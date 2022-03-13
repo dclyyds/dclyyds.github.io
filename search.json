@@ -1,1 +1,1 @@
-[{"title":"第一篇博客","date":"2022-03-08T08:16:36.000Z","url":"/2022/03/08/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/","categories":[[" ",""]],"content":"为啥子每次在cmd中hexo g -d 有的时候链接不上服务器有的时候链接的上呢。。"}]
+[{"title":"第一篇博客","date":"2022-03-08T08:16:36.000Z","url":"/2022/03/08/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/","categories":[[" ",""]],"content":"为啥子每次在cmd中hexo g -d 有的时候链接不上服务器有的时候链接的上呢。。fatal: unable to access ‘;: OpenSSL SSL_read: Connection was reset, errno 10054"}]
