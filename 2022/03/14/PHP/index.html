@@ -424,7 +424,7 @@ header .header__right .dropdown-menus .dropdown-menu {
       
       <span class="post-meta">
         <span class="p-dot"></span>
-        共 445 字
+        共 1.9k 字
       </span>
     
     
@@ -449,6 +449,23 @@ header .header__right .dropdown-menus .dropdown-menu {
 <p>a .= b        a = a .b  （连接两个字符串）</p>
 <p>变量函数库</p>
 <p>类型           说明                                            语法<br>empty        检查变量是否为空，为空返        empty(变量)<br>                   回TRUE，否则为FALSE<br>gettype      获取变量的类型                   gettype(变量)<br>is_array      检查变量是否为数组类型           is.array(变量)<br>isset           检查变量是否被设置或赋值          isset(变量)<br>unset         给定变量，即销毁变量                unset(变量)<br>var_dump  打印变量的相关信息            var dump(变量)</p>
+<p>表单属性<br>● 表单METHOD属性<br><FORM ACTION=URL METHOD="POSTIGET].…."><br>METHOD说明本表单向服务器发送输入信息时的使用方式. 一般有两种选择:POST和GET，默认的方式是GET</p>
+<p>● GET方法<br>使用GET时，HTTP的客户端将表单上用户的输入信息作为字符串附加在ACTION所设定的URL后面·用“?”和“&amp;”隔开，然后把整个字符串传送到服务器端<br>但由于系统内置变量的长度限制了输入字符串的长度，因此，用GET方式所能传送的数据长度受到限制(一般为2k字节)·注意:GET方法不具有保密性，不适合处理如信用卡卡号等要求保密的内容，而且不能传送非ASCI码的字符</p>
+<p>表单属性</p>
+<p>GET方法和POST方法的对比<br>GET方式</p>
+<ol>
+<li>get方式在url后面拼接参数<br>2．只能以文本的形式传递数据<br>3．传递的数据量小，4KB左右<br>4、安全性低，会将数据显示在地址栏<br>5．速度快，通常用于对安全性要求不高的请求<br>POST方式</li>
+<li>安全性较高<br>2．传递数据量大，请求对数据长度没有要求<br>3．请求不会被缓存，也不会保留在浏览器历史记录中</li>
+</ol>
+<p>服务器端接收数据<br>. PHP中有三种变量进行数据的接收<br>$_GET<br>·变量接受所有以get方式发送的请求，及浏览器地址栏中的?之后的内容<br>$_POST<br>·变量接受所有以post方式发送的请求<br>·例如，一个form以 method=post提交，提交后php 会处理post过来的全部变量<br>$_REQUEST<br>·支持两种方式发送过来的请求，即post和get它都可以接受</p>
+<p>文件访问函数:打开文件<br>fopen()函数参数mode的可选值<br>r以只读方式打开，如果文件不存在将出错<br>w以写入方式打开，将文件指针指向文件头部，并删除文件内容，如果文件不存在则创建文件<br>a以追加写入方式打开，将文件指针指向文件末尾，如果文件不存在则创建文件<br>r+以读写方式(先读后写)打开，将文件指针指向文件头部。<br>W+以读写方式（先写后读)打开，将文件指针指向文件头部，并删除文件内容<br>a+以追加读写方式打开，将文件指针指向文件末尾。<br>x以只写方式创建并打开文件，并将文件指针指向文件头。如果指定文件存在，就会打开失败<br>X+以读写方式创建并打开文件，并将文件指针指向文件头。如果指定文件存在，就会打开失败<br>b以二进制模式打开，可与r…w…a合用</p>
+<p>文件访问函数∶读取文件读取文件常用函数<br>fread0<br>读取整个文件或文件中指定长度的字符串，可用于二进制文件读取<br>fgets()<br>读取文件中的一行字符<br>fgetss()<br>读取文件中的一行字符,并去掉所有HTML和PHP标记<br>fgetc()<br>读取文件中的一个字符<br>file_get_contents()<br>将文件读入字符串<br>file()<br>把文件读入到一个数组中<br>readfile()<br>读取一个文件，并输出到输出缓冲<br>fread()<br>读取整个文件或文件中指定长度的字符串，可用于二进制文件读取</p>
+<p>文件的基本操作<br>函数                语法                             说明<br>copy()          copy(源文件,目的文件)                    复制文件<br>unlink()        unlink(目标文件)                       删除文件<br>rename()      rename(I日文件名,新文件名)            重命名文件或目录，或移动文件<br>ftruncate()    ftruncate(目标文件资源,截取长度)        将文件截断到指定长度<br>file_exists()    file_exists(目标文件名)            判断文件或文件夹是否存在<br>is_file()        is_file(文件名)                        判断指定的路径存在且为文件</p>
+<p>获取文件属性<br>realpath()          返回文件的物理路径<br>pathinfo()        以数组形式返回文件的路径和文件名信息</p>
+<p>目录的基本操作<br>函数                    说明                            示例<br>mkdir(pathname)        新建一个指定的目录            mkdir(‘temp’)<br>rmdiridirname)        患除目录，该目录必须为空        rmdirt (“data”)<br>getcwd(void)            取得当前文件所在的目录        echo getcwd();<br>chdir(dirname)        改变当前目录                    chdirt(“ ../“);<br>opendir(path)            打开目录，返回目录的指针        $dirh=opendir(‘temP’);<br>closedir()                关闭目录，参数为目录指针        clasedir($dirh);<br>readdir()            遍历历目录                    $file=readdir($dirh)<br>scandir(path, sort)        以数组形式遍历目录，            $arr=scandir(‘D:\ICQ’,1);<br>    sort参数可设置升序或降序排列    </p>
+<p>会话控制的概述<br>● HTTP协议本身是无状态的<br>● http协议无法记录用户经常上哪些网站，有什么爱好，也无法记录用户的ID帐号和密码，这就是无状态<br>● HTTP协议本身是无状态的，客户端只需要简单的向服务器请求下载某些文件，无论足客户端还是服务器都没有必要记录彼此过去的行为，每一次请求之间都是独立的<br>● .HTTP协议自身不具备保存之前发送过的请求或相应的功能</p>
+<p>设置cookie<br>PHP用setcookie函数来设置cookie<br> Cookie在传输过程中，是HTTP协议头的一部分，用于浏览器和服务器之间传递信息<br>所以必须在任何属于HTML文件本身的内容输出之前调用SetCookie()函数，调用该函数前不能有任何内容<br>setcookie函数语法<br>setcookie(namexalue.expire.p.ath.domain.secure)<br>参数解释</p>
+<p>参数类型        参数名        解释<br>必填            name        设置cookie的名字<br>value        设定cookie的值<br>可选            expire        设定cookie的有效期，以秒为单位<br>path            服务器端的有效路径<br>            domain        设定有效域名<br>secure    设定是否仅在https安全连接时才设定</p>
 
       </div>
     </div>
