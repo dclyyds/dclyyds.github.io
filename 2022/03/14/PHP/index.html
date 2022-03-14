@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/null">
     <link rel="icon" type="image/png" href="/null">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <title>归档 - Hexo</title>
+    <title>PHP - Hexo</title>
     
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
@@ -404,35 +404,78 @@ header .header__right .dropdown-menus .dropdown-menu {
             
 
 <article class="page">
-  <div class="archive-list">
-    <p class="h4">共计 3 篇文章</p>
-    <hr>
+<div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3>PHP</h3>
+    
+      <span class="post-meta-label">
+        John Doe
+      </span>
+    
+    
+      <span class="post-meta-label">
+        <span class="p-dot"></span>
+        <time datetime="2022-03-14 11:40" pubdate>
+          2022-03-14
+        </time>
+      </span>
     
     
       
-        
-        <p class="h5">2022</p>
-      
-      <a href="/2022/03/14/PHP/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">PHP</span>
-        <time style="float: right;">03-14</time>
-      </a>
+      <span class="post-meta">
+        <span class="p-dot"></span>
+        共 445 字
+      </span>
+    
+    
+    
+  </div>
+  
+</div>
+<div class="article-m">
+  <div class="post-toc">
     
       
-      <a href="/2022/03/14/Linux/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">Linux</span>
-        <time style="float: right;">03-14</time>
-      </a>
     
+  </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <p>PHP大小写敏感</p>
+<p>·在PHP中，所有关键词（例如if、else、echo等等）和用户定义的函数名、类名均不区分大小写·但是变量名会对大小写敏感</p>
+<p>变量规则</p>
+<p>变量以$符号开头，其后是变量的名称<br>变量名称必须以字母或下划线开头，而不能以数字开头变量名称只能包含字母、数字和下划线（A-z、0-9以及_)变量名称区分大小写，建议用小写<br>PHP没有创建变量的命令，变量会在首次为其赋值时自动被创建<br>PHP是一门类型松散的语言，在为变量赋值时，不必声明变量的数据类型，PHP会自动把变量转换为相应的数据类型</p>
+<p>字符串</p>
+<p>字符串要用单引号或双引号括住，字符串中可以包括html标记<br>用单引号时，程序不会对字符串进行解析。如果字符串中包含变量，也只输出变量名，而不会输出变量值;用双引号则会对字符串进行解析。如果字符串中包含变量，则会对变量进行解析而输出变量的值;<br>当一个字符串是纯文本组成的时候，尽量用单引号</p>
+<p>a .= b        a = a .b  （连接两个字符串）</p>
+<p>变量函数库</p>
+<p>类型           说明                                            语法<br>empty        检查变量是否为空，为空返        empty(变量)<br>                   回TRUE，否则为FALSE<br>gettype      获取变量的类型                   gettype(变量)<br>is_array      检查变量是否为数组类型           is.array(变量)<br>isset           检查变量是否被设置或赋值          isset(变量)<br>unset         给定变量，即销毁变量                unset(变量)<br>var_dump  打印变量的相关信息            var dump(变量)</p>
+
+      </div>
+    </div>
+</div>
+
+
+<div class="post-footer">
+  
+  <div class="donate text-center">
+    <span></span>
+    <div class="donate-way">
       
-      <a href="/2022/03/08/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">第一篇博客</span>
-        <time style="float: right;">03-08</time>
-      </a>
-    
+    </div>
+  </div>
+  
 
 </div>
+
+    <!-- Comments -->
+    <div class="comments">
+        
+        
+    </div>
+
 </article>
+
+
         </div>
         
 <footer class="text-center">
@@ -449,6 +492,8 @@ header .header__right .dropdown-menus .dropdown-menu {
 </footer>
 
 <div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
     
     <a href="#top" class="click-btn">
       <i id="i-up"></i>
@@ -484,8 +529,50 @@ header .header__right .dropdown-menus .dropdown-menu {
 </script>
 
 
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
 
 
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
 
 
 
