@@ -424,7 +424,7 @@ header .header__right .dropdown-menus .dropdown-menu {
       
       <span class="post-meta">
         <span class="p-dot"></span>
-        共 1.9k 字
+        共 2.4k 字
       </span>
     
     
@@ -466,6 +466,17 @@ header .header__right .dropdown-menus .dropdown-menu {
 <p>会话控制的概述<br>● HTTP协议本身是无状态的<br>● http协议无法记录用户经常上哪些网站，有什么爱好，也无法记录用户的ID帐号和密码，这就是无状态<br>● HTTP协议本身是无状态的，客户端只需要简单的向服务器请求下载某些文件，无论足客户端还是服务器都没有必要记录彼此过去的行为，每一次请求之间都是独立的<br>● .HTTP协议自身不具备保存之前发送过的请求或相应的功能</p>
 <p>设置cookie<br>PHP用setcookie函数来设置cookie<br> Cookie在传输过程中，是HTTP协议头的一部分，用于浏览器和服务器之间传递信息<br>所以必须在任何属于HTML文件本身的内容输出之前调用SetCookie()函数，调用该函数前不能有任何内容<br>setcookie函数语法<br>setcookie(namexalue.expire.p.ath.domain.secure)<br>参数解释</p>
 <p>参数类型        参数名        解释<br>必填            name        设置cookie的名字<br>value        设定cookie的值<br>可选            expire        设定cookie的有效期，以秒为单位<br>path            服务器端的有效路径<br>            domain        设定有效域名<br>secure    设定是否仅在https安全连接时才设定</p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6898630134530752520">https://juejin.cn/post/6898630134530752520</a> (cookie seesion token 单点登录建权详解)</p>
+<p>Cookie<br>cookie注意事项</p>
+<ol>
+<li>SetCookie(之前不能有任何html输出，空格、空白行都不行</li>
+<li>SetCookieO后，在当前页调用echo $_COOKIE[“name””]不会有输出，必须刷新或到下一个页面才可以看到Cookie值<br>3．使用Cookie的限制，一个浏览器能创建的Cookie数量最多为30个，并且每个不能超过4KB，每个WEB站点能设置的Cookie总数不能超过20个</li>
+<li>Cookie是保存在客户端的，如果用户禁用了Cookie，那么cookie也就失效了5. cookie的生命周期到了，cookie就会失效</li>
+<li>设置一个cookie时失效时间为time()那么在页面浏览完之后就被删除</li>
+</ol>
+<p>Session概述什么是Session ?<br>Session译为“会话”，其本义是指有始有终的一系列动作/消息<br>Web中的Session指的就是用户在浏览某个网站时，从进入网站到浏览器关闭所经过的这段时间，也就是用户浏览这个网站所花费的时间<br>因此Session实际上是一个特定的时间概念，Session默认的生命周期为20分钟</p>
+<p>Session的作用<br>Session可以用于身份认证，程序状态记录，页面之间的参数传递等<br>因为HTTP协议无状态，为了在服务器保持客户端的状态，就需要使用Session</p>
+<p>总结Cookie和Session的异同点<br>异同点<br>Cookie                       Session<br>相同                                能够保存用户信息的区别<br>不同        存储位置            存放在客户端浏览器            存放在服务器<br> 保留时间        设定有效保存期限                关闭浏览器后自动作废<br> 存储容量        每个浏览器只能保存某个        可以创建多个<br>   Web服务器的最多20个cookie        但是过多会影响服务器性能<br>        且大小不超过4KB<br> 是否被禁用        用户设置是否开启cookie        不会被禁用，因为内容保存在服务器端<br> 隐私策略        对客户端可见，不安全            存储在服务器，较安全<br> 跨域支持        支持跨域名访问                不支持跨域名访问</p>
 
       </div>
     </div>
