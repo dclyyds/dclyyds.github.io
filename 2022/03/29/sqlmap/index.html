@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/null">
     <link rel="icon" type="image/png" href="/null">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <title>归档 - Hexo</title>
+    <title>sqlmap - Hexo</title>
     
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
@@ -404,59 +404,73 @@ header .header__right .dropdown-menus .dropdown-menu {
             
 
 <article class="page">
-  <div class="archive-list">
-    <p class="h4">共计 7 篇文章</p>
-    <hr>
+<div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3>sqlmap</h3>
+    
+      <span class="post-meta-label">
+        John Doe
+      </span>
+    
+    
+      <span class="post-meta-label">
+        <span class="p-dot"></span>
+        <time datetime="2022-03-29 11:11" pubdate>
+          2022-03-29
+        </time>
+      </span>
     
     
       
-        
-        <p class="h5">2022</p>
-      
-      <a href="/2022/03/29/sqlmap/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">sqlmap</span>
-        <time style="float: right;">03-29</time>
-      </a>
+      <span class="post-meta">
+        <span class="p-dot"></span>
+        共 1k 字
+      </span>
+    
+    
+    
+  </div>
+  
+</div>
+<div class="article-m">
+  <div class="post-toc">
     
       
-      <a href="/2022/03/23/sql%E6%B3%A8%E5%85%A5/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title"></span>
-        <time style="float: right;">03-23</time>
-      </a>
     
+  </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <p>-u 指定目标URL (可以是http协议也可以是https协议)<br>-d 连接数据库<br>–dbs 列出所有的数据库<br>–current-db 列出当前数据库<br>–tables 列出当前的表<br>–columns 列出当前的列<br>-D 选择使用哪个数据库<br>-T 选择使用哪个表<br>-C 选择使用哪个列<br>–dump 获取字段中的数据<br>–batch 自动选择yes<br>–smart 启发式快速判断，节约浪费时间<br>–forms 尝试使用post注入<br>-r 加载文件中的HTTP请求（本地保存的请求包txt文件）<br>-l 加载文件中的HTTP请求（本地保存的请求包日志文件）<br>-g 自动获取Google搜索的前一百个结果，对有GET参数的URL测试<br>-o 开启所有默认性能优化<br>–tamper 调用脚本进行注入<br>-v 指定sqlmap的回显等级<br>–delay 设置多久访问一次<br>–os-shell 获取主机shell，一般不太好用，因为没权限<br>-m 批量操作<br>-c 指定配置文件，会按照该配置文件执行动作<br>-data data指定的数据会当做post数据提交<br>-timeout 设定超时时间<br>-level 设置注入探测等级<br>–risk 风险等级<br>–identify-waf 检测防火墙类型<br>–param-del=”分割符” 设置参数的分割符<br>–skip-urlencode 不进行url编码<br>–keep-alive 设置持久连接，加快探测速度<br>–null-connection 检索没有body响应的内容，多用于盲注<br>–thread 最大为10 设置多线程<br>–is-dba  判断当前用户是否为管理员权限<br>–roles 列出数据库管理员角色<br>–users  枚举所有的用户<br>–passwords  枚举所有的的用户密码<br>–delay<br>有些web服务器请求访问太过频繁可能会被防火墙拦截，使用–delay就可以设定两次http请求的延时<br>–safe-url<br>有的web服务器会在多次错误的访问请求后屏蔽所有请求，使用–safe-url 就可以每隔一段时间去访问一个正常的页面。<br>-v “x”</p>
+<p>使用sqlmap注入测试时，可以使用 -v [x] 参数来指定回显信息的复杂程度, x 的取值范围为[0~6]<br>0   只显示python错误以及严重信息<br>1    同时显示基本信息和警告信息<br>2   同时显示debug信息<br>3   同时显示注入的pyload<br>4   同时显示HTTP请求<br>5   同时显示HTTP相应头<br>6   同时显示HTTP相应页面<br>–level</p>
+<p>level有5个等级，默认等级为1，进行Cookie测试时使用–level 2 ，进行use-agent或refer测试时使用–level 3 ，进行 host 测试时使用–level 5<br>get型<br>step1：sqlmap -u “URL” //测试是否存在注入<br>step2：sqlmap -u “URL” -current-db //查询当前数据库<br>step3：sqlmap -u “URL” -D “数据库名” –tables //查询当前数据库中的所有表<br>step4：sqlmap -u “URL” -D “数据库名” -T “表名” –columns //查询指定库中指定表的所有列(字段)<br>step5：sqlmap -u “URL” -D “数据库名” -T “表名” -C “列名” –dump //打印出指定库中指定表指定列中的字段内容<br>post型：<br>先使用burp把提交的数据包保存下来<br>或者直接加上post提交的参数 sqlmap -u “URL” –data “post参数”<br>语法：sqlmap -r “请求包的txt文件”sqlmap -r “/root/.sqlmap/post.txt”<br>sql-labs-less18<br>Header injection - Uagent<br>sqlmap 在对user-agent 注入的时候，得在文件中的user-agent的参数后面加上 *<br>或者不加 * 号，调用 –level参数，将等级调至 3级，只有等级为 3级即以上时才能对 user-agent进行注入 语句:salmap -u “<a target="_blank" rel="noopener" href="http://ip地址/ua.php&quot;">http://IP地址/ua.php&quot;</a> –data “uname=admin&amp;passwd=admin” –user-agent=”aaa”–level 3 –dbs-batch   –user-agent参数:指定想使用的UA</p>
+<p>sql-labs-less20<br>Header injection -Cookie<br>语法：sqlmap -u “url” –cookie “cookie信息” –level 2<br>说明∶当需要对cookie注入的时候，必须使用–cookie选项,–data “”因为post的数据长度为0，但是又想使用post方法进行注入，则使用–data””，使用–data选项后，sqlmap自动使用post方法。<br>sql-labs-less19<br>Header injection - Referer<br>对Referer注入和User-agent相同，要么是在Referer后面加上 *<br>或者将 level 调至 3 级</p>
+
+      </div>
+    </div>
+</div>
+
+
+<div class="post-footer">
+  
+  <div class="donate text-center">
+    <span></span>
+    <div class="donate-way">
       
-      <a href="/2022/03/21/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%8F%92%E4%BB%B6/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">渗透测试插件</span>
-        <time style="float: right;">03-21</time>
-      </a>
-    
-      
-      <a href="/2022/03/15/mysql/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">mysql</span>
-        <time style="float: right;">03-15</time>
-      </a>
-    
-      
-      <a href="/2022/03/14/PHP/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">PHP</span>
-        <time style="float: right;">03-14</time>
-      </a>
-    
-      
-      <a href="/2022/03/14/Linux/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">Linux</span>
-        <time style="float: right;">03-14</time>
-      </a>
-    
-      
-      <a href="/2022/03/08/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">第一篇博客</span>
-        <time style="float: right;">03-08</time>
-      </a>
-    
+    </div>
+  </div>
+  
 
 </div>
+
+    <!-- Comments -->
+    <div class="comments">
+        
+        
+    </div>
+
 </article>
+
+
         </div>
         
 <footer class="text-center">
@@ -473,6 +487,8 @@ header .header__right .dropdown-menus .dropdown-menu {
 </footer>
 
 <div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
     
     <a href="#top" class="click-btn">
       <i id="i-up"></i>
@@ -508,8 +524,50 @@ header .header__right .dropdown-menus .dropdown-menu {
 </script>
 
 
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
 
 
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
 
 
 
