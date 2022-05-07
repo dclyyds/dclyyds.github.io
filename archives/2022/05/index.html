@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/null">
     <link rel="icon" type="image/png" href="/null">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <title>Hexo</title>
+    <title>归档 - Hexo</title>
     
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
@@ -334,6 +334,13 @@ header .header__right .dropdown-menus .dropdown-menu {
     
 
     
+        <!--
+        <link rel="stylesheet" href="/css/page.css" media="print"
+            onload="this.media='all';this.onload=null">
+        <noscript>-->
+            <link rel="stylesheet" href="/css/page.css">
+        <!--</noscript>-->
+    
     
     <link rel="stylesheet" href="/css/main.css" media="print" onload="this.media='all';this.onload=null">
     <noscript>
@@ -395,324 +402,25 @@ header .header__right .dropdown-menus .dropdown-menu {
         <div id="page-main" class="main-content">
         <div class="mg-top">
             
-  <div id="index-banner" class="text-center middle-center">
-    <div class="banner-text">
-        <h3 id="banner-name">
-            不恰葡萄干的博客
-        </h3>
-        <p class="slogan">
-          进来的都是帅的人
-        </p>
-    </div>
+
+<article class="page">
+  <div class="archive-list">
+    <p class="h4">共计 12 篇文章</p>
+    <hr>
+    
+    
+      
+        
+        <p class="h5">2022</p>
+      
+      <a href="/2022/05/07/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="list-group-item list-group-item-action">
+        <span class="archive-post-title">php反序列化</span>
+        <time style="float: right;">05-07</time>
+      </a>
+    
+
 </div>
-
-
-<div class="post-card-center">
-<div class="post-card-main">
-
-    <div class="index-card">
-      
-      <article class="index-card-info">
-        <h3 class="index-header">
-          <a href="/2022/05/07/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
-          
-          php反序列化</a>
-        </h3>
-        <p class="index-excerpt">
-            
-            
-              
-            
-            基本概念序列化（串行化）：将变量转换为可保存或传输的字符串的过程；
-反序列化（反串行化）：在适当的时候把这个字符串再转化成原来的变量使用。
-这两个过程结合起来，可以轻松地存储和传输数据，使程序更具维护性。常见的php系列化和反系列化方式主要有：serialize，unserialize；json_encode，json_decode。
-string serialize ( mixed $value
-        </p>
-        <div class="index-btm post-metas">
-          
-            
-              <time datetime="2022-05-07 13:58" pubdate>
-                2022-05-07
-              </time>
-            
-          
-          
-        </div>
-      </article>
-    </div>
-  
-    <div class="index-card">
-      
-      <article class="index-card-info">
-        <h3 class="index-header">
-          <a href="/2022/04/22/xss-labs1-12%E5%85%B3/">
-          
-          xss-labs1-12关</a>
-        </h3>
-        <p class="index-excerpt">
-            
-            
-              
-            
-            xss-lib注：为防止不必要的麻烦，统一把&lt;&gt;替换成《&gt;第一关：get请求的name变量放入xss poc,完整的返回在html中，浏览器响应xss poc。level1.php?name=《script&gt;alert(“xss”)《/script&gt;第二关：test”&gt;《script&gt;alert(“xss”)《/script&gt;//   完成闭合第三关
-        </p>
-        <div class="index-btm post-metas">
-          
-            
-              <time datetime="2022-04-22 11:51" pubdate>
-                2022-04-22
-              </time>
-            
-          
-          
-        </div>
-      </article>
-    </div>
-  
-    <div class="index-card">
-      
-      <article class="index-card-info">
-        <h3 class="index-header">
-          <a href="/2022/04/20/xss%E6%BC%8F%E6%B4%9E/">
-          
-          xss漏洞</a>
-        </h3>
-        <p class="index-excerpt">
-            
-            
-              
-            
-            注： &lt;&gt; 统一写成《&gt;  要不然一点开一直弹窗XSS漏洞的概述漏洞的介绍. XSS又叫CsS (Cross Site Script)，全称跨站脚本攻击。它指的是攻击者往Web页面或者URL里插入恶意JavaScript脚本代码，如果Web应用程序对于用户输入的内容没有过滤，那么当正常用户浏览该网页的时候，嵌入在Web页面里的恶意JavaScript脚本代码会被执行，从而达到恶意
-        </p>
-        <div class="index-btm post-metas">
-          
-            
-              <time datetime="2022-04-20 10:03" pubdate>
-                2022-04-20
-              </time>
-            
-          
-          
-        </div>
-      </article>
-    </div>
-  
-    <div class="index-card">
-      
-      <article class="index-card-info">
-        <h3 class="index-header">
-          <a href="/2022/04/20/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/">
-          
-          文件包含漏洞</a>
-        </h3>
-        <p class="index-excerpt">
-            
-            
-              
-            
-            一、什么是文件包含漏洞？
-1、文件包含概述
-和SQL注入等攻击方式一样，文件包含漏洞也是一种“注入型漏洞”，其本质就是输入一段用户能够控制的脚本或者代码，并让服务器端执行。
-什么叫包含呢？以PHP为例，我们常常把可重复使用的函数写入到单个文件中，在使用该函数时，直接调用此文件，而无需再次编写函数，这一过程就叫做包含。
-有时候由于网站功能需求，会让前端用户选择要包含的文件，而开发人员又没有对要包含的
-        </p>
-        <div class="index-btm post-metas">
-          
-            
-              <time datetime="2022-04-20 09:15" pubdate>
-                2022-04-20
-              </time>
-            
-          
-          
-        </div>
-      </article>
-    </div>
-  
-    <div class="index-card">
-      
-      <article class="index-card-info">
-        <h3 class="index-header">
-          <a href="/2022/04/13/%E7%BB%95%E8%BF%87waf%E6%8A%80%E5%B7%A7/">
-          
-          绕过waf技巧</a>
-        </h3>
-        <p class="index-excerpt">
-            
-            
-              
-            
-            常见的过WAF技巧1．大小写绕过∶·大小写绕过用于只针对小写或大写的关键字匹配技术·出现原因:在waf里，使用的正则不完善或者是没有用大小写转换函数·用法:比如，拦截了union，那就使用uNIoNXXx.com/index.php?id=-3 uNIoN sELect 1,2,3·注意:对于一些不太成熟的WAF效果显著
-2．替换关键字∶关键字双写·出现原因∶利用waf的不完整性，只验证一次字符串
-        </p>
-        <div class="index-btm post-metas">
-          
-            
-              <time datetime="2022-04-13 09:30" pubdate>
-                2022-04-13
-              </time>
-            
-          
-          
-        </div>
-      </article>
-    </div>
-  
-    <div class="index-card">
-      
-      <article class="index-card-info">
-        <h3 class="index-header">
-          <a href="/2022/04/06/sql-lib/">
-          
-          sql-lib</a>
-        </h3>
-        <p class="index-excerpt">
-            
-            
-              
-            
-            sql注入union联合注入(前四关关同理)1.http://45.32.113.109:44709/Less-1/?id=1&#39;   //报错,说明存在注入2.http://45.32.113.109:44709/Less-1/?id=1&#39;  and 1=1–+ //显示数据http://45.32.113.109:44709/Less-1/?id=1&#39;  and 1=2–
-        </p>
-        <div class="index-btm post-metas">
-          
-            
-              <time datetime="2022-04-06 14:40" pubdate>
-                2022-04-06
-              </time>
-            
-          
-          
-        </div>
-      </article>
-    </div>
-  
-    <div class="index-card">
-      
-      <article class="index-card-info">
-        <h3 class="index-header">
-          <a href="/2022/03/29/sqlmap/">
-          
-          sqlmap</a>
-        </h3>
-        <p class="index-excerpt">
-            
-            
-              
-            
-            -u 指定目标URL (可以是http协议也可以是https协议)-d 连接数据库–dbs 列出所有的数据库–current-db 列出当前数据库–tables 列出当前的表–columns 列出当前的列-D 选择使用哪个数据库-T 选择使用哪个表-C 选择使用哪个列–dump 获取字段中的数据–batch 自动选择yes–smart 启发式快速判断，节约浪费时间–forms 尝试使用post注入
-        </p>
-        <div class="index-btm post-metas">
-          
-            
-              <time datetime="2022-03-29 11:11" pubdate>
-                2022-03-29
-              </time>
-            
-          
-          
-        </div>
-      </article>
-    </div>
-  
-    <div class="index-card">
-      
-      <article class="index-card-info">
-        <h3 class="index-header">
-          <a href="/2022/03/21/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%8F%92%E4%BB%B6/">
-          
-          渗透测试插件</a>
-        </h3>
-        <p class="index-excerpt">
-            
-            
-              
-            
-            Wappalyzer识别网站使用的技术
-Chromehttps://chrome.google.com/webstore/detail/wappalyzer/gppongmhjkpfnbhagpmjfkannfbllamg
-Firefoxhttps://addons.mozilla.org/zh-CN/firefox/addon/wappalyzer/
-Netcraft ExtensionNetc
-        </p>
-        <div class="index-btm post-metas">
-          
-            
-              <time datetime="2022-03-21 10:45" pubdate>
-                2022-03-21
-              </time>
-            
-          
-          
-        </div>
-      </article>
-    </div>
-  
-    <div class="index-card">
-      
-      <article class="index-card-info">
-        <h3 class="index-header">
-          <a href="/2022/03/15/mysql/">
-          
-          mysql</a>
-        </h3>
-        <p class="index-excerpt">
-            
-            
-              
-            
-            mysql总结:常用数据类型分类                备注和说明                    数据类型                说明二进制数据类型    存储非子符和文本的数据        BLOB            可用来存储图像文本数据类型        字符数据包括任意字母、符        char                固定长度的非 Unicode
-        </p>
-        <div class="index-btm post-metas">
-          
-            
-              <time datetime="2022-03-15 17:33" pubdate>
-                2022-03-15
-              </time>
-            
-          
-          
-        </div>
-      </article>
-    </div>
-  
-    <div class="index-card">
-      
-      <article class="index-card-info">
-        <h3 class="index-header">
-          <a href="/2022/03/14/PHP/">
-          
-          PHP</a>
-        </h3>
-        <p class="index-excerpt">
-            
-            
-              
-            
-            PHP大小写敏感
-·在PHP中，所有关键词（例如if、else、echo等等）和用户定义的函数名、类名均不区分大小写·但是变量名会对大小写敏感
-变量规则
-变量以$符号开头，其后是变量的名称变量名称必须以字母或下划线开头，而不能以数字开头变量名称只能包含字母、数字和下划线（A-z、0-9以及_)变量名称区分大小写，建议用小写PHP没有创建变量的命令，变量会在首次为其赋值时自动被创建PHP是一门类型松
-        </p>
-        <div class="index-btm post-metas">
-          
-            
-              <time datetime="2022-03-14 11:40" pubdate>
-                2022-03-14
-              </time>
-            
-          
-          
-        </div>
-      </article>
-    </div>
-  
-</div>
-</div>
-
-    <nav aria-label="navigation">
-      <span class="pagination" id="pagination">
-        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">&gt;</a>
-      </span>
-    </nav>
-
+</article>
         </div>
         
 <footer class="text-center">

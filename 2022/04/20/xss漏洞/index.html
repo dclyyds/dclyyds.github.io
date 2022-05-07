@@ -424,7 +424,7 @@ header .header__right .dropdown-menus .dropdown-menu {
       
       <span class="post-meta">
         <span class="p-dot"></span>
-        共 1.6k 字
+        共 1.7k 字
       </span>
     
     
@@ -443,10 +443,12 @@ header .header__right .dropdown-menus .dropdown-menu {
         <p>注： &lt;&gt; 统一写成《&gt;  要不然一点开一直弹窗<br>XSS漏洞的概述<br>漏洞的介绍<br>. XSS又叫CsS (Cross Site Script)，全称跨站脚本攻击。它指的是攻击者往Web页面或者URL里插入恶意JavaScript脚本代码，如果Web应用程序对于用户输入的内容没有过滤，那么当正常用户浏览该网页的时候，嵌入在Web页面里的恶意JavaScript脚本代码会被执行，从而达到恶意攻击正常用户的目的。<br>漏洞的位置<br>·数据交互的地方∶<br>-get post cookies headers方法<br>-富文本编辑器<br>-各类标签插入和自定义<br>·数据输出的地方∶<br>-用户资料<br>-关键词、标签、说明<br>漏洞的原理<br> XSS，是指攻击者通过在Web页面中写入恶意脚本，造成用户在浏览页面时，获取控制用户浏览器进行操作的攻击方式。<br>服务端代码︰<br><?php
 $input = $_GET["test"];
 echo $input;
-?><br>用户提交:<br>《script&gt;alert(/xss/)&lt;/script》</p>
+?><br>用户提交:<br><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code><br>xSS漏洞产生的两个条件<br>确定<br>1.可以控制的输入点<br>⒉.输入能返回到前端页面上被浏览器当成脚本语言解释执行<br>漏洞的分类<br>,<br>根据攻击手法的不同，XSS漏洞分为三类<br>类型                存储区                  插入点<br>反射型XSS           URL                     HTML<br>存储型XSS           后端数据库               HTML<br>DOM型xSS            后端数据库/前端存储/URL  前端JavaScript<br>反射型XSS</p>
 <blockquote>
-<p>xSS漏洞产生的两个条件<br>确定<br>1.可以控制的输入点<br>⒉.输入能返回到前端页面上被浏览器当成脚本语言解释执行<br>漏洞的分类<br>,<br>根据攻击手法的不同，XSS漏洞分为三类<br>类型                存储区                  插入点<br>反射型XSS           URL                     HTML<br>存储型XSS           后端数据库               HTML<br>DOM型xSS            后端数据库/前端存储/URL  前端JavaScript<br>反射型XSS<br>验证反射型xss漏洞存在的poc :<br>. 《script&gt;alert(/xss/)</script>（常用)<br>·《script&gt;confirm(‘xss’)</script><br>. 《script&gt;prompt(‘xss’)</script><br>◆存储型XSs<br>概念︰持久性跨站脚本，是三种XSS中危害最大的。它是将恶意代码写进数据库或文件等可以永久保存数据的介质中&gt;存在位置:常出现在留言板、发表评论或发表文章的地方(数据写入的地方)<br>攻击手法:通过留言板等功能，将攻击者精心构造XSS代码，保存到数据库中，当其他用户再次访问这个页面时，就会触发并执行恶意的XSS代码，从而窃取用户的敏感信息。</p>
+<p>验证反射型xss漏洞存在的poc :</p>
 </blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">. &lt;script&gt;alert(/xss/)&lt;/script&gt;（常用)</span><br><span class="line">·  &lt;script&gt;confirm(&#x27;xss&#x27;)&lt;/script&gt;</span><br><span class="line">. &lt;script&gt;prompt(&#x27;xss&#x27;)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>◆存储型XSs<br>概念︰持久性跨站脚本，是三种XSS中危害最大的。它是将恶意代码写进数据库或文件等可以永久保存数据的介质中&gt;存在位置:常出现在留言板、发表评论或发表文章的地方(数据写入的地方)<br>攻击手法:通过留言板等功能，将攻击者精心构造XSS代码，保存到数据库中，当其他用户再次访问这个页面时，就会触发并执行恶意的XSS代码，从而窃取用户的敏感信息。</p>
 <p>DOM型xSS<br>DOM型XSs<br>漏洞概念∶不经过后端，DOM-XSS漏洞是基于文档对象模型的一种漏洞，简单去理解就是因为输出点在DOMRDOM-XSS是通过url传入参数去控制触发的，其实也属于反射型XSS.</p>
 <blockquote>
 <p>攻击手法∶<br>攻击者构造出特殊的URL，其中包含恶意代码。用户打开带有恶意代码的URL<br>用户浏览器接收到响应后解析执行，前端JavaScript取出URL中的恶意代码并执行。<br>恶意代码窃取用户数据并发送到攻击者的网站，或者冒充用户的行为，调用目标网站接口执行攻击者指定的操作。<br>三种漏洞的区别<br>存储型XSS与反射型XSS的区别<br>·存储型XSS的恶意代码存在数据库里，反射型XSS的恶意代码存在URL里<br>DOM型与其他两种XSS的区别<br>.DOM型XSS攻击中，取出和执行恶意代码由浏览器端完成，属于前端JavaScript自身的安全漏洞，而其他两种XSS都属于服务端的安全漏洞</p>

