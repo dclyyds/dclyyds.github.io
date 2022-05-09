@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="UTF-8">
+    
+    <link rel="apple-touch-icon" sizes="76x76" href="/null">
+    <link rel="icon" type="image/png" href="/null">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    <title>信息收集 - Hexo</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+    
+    <meta name="description" content="">
+    <meta name="author" content="John Doe">
+    <meta name="keywords" content="">
+    <style>
+
+
+    
+    :root{
+        --shadow-color: rgba(0,0,0,0.2);
+        --sec-shadow: rgba(0,0,0,0.03);
+        --shadow-hover-color: rgba(0,0,0,0.28);
+        --first-text-color: #475b6d;
+        --second-text-color: #37475b;
+        --third-text-color: #858585;
+        --default-text-color: #505050;
+        --default-link-color: #007bff;
+        --link-color: #000000;
+        --second-link-color: #4F9BFA;
+        --code-color:rgba(27,31,35,.05);
+        --post-bkg-color: #fff;
+        --page-bkg-color: #f2f5f8;
+        --nav-a-hover-color: #3498db;
+        --post-sec-text-color: #718096;
+        --sec-bkg: #f2f5f8;
+        --color-mode: 'light';
+        --bkg-h: rgba(255,255,255,0.6);
+        --bkg-m: #e1e4e8;
+        --home-title-color: #4169E1;
+        --shadow: 0 4px 10px rgba(0,2,4,0.06),0 0 1px rgba(0,2,4,0.11);
+        --hr-color: #ddd;
+        --bg-t: #f4f4f4;
+        --nav-bkg: rgba(255,255,255,0.6);
+    }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-mode: 'dark';
+  }
+
+  :root:not([data-theme]) {
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+  }
+}
+
+[data-theme='dark'] {
+    --shadow-color: rgba(0,0,0,0.2);
+    --shadow-hover-color: rgba(0,0,0,0.28);
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+}
+
+</style>
+
+
+
+<style>
+#page-main,footer,.p-btn{
+    display: none;
+}
+html,body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: overlay;
+}
+body{
+    background-color: var(--page-bkg-color);
+    color: var(--second-text-color);
+    overflow-y: scroll;
+}
+a {
+    color: var(--default-link-color);
+    text-decoration: none;
+    background-color: transparent;
+}
+a:hover{
+    color: var(--second-link-color);
+}
+.main-content,.post-card-main{
+    margin: 30px;
+}
+
+
+
+@media (max-width: 410px){
+    .post-card-main{
+        max-width: 350px!important;
+    }
+}
+
+@media (max-width: 980px){
+    .post-card-main{
+        max-width: 520px!important;
+    }
+}
+
+
+@media (min-width: 780px){ 
+    h3{
+        font-size: 1.5rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 1280px){ 
+    h3{
+        font-size: 1.7rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 2096px){ 
+    h3{
+        font-size: 1.8rem;
+        line-height: 1.5em;
+    }
+}
+
+.text-center{
+    text-align: center!important;
+}
+.middle-center{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 100%;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    height: 54px;
+    padding: 0 1.25rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--bkg-m);
+    background-color: var(--nav-bkg);
+}
+header .header__left, header .header__right {
+    display: flex;
+    align-items: center;
+    font-family: rubik,sans-serif,Varela Round;
+}
+header .header__left .logo__text {
+    font-size: 18px;
+    font-weight: 450;
+    padding: 14.5px 10px;
+    border-radius: 5px;
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus {
+    height: 54px;
+    padding: 0 0 0 15px;
+}
+header .header__right .button {
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus .navbar-menu {
+    display: inline-block;
+    align-items: center;
+    height: 54px;
+    padding: 0 10px;
+    font-size: 16px;
+    line-height: 54px;
+}
+header .header__right .dropdown-icon {
+    display: none;
+    height: 54px;
+    padding: 15px 10px;
+    border: 0;
+    background-color: transparent;
+}
+header .header__right .dropdown-menus {
+    line-height: 2rem;
+    animation: slide-in .15s ease 1;
+    display: none;
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: calc(54px + 10px);
+    border-radius: 6px;
+    padding: 24px;
+    background-color: var(--page-bkg-color);
+    border: 1px solid var(--bkg-m);
+    z-index: 9999;
+    justify-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+header .header__right #btn-search, header .header__right #btn-toggle-dark{
+    display: inline-block;
+    padding:  18px 10px;
+    height: 25px;
+}
+header .header__right #btn-dropdown{
+  display: inline-block;
+  padding:  13.5px 0;
+}
+header .header__right .dropdown-menus .dropdown-menu {
+    padding: 10px;
+    color: var(--second-text-color);
+}
+@media screen and (max-width: 764px){
+.navbar__menus {
+    display: none!important;
+}
+.dropdown-icon {
+    display: inline-block!important;
+}
+}
+.p-btn{
+    position: fixed;
+    bottom: 1.2rem;
+    right: 1.2rem;
+    contain: layout;
+}
+.toc-btn,.click-btn{
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    align-items: center;
+    margin-top: .5rem;
+    font-size: .75rem;
+    background-color: var(--sec-bkg);
+    display: block;
+    padding: 0.9rem;
+    box-shadow: 0 0.3rem 0.6rem rgba(48,55,66,.15);
+    border: none;
+    border-radius: 0.5rem;
+    line-height: 1;
+    color: var(--first-text-color);
+}
+.toc-link{
+    color: var(--second-text-color);
+}
+
+#css-loading h3{
+    font-weight: 500;
+    font-size: 1.4rem;
+    text-align: center;
+    position: fixed;
+    top: 200px;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    animation: cssLoad;
+    animation-delay: 0.3s;
+    -webkit-animation: cssLoad;
+    -webkit-animation-delay: 0.3s;
+}
+@keyframes cssLoad {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.9;
+    }
+}
+
+
+.memorial {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1); filter:gray;
+}
+
+
+</style>
+
+    
+
+    
+        <!--
+        <link rel="stylesheet" href="/css/page.css" media="print"
+            onload="this.media='all';this.onload=null">
+        <noscript>-->
+            <link rel="stylesheet" href="/css/page.css">
+        <!--</noscript>-->
+    
+    
+    <link rel="stylesheet" href="/css/main.css" media="print" onload="this.media='all';this.onload=null">
+    <noscript>
+        <link rel="stylesheet" href="/css/main.css">
+    </noscript>
+
+    
+    <script src="/js/main.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+    <body>
+        <header>
+            
+<div class="header__left">
+	<a href="/" class="button"><span class="logo__text">不恰葡萄干的博客</span></a>
+</div>
+<div class="header__right">
+	<div class="navbar__menus">
+		
+	</div>
+	
+	<a href="/search/" class="button">
+		<div id="btn-search">
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1024 1024" width="24" height="24" fill="currentColor"
+				stroke="currentColor" stroke-width="32">
+				<path
+					d="M192 448c0-141.152 114.848-256 256-256s256 114.848 256 256-114.848 256-256 256-256-114.848-256-256z m710.624 409.376l-206.88-206.88A318.784 318.784 0 0 0 768 448c0-176.736-143.264-320-320-320S128 271.264 128 448s143.264 320 320 320a318.784 318.784 0 0 0 202.496-72.256l206.88 206.88 45.248-45.248z">
+				</path>
+			</svg>
+		</div>
+	</a>
+	
+	<a href="javaScript:void(0);" class="button" id="btn-toggle-dark">
+		<div>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none"
+				stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+			</svg>
+		</div>
+	</a>
+	<a href="javaScript:void(0);" class="dropdown-icon button">
+		<div id="btn-dropdown">
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1024 1024" width="24" height="24" fill="currentColor"
+				stroke="currentColor" stroke-width="32" stroke-linecap="round">
+				<path
+					d="M903.43 561.52H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24zM903.43 204.31H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24zM903.43 918.73H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24z"
+					fill="currentColor"></path>
+			</svg>
+		</div>
+	</a>
+	<div class="dropdown-menus" id="dropdown-menus">
+		
+	</div>
+</div>
+
+        </header>
+        <div id="top"></div>
+        <div id="page-main" class="main-content">
+        <div class="mg-top">
+            
+
+<article class="page">
+<div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3>信息收集</h3>
+    
+      <span class="post-meta-label">
+        John Doe
+      </span>
+    
+    
+      <span class="post-meta-label">
+        <span class="p-dot"></span>
+        <time datetime="2022-05-09 09:45" pubdate>
+          2022-05-09
+        </time>
+      </span>
+    
+    
+      
+      <span class="post-meta">
+        <span class="p-dot"></span>
+        共 13.9k 字
+      </span>
+    
+    
+    
+  </div>
+  
+</div>
+<div class="article-m">
+  <div class="post-toc">
+    
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">信息收集概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%90%E5%9F%9F%E5%90%8D%E6%94%B6%E9%9B%86"><span class="toc-number">2.</span> <span class="toc-text">子域名收集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%9F%E5%90%8D%E4%BF%A1%E6%81%AF%EF%BC%88%E5%89%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0%E5%86%85%E5%AE%B9%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">域名信息（前置学习内容）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%90%E5%9F%9F%E5%90%8D%E6%94%B6%E9%9B%86%E5%B8%B8%E8%A7%81%E6%96%B9%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">子域名收集常见方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE"><span class="toc-number">2.2.1.</span> <span class="toc-text">枚举</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E"><span class="toc-number">2.2.2.</span> <span class="toc-text">搜索引擎</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E8%81%9A%E5%90%88%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.2.3.</span> <span class="toc-text">第三方聚合服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E6%8F%90%E5%8F%96SSL%E8%AF%81%E4%B9%A6%E9%87%8C%E7%9A%84%E5%9F%9F%E5%90%8D"><span class="toc-number">2.2.4.</span> <span class="toc-text">快速提取SSL证书里的域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%96%B9%E6%B3%95"><span class="toc-number">2.2.5.</span> <span class="toc-text">其他方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CDN%E8%AF%86%E5%88%AB%E5%92%8C%E7%BB%95%E8%BF%87"><span class="toc-number">3.</span> <span class="toc-text">CDN识别和绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CDN%E5%9F%BA%E6%9C%AC%E4%BB%8B%E7%BB%8D"><span class="toc-number">3.1.</span> <span class="toc-text">CDN基本介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CND%E5%88%A4%E6%96%AD"><span class="toc-number">3.2.</span> <span class="toc-text">CND判断</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ping-nslookup"><span class="toc-number">3.2.1.</span> <span class="toc-text">ping&#x2F;nslookup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E7%BA%BF%E5%B9%B3%E5%8F%B0"><span class="toc-number">3.2.2.</span> <span class="toc-text">在线平台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#phpinfo%E7%AD%89%E6%8E%A2%E9%92%88%E6%89%BE%E5%88%B0%E7%9C%9F%E5%AE%9EIP"><span class="toc-number">3.2.3.</span> <span class="toc-text">phpinfo等探针找到真实IP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CND%E7%BB%95%E8%BF%87"><span class="toc-number">3.3.</span> <span class="toc-text">CND绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%AB%99%E6%A0%B9%E5%9F%9F%E6%88%96%E8%80%85%E5%AD%90%E5%9F%9F%E6%89%BE%E7%9C%9F%E5%AE%9EIP"><span class="toc-number">3.3.1.</span> <span class="toc-text">网站根域或者子域找真实IP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Email%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%89%BE%E7%9C%9F%E5%AE%9EIP"><span class="toc-number">3.3.2.</span> <span class="toc-text">Email服务器找真实IP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%9F%E5%90%8D%E5%8E%86%E5%8F%B2%E8%A7%A3%E6%9E%90%E5%BD%95%E6%89%BE%E7%9C%9F%E5%AE%9EIP"><span class="toc-number">3.3.3.</span> <span class="toc-text">域名历史解析录找真实IP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FOFA%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99%E6%A0%87%E9%A2%98%E6%89%BE%E7%9C%9F%E5%AE%9EIP"><span class="toc-number">3.3.4.</span> <span class="toc-text">FOFA查询网站标题找真实IP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Censys%E6%9F%A5%E8%AF%A2SSL%E8%AF%81%E4%B9%A6%E6%89%BE%E5%88%B0%E7%9C%9F%E5%AE%9EIP"><span class="toc-number">3.3.5.</span> <span class="toc-text">Censys查询SSL证书找到真实IP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">3.3.6.</span> <span class="toc-text">其他的方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#WAF%E6%8E%A2%E6%B5%8B"><span class="toc-number">4.</span> <span class="toc-text">WAF探测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%90%86%E8%AE%BA%E4%BB%8B%E7%BB%8D"><span class="toc-number">4.1.</span> <span class="toc-text">理论介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9C%8B%E5%9B%BE%E8%AF%86%E5%88%ABWAF"><span class="toc-number">4.1.1.</span> <span class="toc-text">看图识别WAF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Nmap%E6%8E%A2%E6%B5%8BWAF"><span class="toc-number">4.1.2.</span> <span class="toc-text">Nmap探测WAF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#wafw00f"><span class="toc-number">4.1.3.</span> <span class="toc-text">wafw00f</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3%E6%8E%A2%E6%B5%8B"><span class="toc-number">5.</span> <span class="toc-text">端口探测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">5.1.</span> <span class="toc-text">端口信息收集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E6%89%AB%E6%8F%8F"><span class="toc-number">5.2.</span> <span class="toc-text">工具扫描</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Nmap"><span class="toc-number">5.2.1.</span> <span class="toc-text">Nmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Masscan"><span class="toc-number">5.2.2.</span> <span class="toc-text">Masscan</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Nmap%E5%92%8CMasscan%E7%BB%93%E5%90%88"><span class="toc-number">5.2.3.</span> <span class="toc-text">Nmap和Masscan结合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ZMap"><span class="toc-number">5.2.4.</span> <span class="toc-text">ZMap</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8C%87%E7%BA%B9%E6%8E%A2%E6%B5%8B"><span class="toc-number">6.</span> <span class="toc-text">指纹探测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">6.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%E6%96%B9%E6%B3%95"><span class="toc-number">6.2.</span> <span class="toc-text">常见指纹识别方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E7%BA%BF%E5%B9%B3%E5%8F%B0-1"><span class="toc-number">6.2.1.</span> <span class="toc-text">在线平台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E5%8C%96%E5%B7%A5%E5%85%B7"><span class="toc-number">6.2.2.</span> <span class="toc-text">本地化工具</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E3%80%81%E6%95%8F%E6%84%9F%E6%96%87%E4%BB%B6%E6%8E%A2%E6%B5%8B"><span class="toc-number">7.</span> <span class="toc-text">目录、敏感文件探测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5-1"><span class="toc-number">7.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E6%89%AB%E6%8F%8F%E5%88%A9%E7%94%A8%E5%B7%A5%E5%85%B7"><span class="toc-number">7.2.</span> <span class="toc-text">常见扫描利用工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%A1%E5%89%91%E5%90%8E%E5%8F%B0%E6%89%AB%E6%8F%8F%E5%B7%A5%E5%85%B7"><span class="toc-number">7.2.1.</span> <span class="toc-text">御剑后台扫描工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Dirbuster"><span class="toc-number">7.2.2.</span> <span class="toc-text">Dirbuster</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Dirsearch"><span class="toc-number">7.2.3.</span> <span class="toc-text">Dirsearch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LinkFinder"><span class="toc-number">7.2.4.</span> <span class="toc-text">LinkFinder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Link-Grabber"><span class="toc-number">7.2.5.</span> <span class="toc-text">Link Grabber</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Burp-JSFinderV1-1-obf"><span class="toc-number">7.2.6.</span> <span class="toc-text">Burp_JSFinderV1.1_obf</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">8.</span> <span class="toc-text">其他信息收集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%8F%E6%84%9F%E4%BF%A1%E6%81%AF"><span class="toc-number">8.0.1.</span> <span class="toc-text">敏感信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Google-Hacking"><span class="toc-number">8.0.2.</span> <span class="toc-text">Google Hacking</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Github%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2"><span class="toc-number">8.0.3.</span> <span class="toc-text">Github信息泄露</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BA%90%E7%A0%81%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">8.0.4.</span> <span class="toc-text">源码信息收集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%81%E7%AB%99%E5%8F%8AC%E6%AE%B5%E6%8E%A2%E6%B5%8B"><span class="toc-number">8.0.5.</span> <span class="toc-text">旁站及C段探测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%84%E7%BB%87%E6%9E%B6%E6%9E%84"><span class="toc-number">8.0.6.</span> <span class="toc-text">组织架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%A1%E7%94%A8%E4%BF%A1%E6%81%AF%E6%9F%A5%E8%AF%A2"><span class="toc-number">8.0.7.</span> <span class="toc-text">信用信息查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%86%E5%8F%B2%E6%BC%8F%E6%B4%9E%E4%BF%A1%E6%81%AF"><span class="toc-number">8.0.8.</span> <span class="toc-text">历史漏洞信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BE%E5%B7%A5%E4%BF%A1%E6%81%AF"><span class="toc-number">8.0.9.</span> <span class="toc-text">社工信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E6%A0%87%E5%92%8C%E4%BF%A1%E6%81%AF%E7%89%B9%E5%BE%81"><span class="toc-number">8.0.10.</span> <span class="toc-text">图标和信息特征</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">9.</span> <span class="toc-text">小结</span></a></li></ol>
+    
+  </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <h1 id="信息收集概述"><a href="#信息收集概述" class="headerlink" title="信息收集概述"></a>信息收集概述</h1><p>渗透的本质就是在做信息收集，目标资产信息收集的程度，决定渗透过程的复杂程度。<br>目标主机信息收集的深度，决定后渗透权限持续把控。<br>渗透的本质是信息收集，而信息收集整理为后续的情报跟进提供了强大的保证。<br>—-Micropoor</p>
+<p>什么是信息收集：通过各种方式获取所需要的信息，以便在后续的渗透过程更好的进行。因为只有我们掌握了目标网站或目标主机足够多的信息之后，才能更好地对其进行漏洞检测。正所谓，知己知彼百战百胜。</p>
+<p>信息收集的方式</p>
+<p>  主动收集：与目标主机进行直接交互，从而拿到目标信息，缺点是会记录自己的操作信息<br>被动收集 ：不与目标主机进行直接交互，通过搜索引擎或者社会工程等方式间接的获取目标主机的信息</p>
+<p>收集内容包含如下但不限于：</p>
+<p>  服务器的配置信息<br>网站的信息（包括网站注册人、目标网站系统、目标服务器系统、目标网站相关子域名、目标服务器所开放的端口等）<br>只要与目标网站相关联的信息，都应该尽量去搜索等</p>
+<p>常见的信息收集内容：</p>
+<p><img src="https://secure2.wostatic.cn/static/mRkYNjf6hUwMU7N9gL3jYq/image.png"></p>
+<p>域名信息：收集域名相关的信息，如URL、IP、注册商家、注册人联系方式等；<br>子域名：收集指定域名的三级、四级等子域名信息，主要结合业务去收集，采用爆破、搜索引擎、证书等方法去实施采集；<br>端口信息探测：探测目标服务上开启的服务，以及服务的banner信息；<br>铭感信息收集：探测目标资源的站点服务架构、JS接口、页面包含的链接、客户信息、邮箱等内容；<br>安全防护判断：通过工具和手工的方式判断目标资源中开启的防护设备，如不同类型的WAF、防火墙、EDR、杀软等；<br>指纹识别：识别目标资源的站点CMS类型、中间件类型、容器类型、服务类型、系统类型等；<br>旁站以及C段探测：收集目标站点上开启的其他的网站信息，一台服务器上可能搭建多个站点，C段也是考虑到目标公司可能同时购买多个同段IP，C段探测有助于资产探测和安全测试；<br>扫描敏感目录和文件：目标站点中可能存在敏感文件和目录，通过目录扫描工具获取这些敏感文件和目录，如phpinfo、robots.txt、<a target="_blank" rel="noopener" href="http://readme.md/">readme.md</a>、备份文件等等；<br>组织架构信息：获取目标对象的内容人力资源架构，可实施社工、近源攻击等测试；<br>历史漏洞信息：通过目标资源的banner信息来判断目标可能存在的漏洞问题，如根据CMS版本来查找exploit；<br>社工信息：以欺骗、诱导等方式获取的社工信息，如目标人的身份信息、邮箱信息、管控系统的密码等；<br>其他信息：微信小程序、APP、合作商、外包商、VPN等等</p>
+<h1 id="子域名收集"><a href="#子域名收集" class="headerlink" title="子域名收集"></a>子域名收集</h1><h2 id="域名信息（前置学习内容）"><a href="#域名信息（前置学习内容）" class="headerlink" title="域名信息（前置学习内容）"></a>域名信息（前置学习内容）</h2><p>  收集域名相关的信息，如URL、IP、注册商家、备案信息、注册人联系方式等；<br>域名信息收集方法：</p>
+<p>  1、Whois查询：通过Whois来对域名信息进行查询，可以查到注册商、注册人、邮箱、DNS解析服务器、注册人联系电话等，推荐线上一些查询网站，直接输入目标站点即可查询到相关信息（具体下页）。<br>2、备案信息查询：国内网站注册需要向国家有关部门申请备案，防止网站从事非法活动，而国外网站不需要备案。<br>3、IP反查：通过目标组织的域名查询IP，然后再通过IP反查域名的方式，查询此主机IP是否有其他网站。</p>
+<p><strong>域名信息收集方法–whois</strong></p>
+<p><img src="https://secure2.wostatic.cn/static/6RieRZQG42N5HrMqnRatBt/image.png"></p>
+<p>（1）站长之家域名WHOIS信息查询地址：<a target="_blank" rel="noopener" href="http://whois.chinaz.com/">http://whois.chinaz.com/</a><br>（2）爱站网域名WHOIS信息查询地址：<a target="_blank" rel="noopener" href="https://whois.aizhan.com/">https://whois.aizhan.com/</a><br>（3）腾讯云域名WHOIS信息查询地址：<a target="_blank" rel="noopener" href="https://whois.cloud.tencent.com/">https://whois.cloud.tencent.com/</a><br>（4）美橙互联域名WHOIS信息查询地址：<a target="_blank" rel="noopener" href="https://whois.cndns.com/">https://whois.cndns.com/</a><br>（5）爱名网域名WHOIS信息查询地址：<a target="_blank" rel="noopener" href="https://www.22.cn/domain/">https://www.22.cn/domain/</a><br>（6）易名网域名WHOIS信息查询地址：<a target="_blank" rel="noopener" href="https://whois.ename.net/">https://whois.ename.net/</a><br>（7）中国万网域名WHOIS信息查询地址：<a target="_blank" rel="noopener" href="https://whois.aliyun.com/">https://whois.aliyun.com/</a></p>
+<p>（8）西部数码域名WHOIS信息查询地址：<a target="_blank" rel="noopener" href="https://whois.west.cn/">https://whois.west.cn/</a><br>（9）新网域名WHOIS信息查询地址：<a target="_blank" rel="noopener" href="http://whois.xinnet.com/domain/whois/index.jsp">http://whois.xinnet.com/domain/whois/index.jsp</a><br>（10）纳网域名WHOIS信息查询地址：<a target="_blank" rel="noopener" href="http://whois.nawang.cn/">http://whois.nawang.cn/</a><br>（11）中资源域名WHOIS信息查询地址：<a target="_blank" rel="noopener" href="https://www.zzy.cn/domain/whois.html">https://www.zzy.cn/domain/whois.html</a><br>（12）三五互联域名WHOIS信息查询地址：<a target="_blank" rel="noopener" href="https://cp.35.com/chinese/whois.php">https://cp.35.com/chinese/whois.php</a><br>（13）新网互联域名WHOIS信息查询地址：<a target="_blank" rel="noopener" href="http://www.dns.com.cn/show/domain/whois/index.do">http://www.dns.com.cn/show/domain/whois/index.do</a><br>（14）国外WHOIS信息查询地址：<a target="_blank" rel="noopener" href="https://who.is/">https://who.is/</a></p>
+<p><strong>域名信息收集方法–备案信息查询</strong></p>
+<p><img src="https://secure2.wostatic.cn/static/cEeGnf8yejAzNqu83MF4Fk/image.png"></p>
+<p>(1)企查查：<a target="_blank" rel="noopener" href="https://www.qcc.com/">https://www.qcc.com/</a><br>(2)天眼查：<a target="_blank" rel="noopener" href="https://www.tianyancha.com/">https://www.tianyancha.com/</a><br>(3)ICP备案查询-站长工具：<a target="_blank" rel="noopener" href="http://icp.chinaz.com/">http://icp.chinaz.com/</a><br>(4)SEO综合查询-爱站：<a target="_blank" rel="noopener" href="https://www.aizhan.com/seo/">https://www.aizhan.com/seo/</a><br>(5)批量查询-站长工具：<a target="_blank" rel="noopener" href="http://icp.chinaz.com/searchs">http://icp.chinaz.com/searchs</a><br>(6)美国企业备案查询：<a target="_blank" rel="noopener" href="https://www.sec.gov/edgar/searchedgar/companysearch.html">https://www.sec.gov/edgar/searchedgar/companysearch.html</a><br>(7)小蓝本：<a target="_blank" rel="noopener" href="https://www.xiaolanben.com/pc">https://www.xiaolanben.com/pc</a></p>
+<p><strong>域名信息收集方法–IP反查</strong></p>
+<p><img src="https://secure2.wostatic.cn/static/tVA11DmyDfDePQ4QdeiC5h/image.png"></p>
+<p><img src="https://secure2.wostatic.cn/static/dyLnDqCDLUCpjG6mpgoqDe/image.png"></p>
+<p>(1)360威胁情报中心：<a target="_blank" rel="noopener" href="https://ti.360.cn/">https://ti.360.cn/</a><br>(2)微步在线：<a target="_blank" rel="noopener" href="https://x.threatbook.cn/">https://x.threatbook.cn/</a><br>(3)全球DNS搜索引擎：<a target="_blank" rel="noopener" href="https://dnsdb.io/zh-cn/">https://dnsdb.io/zh-cn/</a><br>(4)ViewDns：<a target="_blank" rel="noopener" href="http://viewdns.info/">http://viewdns.info/</a><br>(5)17CE性能检测平台：<a target="_blank" rel="noopener" href="http://www.17ce.com/">http://www.17ce.com/</a><br>(6)RISKIQ:<a target="_blank" rel="noopener" href="https://community.riskiq.com/">https://community.riskiq.com/</a><br>(7)Dnslytics:<a target="_blank" rel="noopener" href="https://dnslytics.com/">https://dnslytics.com/</a><br>(8)Netcraft:<a target="_blank" rel="noopener" href="http://toolbar.netcraft.com/">http://toolbar.netcraft.com/</a></p>
+<p><strong>域名信息收集方法–浏览器插件</strong></p>
+<p>通过Chrome、FireFox等浏览器插件的使用，收集域名信息。常见的浏览器插件有：<a target="_blank" rel="noopener" href="http://myip.ms/">Myip.ms</a>、TCPIPUTILS、DNSlytics、Shodan、Fofa等。</p>
+<p><img src="https://secure2.wostatic.cn/static/eNRSHRfjq9T3S5HumsyVK5/image.png"></p>
+<h2 id="子域名收集常见方法"><a href="#子域名收集常见方法" class="headerlink" title="子域名收集常见方法"></a>子域名收集常见方法</h2><p><strong>子域名</strong></p>
+<p>子域名也就是二级目录，是指顶级域名下的域名。举例：<a target="_blank" rel="noopener" href="http://tieba.baidu.com/">tieba.baidu.com</a>.</p>
+<p>  . 为根域<br>.com 为顶级域<br>baidu 为二级域名<br>tieba  为三级域名</p>
+<p><img src="https://secure2.wostatic.cn/static/2PTtPkFUoh1MnwdzFABTHt/image.png"></p>
+<p>顶级域名/一级域名：顶级域（或顶级域名，也称为一级域名），是互联网DNS等级之中的最高级的域，它保存于DNS根域的名字空间中。顶级域名是域名的最后一个部分，即是域名最后一点之后的字母，例如在<a href="http://www.example.com这个域名中，[顶级域是.com](http://xn--cjsy64a46sctx.com)。">http://www.example.com这个域名中，[顶级域是.com](http://xn--cjsy64a46sctx.com)。</a><br>二级域名：除了顶级域名，还有二级域名，就是最靠近顶级域名左侧的字段。例如在<a target="_blank" rel="noopener" href="http://www.example.com这个域名中,example就是二级域名./">http://www.example.com这个域名中，example就是二级域名。</a><br>子域名：子域名（或子域；英语：Subdomain）是在域名系统等级中，属于更高一层域的域。比如，mail.example.com和calendar.example.com是example.com的两个子域，而example.com则是顶级域.com的子域。凡顶级域名前加前缀的都是该顶级域名的子域名，而子域名根据技术的多少分为二级子域名，三级子域名以及多级子域</p>
+<p>子域名收集的意义：假设目标网络的规模比较大，或者直接对站点无法渗透时，可以先进入某个目标的某个子域，然后再想进办法迂回接近真正的目标。一台服务器上有很多个站点，这些站点之间没有必然的联系，是相互独立的，使用的是不同的域名（甚至端口都不同），但是它们却共存在一台服务器上。</p>
+<p><strong>收集方法</strong></p>
+<p>  枚举–基于字典的枚举是一种查找带有通用名称的子域名的技术。<br>搜索引擎–Google hacking，Bing搜索。<br>第三方聚合服务–第三方服务聚合了大量的DNS数据集，并通过它们来检索给定域名的子域名。<br>其他–证书透明度、DNS域传输、文件泄露等</p>
+<h3 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a><strong>枚举</strong></h3><p>通过域名枚举工具实现子域名发现的目标。使用工具进行域名枚举的关键在于字典是否足够齐全。</p>
+<p><img src="https://secure2.wostatic.cn/static/592pXuDm37SkFcgNR4ubA7/image.png"></p>
+<p>1、Layer子域名挖掘机：<a target="_blank" rel="noopener" href="https://github.com/euphrat1ca/LayerDomainFinder">https://github.com/euphrat1ca/LayerDomainFinder</a><br>2、OneForAll：<a target="_blank" rel="noopener" href="https://github.com/shmilylty/OneForAll">https://github.com/shmilylty/OneForAll</a><br>3、SubDomainsBrute：<a target="_blank" rel="noopener" href="https://github.com/lijiejie/subDomainsBrute">https://github.com/lijiejie/subDomainsBrute</a><br>4、Sublist3r：<a target="_blank" rel="noopener" href="https://github.com/aboul3la/Sublist3r">https://github.com/aboul3la/Sublist3r</a><br>5、ESD：<a target="_blank" rel="noopener" href="https://github.com/FeeiCN/ESD">https://github.com/FeeiCN/ESD</a><br>6、Dnsprobe：<a target="_blank" rel="noopener" href="https://github.com/projectdiscovery/dnsprobe">https://github.com/projectdiscovery/dnsprobe</a><br>7、Subfinder：<a target="_blank" rel="noopener" href="https://github.com/projectdiscovery/subfinder">https://github.com/projectdiscovery/subfinder</a><br>8、Massdns：<a target="_blank" rel="noopener" href="https://github.com/blechschmidt/massdns">https://github.com/blechschmidt/massdns</a></p>
+<h3 id="搜索引擎"><a href="#搜索引擎" class="headerlink" title="搜索引擎"></a><strong>搜索引擎</strong></h3><p>通过资源搜索引擎进行子域名发现，常见的搜索引擎如下：</p>
+<p>（1）<a target="_blank" rel="noopener" href="https://www.google.com/">https://www.google.com/</a> 推荐指数：⭐️⭐️⭐️⭐️⭐️<br>（2）<a target="_blank" rel="noopener" href="https://www.bing.com/">https://www.bing.com/</a> 推荐指数：⭐️⭐️⭐️<br>（3）<a target="_blank" rel="noopener" href="https://www.so.com/">https://www.so.com/</a> 推荐指数：⭐️⭐️⭐️<br>（4）<a target="_blank" rel="noopener" href="https://www.baidu.com/">https://www.baidu.com/</a> 推荐指数：⭐️⭐️⭐️<br>（5）<a target="_blank" rel="noopener" href="https://fofa.so/">https://fofa.so/</a> 推荐指数：⭐️⭐️⭐️⭐️⭐️<br>（6）<a target="_blank" rel="noopener" href="https://www.shodan.io/">https://www.shodan.io/</a> 推荐指数：⭐️⭐️⭐️⭐️⭐️<br>（7）<a target="_blank" rel="noopener" href="https://www.zoomeye.org/">https://www.zoomeye.org/</a> 推荐指数：⭐️⭐️⭐️⭐️⭐️<br>（8）<a target="_blank" rel="noopener" href="https://search.yahoo.com/">https://search.yahoo.com/</a> 推荐指数：⭐️⭐️⭐️<br>（9）<a target="_blank" rel="noopener" href="https://www.ask.com/">https://www.ask.com/</a> 推荐指数：⭐️⭐️<br>（10）<a target="_blank" rel="noopener" href="https://duckduckgo.com/">https://duckduckgo.com/</a> 推荐指数：⭐️⭐️<br>（11）<a target="_blank" rel="noopener" href="https://www.dogpile.com/">https://www.dogpile.com/</a>  推荐指数：⭐️⭐<br>（12）<a target="_blank" rel="noopener" href="https://www.sogou.com/">https://www.sogou.com/</a>  推荐指数：⭐️⭐<br>（13）<a target="_blank" rel="noopener" href="https://quake.360.cn/">https://quake.360.cn/</a>  推荐指数：⭐️⭐️⭐</p>
+<p>Google Hacking：GoogleHacking 作为常用且方便的信息收集搜索引擎工具，它是利用谷歌搜索强大，可以搜出不想被看到的后台、泄露的信息、未授权访问，甚至还有一些网站配置密码和网站漏洞等。掌握了Google Hacking基本使用方法，或许下一秒就是惊喜！<br>基础使用方法</p>
+<p>  site: 找到与指定网站有联系的URL<br>inurl：将返回url中含有关键词的网页<br>intext：寻找正文中含有关键字的网页<br>intitle：寻找标题中含有关键字的网页<br>filetype：指定访问的文件类型</p>
+<p>Google Hacking符号使用</p>
+<p>  （1）精确搜索：给关键词加上双引号实现精确匹配双引号内的字符<br>（2）通配符：谷歌的通配符是星号“*”，必须在精确搜索符双引号内部使用。用通配符代替关键词或短语中无法确定的字词<br>（3）点号匹配任意字符：点号“.”匹配的是匹配某个字符，不是字、短语等内容。<br>（4）基本搜索符号约束：  加号“+”用于强制搜索，即必须包含加号后的内容。一般与精确搜索符一起应用。关键词前加“-”减号,要求搜索结果中包含关键词,但不包含减号后的关键词，用关于搜索结果的筛选。<br>（5）数字范围：用两个点号“..”表示一个数字范围。一般应用于日期、货币、尺寸、重量、高度等范围的搜索， 如：手机 2000..3000 元，注意“3000”与“元”之间必须有空格<br>（6）布尔逻辑：或，符号“|” 在多个关键字中,只要有一个关键字匹配上即可；与，符号“&amp;”所有的关键字都匹配上才可以。</p>
+<p>Google Hacking综合利用</p>
+<p>  查找后台地址：site:域名 inurl:login|admin|manage|member|admin_login|login_admin|system|login|user|main|cms<br>查找文本内容：site:域名 intext:管理|后台|登陆|用户名|密码|验证码|系统|帐号|admin|login|sys|managetem|password|username<br>查找可注入点：site:域名 inurl:aspx|jsp|php|asp<br>查找上传漏洞：site:域名 inurl:file|load|editor|Files<br>找eweb编辑器：site:域名 inurl:ewebeditor|editor|uploadfile|eweb|edit<br>存在的数据库：site:域名 filetype:mdb|asp|#<br>查看脚本类型：site:域名 filetype:asp|aspx|php|jsp</p>
+<p>intext:login japan</p>
+<p><img src="https://secure2.wostatic.cn/static/2WjkV1BFQTqR8C7wRcARke/image.png"></p>
+<p>site:360.cn intext:管理|后台|登陆|用户名|密码|验证码|系统|帐号|admin|login|sys|managetem|password|username</p>
+<p><img src="https://secure2.wostatic.cn/static/nu3hqf4N677TVZCaLtbZYa/image.png"></p>
+<p>子域名收集方法汇总</p>
+<p>  Google：site:target.com           </p>
+<p>  Bing: site:target.com    </p>
+<p>  FOFA：domain=”<a target="_blank" rel="noopener" href="http://target.com/">target.com</a>“</p>
+<p>  百度：intitle=公司名称/site:target.com    </p>
+<p>  钟馗之眼：<a target="_blank" rel="noopener" href="http://site=target.com/">site=target.com</a></p>
+<p><img src="https://secure2.wostatic.cn/static/c4sS4rtASWkUeMhK5v1fuu/image.png"></p>
+<h3 id="第三方聚合服务"><a href="#第三方聚合服务" class="headerlink" title="第三方聚合服务"></a><strong>第三方聚合服务</strong></h3><p>  第三方平台：利用第三方网站和一些博主提供服务进行子域名发现;<br>权重综合查询：利用权重综合查询进行子域名发现;<br>全国政府网站基本数据库：针对特定性质网站可通过全国政府网站基本数据库进行子域名发现。</p>
+<p>第三方平台<br><a target="_blank" rel="noopener" href="http://tool.chinaz.com/subdomain/?domain=">http://tool.chinaz.com/subdomain/?domain=</a><br><a target="_blank" rel="noopener" href="https://hackertarget.com/find-dns-host-records/">https://hackertarget.com/find-dns-host-records/</a><br><a target="_blank" rel="noopener" href="https://phpinfo.me/domain/">https://phpinfo.me/domain/</a><br><a target="_blank" rel="noopener" href="https://www.t1h2ua.cn/tools/">https://www.t1h2ua.cn/tools/</a><br><a target="_blank" rel="noopener" href="https://dnsdumpster.com/">https://dnsdumpster.com/</a><br><a target="_blank" rel="noopener" href="https://d.chinacycc.com/">https://d.chinacycc.com/</a><br><a target="_blank" rel="noopener" href="http://z.zcjun.com/">http://z.zcjun.com/</a></p>
+<p><img src="https://secure2.wostatic.cn/static/csA9fadDs3E5rwB74p4s1r/image.png"></p>
+<p>权重综合查询<br>爱站：<a target="_blank" rel="noopener" href="https://www.aizhan.com/seo/">https://www.aizhan.com/seo/</a><br>站长工具：<a target="_blank" rel="noopener" href="http://rank.chinaz.com/all/">http://rank.chinaz.com/all/</a></p>
+<p><img src="https://secure2.wostatic.cn/static/rcXHdoQmDaYZHgMopKsmU8/image.png"></p>
+<p>全国政府网站基本数据库<br>常用网站：<a target="_blank" rel="noopener" href="https://zfwzzc.www.gov.cn/">https://zfwzzc.www.gov.cn/</a></p>
+<p><img src="https://secure2.wostatic.cn/static/brEPQiAKERRhL71f8d9wwJ/image.png"></p>
+<h3 id="快速提取SSL证书里的域名"><a href="#快速提取SSL证书里的域名" class="headerlink" title="快速提取SSL证书里的域名"></a>快速提取SSL证书里的域名</h3><p>echo ‘<a target="_blank" rel="noopener" href="https://www.baidu.com&/#39;">https://www.baidu.com&#39;</a> | httpx -tls-probe -json -silent | jq .tls.dns_names</p>
+<p>echo ‘<a target="_blank" rel="noopener" href="https://www.vip.com/">https://www.vip.com</a>‘ | httpx -tls-probe -json -silent | jq -r ‘.[“tls-grab”]’.dns_names</p>
+<p>httpx 是一个快速且多用途的 HTTP 工具包，允许使用 retryablehttp 库运行多个探测器，它旨在通过增加线程来保持结果的可靠性。</p>
+<p>jq是命令行 JSON 处理器</p>
+<p><img src="https://secure2.wostatic.cn/static/b1zZEJm22UtpGVBKuBcXpa/image.png"></p>
+<h3 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法"></a><strong>其他方法</strong></h3><p><strong>证书透明度公开日志枚举(在线平台)</strong></p>
+<p>证书透明度(Certificate Transparency, CT)是证书授权机构(CA) 的一个项目，证书授权机构会将每个SSL/TLS证书发布到公共日志中。一个SSL/TLS证书通常包含域名、子域名和邮件地址，这些也经常成为红队评估非常希望获得的有用信息。查找某个域名所属证书的最简单的方法就是使用搜索引擎搜索一些公开的CT日志。</p>
+<p>（1）<a target="_blank" rel="noopener" href="https://crt.sh/">https://crt.sh/</a><br>（2）<a target="_blank" rel="noopener" href="https://censys.io/">https://censys.io/</a><br>（3）<a target="_blank" rel="noopener" href="https://myssl.com/">https://myssl.com/</a><br>（4）<a target="_blank" rel="noopener" href="https://google.com/transparencyreport/https/ct/">https://google.com/transparencyreport/https/ct/</a><br>（5）<a target="_blank" rel="noopener" href="https://developers.facebook.com/tools/ct/">https://developers.facebook.com/tools/ct/</a></p>
+<p><img src="https://secure2.wostatic.cn/static/ggUpJn6eYABS1oKPH7JdXm/image.png"></p>
+<p><strong>证书透明度公开日志枚举（工具查询）</strong></p>
+<p>通过利用工具调用各个证书接口进行域名查询。</p>
+<p>（1）Findomain：<a target="_blank" rel="noopener" href="https://github.com/Edu4rdSHL/findomain">https://github.com/Edu4rdSHL/findomain</a><br>（2）OneForAll：<a target="_blank" rel="noopener" href="https://github.com/shmilylty/OneForAll">https://github.com/shmilylty/OneForAll</a><br>（3）Sublist3r：<a target="_blank" rel="noopener" href="https://github.com/aboul3la/Sublist3r">https://github.com/aboul3la/Sublist3r</a></p>
+<p><img src="https://secure2.wostatic.cn/static/ubLvcwtM4CXseKygVtPWga/image.png"></p>
+<p><strong>DNS域传送漏洞</strong></p>
+<p>DNS服务器分为：主服务器、备份服务器和缓存服务器。在主备服务器之间同步数据库，需要使用“DNS域传送”。域传送是指备份服务器从主服务器拷贝数据，并用得到的数据更新自身数据库。若DNS服务器配置不当，可能导致攻击者获取某个域的所有记录。<br>检测方法：</p>
+<p>（1）nslookup：nslookup -type=ns <a target="_blank" rel="noopener" href="http://vulhub.org/">vulhub.org</a><br>（2）dig：dig @192.168.48.130 -t axfr <a target="_blank" rel="noopener" href="http://www.vulhub.org/">www.vulhub.org</a><br>（3）nmap：nmap –script dns-zone-transfer.nse –script-args “ <a target="_blank" rel="noopener" href="http://dns-zone-transfer.domain=vulhub.org/">dns-zone-transfer.domain=vulhub.org</a>“ -Pn -p 53 192.168.48.130</p>
+<p><img src="https://secure2.wostatic.cn/static/xoJQHPKFkh7RTKyUMhEtFD/image.png"></p>
+<p><strong>文件泄露</strong><br>网站根目录下的 crossdomain.xml 文件指明了远程 Flash 是否可以加载当前网站的资源（图片、网页内容、Flash等）。有时候可以用来收集到一些与目标组织域名相关信息。</p>
+<p><img src="https://secure2.wostatic.cn/static/hPuxvZwQwriJaDvjiqGgfu/image.png"></p>
+<h1 id="CDN识别和绕过"><a href="#CDN识别和绕过" class="headerlink" title="CDN识别和绕过"></a>CDN识别和绕过</h1><h2 id="CDN基本介绍"><a href="#CDN基本介绍" class="headerlink" title="CDN基本介绍"></a>CDN基本介绍</h2><p>CDN的全称是Content Delivery Network，即内容分发网络。其基本思路是尽可能避开互联网上有可能影响数据传输速度和稳定性的瓶颈和环节，使内容传输的更快、更稳定。通过在网络各处放置节点服务器所构成的在现有的互联网基础之上的一层智能虚拟网络，CDN系统能够实时地根据网络流量和各节点的连接、负载状况以及到用户的距离和响应时间等综合信息将用户的请求重新导向离用户最近的服务节点上。<br>CND工作原理</p>
+<p><img src="https://secure2.wostatic.cn/static/9KrQv5vS2bYJ3Cf4GerPXW/image.png"></p>
+<p>CDN的基本原理是广泛采用各种缓存服务器，将这些缓存服务器分布到用户访问相对集中的地区或网络中，在用户访问网站时，利用全局负载技术将用户的访问指向距离最近的工作正常的缓存服务器上，由缓存服务器直接响应用户请求。<br>CDN的基本思路是尽可能避开互联网上有可能影响数据传输速度和稳定性的瓶颈和环节，使内容传输的更快、更稳定。通过在网络各处放置节点服务器所构成的在现有的互联网基础之上的一层智能虚拟网络，CDN系统能够实时地根据网络流量和各节点的连接、负载状况以及到用户的距离和响应时间等综合信息将用户的请求重新导向离用户最近的服务节点上。其目的是使用户可就近取得所需内容，解决 Internet网络拥挤的状况，提高用户访问网站的响应速度。<br>域名解析过程 </p>
+<p>  传统访问：用户访问域名–&gt; 析IP–&gt;  目标主机<br>简单模式 ：用户访问域名–&gt;CDN 节点–&gt;真实IP–&gt;目标主机<br>360 网站卫士 :用户访问域名–&gt;CDN 节点（云WAF ）–&gt;真实IP–&gt;目标主机</p>
+<h2 id="CND判断"><a href="#CND判断" class="headerlink" title="CND判断"></a>CND判断</h2><h3 id="ping-nslookup"><a href="#ping-nslookup" class="headerlink" title="ping/nslookup"></a>ping/nslookup</h3><p>查看不同时段不同地域下ping或者nslookup的结果，ip不一样，则说明可能存在CDN。</p>
+<p><img src="https://secure2.wostatic.cn/static/eaYXCBiVPif1C2hzgfTf81/image.png"></p>
+<h3 id="在线平台"><a href="#在线平台" class="headerlink" title="在线平台"></a>在线平台</h3><p>Ping检测-站长工具：<a target="_blank" rel="noopener" href="http://ping.chinaz.com/">http://ping.chinaz.com/</a><br>17CE：<a target="_blank" rel="noopener" href="https://www.17ce.com/">https://www.17ce.com/</a><br>IPIP：<a target="_blank" rel="noopener" href="https://tools.ipip.net/newping.php">https://tools.ipip.net/newping.php</a><br><a target="_blank" rel="noopener" href="http://ping.cn/">ping.cn</a>：<a target="_blank" rel="noopener" href="https://www.ping.cn/ping">https://www.ping.cn/ping</a><br>Cdnplanet：<a target="_blank" rel="noopener" href="https://www.cdnplanet.com/">https://www.cdnplanet.com/</a><br>tools/cdnfinder/<br>国内在线CDN云观测：<a target="_blank" rel="noopener" href="http://cdn.chinaz.com/">http://cdn.chinaz.com</a><br>国外在线CDNplanet：<a target="_blank" rel="noopener" href="https://www.cdnplanet.com/">https://www.cdnplanet.com</a><br>脚本探测xcdn：<a target="_blank" rel="noopener" href="https://github.com/3xp10it/xcdn">https://github.com/3xp10it/xcdn</a></p>
+<p><img src="https://secure2.wostatic.cn/static/4eZXeDPSpNFaBpXCmHCErc/image.png"></p>
+<h3 id="phpinfo等探针找到真实IP"><a href="#phpinfo等探针找到真实IP" class="headerlink" title="phpinfo等探针找到真实IP"></a>phpinfo等探针找到真实IP</h3><p>l.php、phpinfo.php 等探 类文件即可得到真实IP 地址 phpinfo.php 搜索SERVER_NAME。</p>
+<p><img src="https://secure2.wostatic.cn/static/aJXPBpUu873E5wXs7CKPEP/image.png"></p>
+<h2 id="CND绕过"><a href="#CND绕过" class="headerlink" title="CND绕过"></a>CND绕过</h2><h3 id="网站根域或者子域找真实IP"><a href="#网站根域或者子域找真实IP" class="headerlink" title="网站根域或者子域找真实IP"></a>网站根域或者子域找真实IP</h3><p>一般情况下，CDN服务器是按流量收费的，管理员可能给一些主要业务的网站部署CDN，根域或者子域业务可能没有部署CDN，这种情况下可以收集其子域名来尝试获取真实IP地址。</p>
+<p><img src="https://secure2.wostatic.cn/static/wZWbMkQnJEHJmQN83YDpUG/image.png"></p>
+<h3 id="Email服务器找真实IP"><a href="#Email服务器找真实IP" class="headerlink" title="Email服务器找真实IP"></a>Email服务器找真实IP</h3><p>在web服务器和email服务器在一起时可以通过email也获取其真实IP，如果不属于同一台服务器时获取的IP可能只是email服务器的地址。常见发送邮件的功能有：注册用户、找回密码等</p>
+<p><img src="https://secure2.wostatic.cn/static/3ZeSRSU4kMAZqkuT5pYxWJ/image.png"></p>
+<h3 id="域名历史解析录找真实IP"><a href="#域名历史解析录找真实IP" class="headerlink" title="域名历史解析录找真实IP"></a>域名历史解析录找真实IP</h3><p>查询目标域名历史解析录可能会找到部署CDN 前的解析记录（真实IP 地址）可用以下几个网站查 。<br>（1）<a target="_blank" rel="noopener" href="https://domain.8aq.net/">https://domain.8aq.net</a><br>（2）<a target="_blank" rel="noopener" href="https://x.threatbook.cn/">https://x.threatbook.cn</a><br>（3）<a target="_blank" rel="noopener" href="https://webiplookup.com/">https://webiplookup.com</a><br>（4）<a target="_blank" rel="noopener" href="https://viewdns.info/iphistory">https://viewdns.info/iphistory</a><br>（5）<a target="_blank" rel="noopener" href="https://securitytrails.com/#search">https://securitytrails.com/#search</a><br>（6）<a target="_blank" rel="noopener" href="https://toolbar.netcraft.com/site_report">https://toolbar.netcraft.com/site_report</a></p>
+<p><img src="https://secure2.wostatic.cn/static/fBtaqA6fWiDk15actGRCRo/image.png"></p>
+<h3 id="FOFA查询网站标题找真实IP"><a href="#FOFA查询网站标题找真实IP" class="headerlink" title="FOFA查询网站标题找真实IP"></a>FOFA查询网站标题找真实IP</h3><p>利用“FOFA 网络空 安全搜索引擎”搜索网站源代码中的title 标签内容即可得到真实IP 地址,title=”XXXXX”.</p>
+<p><img src="https://secure2.wostatic.cn/static/u2N8q6jzexpHToW7JVkaQ2/image.png"></p>
+<p>注意：先去网站中到找到标题，将标题复制过来在FOFA中查询。</p>
+<h3 id="Censys查询SSL证书找到真实IP"><a href="#Censys查询SSL证书找到真实IP" class="headerlink" title="Censys查询SSL证书找到真实IP"></a>Censys查询SSL证书找到真实IP</h3><p>利用“Censys 网络空间搜索引擎”搜索网站的SSL证书及HASH，在<a target="_blank" rel="noopener" href="https://crt.sh/">https://crt.sh</a> 上查找目标网站SSL证书的HASH，然后再用Censys 搜索 HASH 即可得到真实IP 地址。<br>443.https.tls.certificate.parsed.extensions.subject_alt_name.dns_names:XXXX.com</p>
+<p><img src="https://secure2.wostatic.cn/static/aPHbehK3bdEud9ib4HC8Z/image.png"></p>
+<h3 id="其他的方法"><a href="#其他的方法" class="headerlink" title="其他的方法"></a>其他的方法</h3><p>（1）自建CDN节点服务器找到真实IP<br>（2）分析目标C端寻找真实IP<br>（3）利用目标网站的漏洞找到真实IP<br>（4）社工CDN 控制台找到真实IP<br>（5）Zmap全网扫描及F5 LTM解码法</p>
+<h1 id="WAF探测"><a href="#WAF探测" class="headerlink" title="WAF探测"></a>WAF探测</h1><h2 id="理论介绍"><a href="#理论介绍" class="headerlink" title="理论介绍"></a>理论介绍</h2><p>WAF也即WEB应用防火墙，是通过执行一系列针对HTTP/HTTPS的安全策略来专门为Web应用提供保护的一款产品。在必要的情况下还是可以对WAF进行探测，了解WAF的种类和版本，并尝试使用一些手段绕过WAF规则。<br>测试方法：<br>（1）手工Fuzzing–提交恶意数据，直接粗暴；<br>（2）工具测试–WAFW00F、Nmap等</p>
+<h3 id="看图识别WAF"><a href="#看图识别WAF" class="headerlink" title="看图识别WAF"></a>看图识别WAF</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Dome_/article/details/109262816">https://blog.csdn.net/Dome_/article/details/109262816</a></p>
+<p><img src="https://secure2.wostatic.cn/static/m72dXyMz8Yj2EnWJ4dRv7n/image.png"></p>
+<h3 id="Nmap探测WAF"><a href="#Nmap探测WAF" class="headerlink" title="Nmap探测WAF"></a>Nmap探测WAF</h3><p>nmap  -p80,443  –script=http-waf-detect  target_ip<br>nmap  -p80,443  –script=http-waf-fingerprint  target_ip</p>
+<p><img src="https://secure2.wostatic.cn/static/dyBCVUBFWVoTamdMghKHcT/image.png"></p>
+<h3 id="wafw00f"><a href="#wafw00f" class="headerlink" title="wafw00f"></a>wafw00f</h3><p>git clone <a target="_blank" rel="noopener" href="https://github.com/EnableSecurity/wafw00f">https://github.com/EnableSecurity/wafw00f</a><br>cd wafw00f<br>python <a target="_blank" rel="noopener" href="http://setup.py/">setup.py</a> install</p>
+<p><img src="https://secure2.wostatic.cn/static/3rZybxDavpyUmPzLZi8Hm1/image.png"></p>
+<p>常用指纹识别工具<br>1、Wafw00f：<a target="_blank" rel="noopener" href="https://github.com/EnableSecurity/wafw00f">https://github.com/EnableSecurity/wafw00f</a><br>2、Sqlmap：<a target="_blank" rel="noopener" href="https://github.com/sqlmapproject/sqlmap%EF%BC%88Sqlmap%E5%8F%AF%E7%94%A8%E6%9D%A5%E6%8E%A2%E6%B5%8B%E6%AF%8F%E7%A7%8Dwaf%E8%AE%BE%E5%A4%87%EF%BC%89">https://github.com/sqlmapproject/sqlmap（Sqlmap可用来探测每种waf设备）</a><br>3、xenoitx：<a target="_blank" rel="noopener" href="https://github.com/ajinabraham/OWASP-Xenotix-XSS-Exploit-Framework%EF%BC%88%E6%A3%80%E6%B5%8B%E5%92%8C%E5%88%A9%E7%94%A8xss%E6%BC%8F%E6%B4%9E%E7%9A%84%E7%A5%9E%E5%99%A8%EF%BC%8Cwaf%E6%A3%80%E6%B5%8B%E4%B9%9F%E6%98%AF%E5%85%B6%E4%B8%AD%E7%9A%84%E5%8A%9F%E8%83%BD%E4%B9%8B%E4%B8%80%EF%BC%89">https://github.com/ajinabraham/OWASP-Xenotix-XSS-Exploit-Framework（检测和利用xss漏洞的神器，waf检测也是其中的功能之一）</a><br>4、Nmap：<a target="_blank" rel="noopener" href="https://nmap.org/%EF%BC%88%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4nmap">https://nmap.org/（使用命令nmap</a> -p 80 –script http-waf-detect.nse <a target="_blank" rel="noopener" href="http://www.xxx.com/">www.xxx.com</a>）</p>
+<h1 id="端口探测"><a href="#端口探测" class="headerlink" title="端口探测"></a>端口探测</h1><h2 id="端口信息收集"><a href="#端口信息收集" class="headerlink" title="端口信息收集"></a>端口信息收集</h2><p> 开放端口——开放代表可通信，端口决定服务。<br> 服务类型探测——服务类型决定了该服务可能存在的漏洞。<br> 端口协议——自定义端口可迷惑扫描器，需要根据返回信息判断协议。</p>
+<p><strong>端口即服务，服务即端口</strong></p>
+<p><img src="https://secure2.wostatic.cn/static/m4cmqQv7sH7jfLNeceFAY2/image.png"></p>
+<h2 id="工具扫描"><a href="#工具扫描" class="headerlink" title="工具扫描"></a>工具扫描</h2><p>对于收集目标系统及其端口状况可以使用工具来进行，其工作原理都是使用TCP或UDP等协议向目标端口发送指定标志位等数据包，等待目标返回数据包，以此来判断端口状态，示例如下：<br>使用Nmap采集，命令为：nmap -A -v -T4 目标<br>使用Masscan采集，命令为：masscan -p80 目标<br>注：参数含义在后文中有详细介绍。</p>
+<p><img src="https://secure2.wostatic.cn/static/nfcJ7xUkCnuAJimRwdb95A/image.png"></p>
+<h3 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h3><p>一款免费开源的网络扫描和嗅探工具，可用于主机存活探测、端口扫描、漏洞探测、应用与版探测、操作系统探测等，是网络安全评估工作必备的神器之一。Nmap支持各类操作系统，如Windows、Linux、macOS等，它可以使用TCP/IP协议栈指纹准确探测出目标主机信息</p>
+<p>安装Nmap</p>
+<p>  macOS: brew install nmap<br>Centos: yum install nmap<br>Ubuntu: apt一get install nmap</p>
+<p>Nmap扫描方式</p>
+<p>  ТСР: -sT    SYN: -sS<br>ACK: -sA    UDP: -sU<br>RPC: -sR    ICMP: -sP<br>Disable Port Scan: -sn</p>
+<p><img src="https://secure2.wostatic.cn/static/bJZ7X9vM6BgadZD1X2R9hk/image.png"></p>
+<p>参考手册：<a target="_blank" rel="noopener" href="https://nmap.org/man/zh/index.html">https://nmap.org/man/zh/index.html</a></p>
+<p>工具扫描–Nmap<br>常见的扫描语句<br>nmap 192.168.211.0/24 扫描整个网段<br>nmap 192.168.211.10-200扫描指定的网络<br>nmap 192.168.211.10,100,200-230扫描10,100,200-300的网络<br>nmap 192.168.1.0/24 10.10.10.0/24扫描不同网段<br>nmap –sT 192.168.1.1 使用TCP全连接的方式，扫描过程需要三次握手 建立连接 则说明端口开放 扫描速度慢<br>nmap –sS 192.168.1.1 使用SYN的数据包去检测，如果接收到ACK，则说明端口开放了<br>nmap –sN 192.178.1.1 NULL扫描，发出的数据包不设置任何标识位<br>注意：上述扫描的端口默认都是1-1000 -p 后跟指定端口 –p20,21,22,80,33 06   -p- = -p1-65535<br>nmap –sV 192.168.1.1 探测服务版本<br>nmap 192.168.1.1 &gt;./re.txt<br>nmap 192.168.1.1 –oX re.html<br>nmap –A 192.168.1.1 获取目标所有的详细结果。 全面扫描<br>nmap –O 192.168.1.1 探测操作系统类型</p>
+<p>–script 使用脚本去探测漏洞<br>nmap –script smb-vuln-ms17-010 192.168.1.1 #永痕之蓝；<br>nmap –script smb-check-vulns 192.168.1.1 #MS08-067；<br>nmap –script ssl-heartbleed 192.168.1.1 #心脏滴血；<br>nmap 目标 –script=ftp-brute,imap-brute,smtp-brute,pop3-brute,mongodb-brute,redis-brute,ms-sql-brute,rlogin-brute,rsync-brute,mysql-brute,pgsql-brute,oracle-sid-brute,oracle-brute,rtsp-url-brute,snmp-brute,svn-brute,telnet-brute,vnc-brute,xmpp-brute#扫描端口并且标记可以爆破的服务<br>nmap 目标 –script=auth,vuln #判断常见的漏洞并扫描端口；<br>nmap -sV -sP 192.168.85.0/24 #-sV服务版本，-sP发现扫描网络存活主机；<br>nmap -sS -sV -T5 -A -p- 192.168.85.129 #-sS隐蔽扫描(半开syn)，-sV服务版本，-T 时间优化(0-5)等级，数字越大力度越强，-A 综合扫描，-p-全端口（1-65535）；<br>输出：-oN <File>    -oX <XML File>    -oG <filespec><br>nmap -iL dns_result.txt –script=auth,vuln,ftp-brute,imap-brute,smtp-brute,pop3-brute,mongodb-brute,redis-brute,ms-sql-brute,rlogin-brute,rsync-brute,mysql-brute,pgsql-brute,oracle-sid-brute,oracle-brute,rtsp-url-brute,snmp-brute,svn-brute,telnet-brute,vnc-brute,xmpp-brute &gt; scan.txt #批量扫描端口和漏洞检测,根据对应开放的端口进行针对性漏洞挖掘</p>
+<p>常用测试命令：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#强化版主机发现</span><br><span class="line">sudo nmap -sn -PE -PP -PS80,<span class="number">23</span>,<span class="number">443</span>,<span class="number">21</span>,<span class="number">22</span>,<span class="number">25</span>,<span class="number">3389</span>,<span class="number">110</span>,<span class="number">445</span>,<span class="number">139</span>,<span class="number">143</span>,<span class="number">53</span>,<span class="number">135</span>,<span class="number">3306</span>,<span class="number">8080</span>,<span class="number">1723</span>,<span class="number">111</span>,<span class="number">995</span>,<span class="number">993</span>,<span class="number">5900</span>,<span class="number">1025</span>,<span class="number">587</span>,<span class="number">8888</span>,<span class="number">199</span>,<span class="number">1720</span>,<span class="number">465</span>,<span class="number">548</span>,<span class="number">113</span>,<span class="number">81</span>,<span class="number">6001</span>,<span class="number">10000</span>,<span class="number">514</span>,<span class="number">5060</span>,<span class="number">179</span>,<span class="number">1026</span>,<span class="number">2000</span>,<span class="number">8443</span>,<span class="number">8000</span>,<span class="number">32768</span>,<span class="number">554</span>,<span class="number">26</span>,<span class="number">1433</span>,<span class="number">49152</span>,<span class="number">2001</span>,<span class="number">515</span>,<span class="number">8008</span>,<span class="number">49154</span>,<span class="number">1027</span>,<span class="number">5666</span>,<span class="number">646</span>,<span class="number">5000</span>,<span class="number">5631</span>,<span class="number">631</span>,<span class="number">49153</span>,<span class="number">8081</span>,<span class="number">2049</span>,<span class="number">88</span>,<span class="number">79</span>,<span class="number">5800</span>,<span class="number">106</span>,<span class="number">2121</span>,<span class="number">1110</span>,<span class="number">49155</span>,<span class="number">6000</span>,<span class="number">513</span>,<span class="number">990</span>,<span class="number">5357</span>,<span class="number">427</span>,<span class="number">49156</span>,<span class="number">543</span>,<span class="number">544</span>,<span class="number">5101</span>,<span class="number">144</span>,<span class="number">7</span>,<span class="number">389</span>,<span class="number">8009</span>,<span class="number">3128</span>,<span class="number">444</span>,<span class="number">9999</span>,<span class="number">5009</span>,<span class="number">7070</span>,<span class="number">5190</span>,<span class="number">3000</span>,<span class="number">5432</span>,<span class="number">3986</span>,<span class="number">1900</span>,<span class="number">13</span>,<span class="number">1029</span>,<span class="number">9</span>,<span class="number">6646</span>,<span class="number">5051</span>,<span class="number">49157</span>,<span class="number">1028</span>,<span class="number">873</span>,<span class="number">1755</span>,<span class="number">2717</span>,<span class="number">4899</span>,<span class="number">9100</span>,<span class="number">119</span>,<span class="number">37</span> -PA80,<span class="number">23</span>,<span class="number">443</span>,<span class="number">21</span>,<span class="number">22</span>,<span class="number">25</span>,<span class="number">3389</span>,<span class="number">110</span>,<span class="number">445</span>,<span class="number">139</span>,<span class="number">143</span>,<span class="number">53</span>,<span class="number">135</span>,<span class="number">3306</span>,<span class="number">8080</span>,<span class="number">1723</span>,<span class="number">111</span>,<span class="number">995</span>,<span class="number">993</span>,<span class="number">5900</span>,<span class="number">1025</span>,<span class="number">587</span>,<span class="number">8888</span>,<span class="number">199</span>,<span class="number">1720</span>,<span class="number">465</span>,<span class="number">548</span>,<span class="number">113</span>,<span class="number">81</span>,<span class="number">6001</span>,<span class="number">10000</span>,<span class="number">514</span>,<span class="number">5060</span>,<span class="number">179</span>,<span class="number">1026</span>,<span class="number">2000</span>,<span class="number">8443</span>,<span class="number">8000</span>,<span class="number">32768</span>,<span class="number">554</span>,<span class="number">26</span>,<span class="number">1433</span>,<span class="number">49152</span>,<span class="number">2001</span>,<span class="number">515</span>,<span class="number">8008</span>,<span class="number">49154</span>,<span class="number">1027</span>,<span class="number">5666</span>,<span class="number">646</span>,<span class="number">5000</span>,<span class="number">5631</span>,<span class="number">631</span>,<span class="number">49153</span>,<span class="number">8081</span>,<span class="number">2049</span>,<span class="number">88</span>,<span class="number">79</span>,<span class="number">5800</span>,<span class="number">106</span>,<span class="number">2121</span>,<span class="number">1110</span>,<span class="number">49155</span>,<span class="number">6000</span>,<span class="number">513</span>,<span class="number">990</span>,<span class="number">5357</span>,<span class="number">427</span>,<span class="number">49156</span>,<span class="number">543</span>,<span class="number">544</span>,<span class="number">5101</span>,<span class="number">144</span>,<span class="number">7</span>,<span class="number">389</span>,<span class="number">8009</span>,<span class="number">3128</span>,<span class="number">444</span>,<span class="number">9999</span>,<span class="number">5009</span>,<span class="number">7070</span>,<span class="number">5190</span>,<span class="number">3000</span>,<span class="number">5432</span>,<span class="number">3986</span>,<span class="number">1900</span>,<span class="number">13</span>,<span class="number">1029</span>,<span class="number">9</span>,<span class="number">6646</span>,<span class="number">5051</span>,<span class="number">49157</span>,<span class="number">1028</span>,<span class="number">873</span>,<span class="number">1755</span>,<span class="number">2717</span>,<span class="number">4899</span>,<span class="number">9100</span>,<span class="number">119</span>,<span class="number">37</span> <span class="number">180.153</span><span class="number">.183</span><span class="number">.1</span>-<span class="number">48</span></span><br><span class="line">#端口探测</span><br><span class="line">sudo nmap -sS -Pn -n --open --min-hostgroup <span class="number">4</span> --min-parallelism <span class="number">1024</span> --host-timeout <span class="number">30</span> -T4 -v  examples.com</span><br><span class="line">sudo nmap -sS -Pn -n --open --min-hostgroup <span class="number">4</span> --min-parallelism <span class="number">1024</span> --host-timeout <span class="number">30</span> -T4 -v -p <span class="number">1</span>-<span class="number">65535</span> examples.com</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://secure2.wostatic.cn/static/sQdF9mK1rmVGdmtnkWrZRf/image.png"></p>
+<h3 id="Masscan"><a href="#Masscan" class="headerlink" title="Masscan"></a>Masscan</h3><p>前面已经介绍过Nmap，通过Nmap可以扫描存活主机以及服务等信息，但是扫描大范围的IP段时就非常耗时，此时可以使用Masscan进行扫描，该工具可以自定义TCP/IP协议栈，加快扫描的速度和效率。<br>项目地址：<a target="_blank" rel="noopener" href="https://github.com/robertdavidgraham/masscan">https://github.com/robertdavidgraham/masscan</a><br>安装使用：</p>
+<p>  sudo apt-get install git make libpcap-dev<br>git clone <a target="_blank" rel="noopener" href="https://github.com/robertdavidgraham/masscan">https://github.com/robertdavidgraham/masscan</a><br>cd masscan<br>sudo apt install cmake<br>make</p>
+<p>常见测试命令：<br>masscan –ports 1-10000 192.168.40.0/24 –adapter-ip 192.168.40.128<br>masscan -p1-10000 192.168.18.1 –rate=10000 -oL out.txt –echo &gt;scan.conf<br>masscan -c scan.conf</p>
+<p>在kali中该工具是自带的，可以直接使用。常用参数如下：<br>-p 自定义端口<br>–rate自定义发包个数<br>-oL 定义输出的文件<br>–banners 探测banner信息<br>–adapter-ip 指定发包的ip地址<br>–adapter-port 指定发包的源端口<br>–adapter-mac 指定发包的源mac地址<br>–router-mac 指定网关的mac地址<br>–exclude  指定ip地址黑名单，防止masscan扫描<br>–excludefile 指定ip地址黑名单文件<br>–includefile 读取一个范围列表进行扫描<br>–wait 指定发送完包等待的时间<br>–readscan 读取文件的目标进行扫描<br>masscan -p1-10000 192.168.18.1 –rate=10000 -oL out.txt –echo &gt;scan.conf将扫描信息导入文件中<br>masscan -c scan.conf开始扫描</p>
+<h3 id="Nmap和Masscan结合"><a href="#Nmap和Masscan结合" class="headerlink" title="Nmap和Masscan结合"></a>Nmap和Masscan结合</h3><p>使用masscan做全端口开放检测，过出来端口信息后，用nmap进行服务信息识别<br>masscan -p1-65535 192.168.10.1 –rate=1000 -e eth0 &gt; ports<br>ports=$(cat ports | awk -F “ “ ‘{print $4}’ | awk -F “/“ ‘{print  1}’ | sort -n | tr ‘\n’ ‘,’ | sed ‘s/,//‘)<br>nmap -Pn -sV -sC -p$ports 192.168.10.1</p>
+<p><img src="https://secure2.wostatic.cn/static/jzp2r8dbo7DMZk3rsFbD9u/image.png"></p>
+<h3 id="ZMap"><a href="#ZMap" class="headerlink" title="ZMap"></a>ZMap</h3><p>zmap是一款扫描软件，由 Durumeric 领导密歇根大学研究团队开发，这种工具能令一台普通的服务器在短短 45 分钟时间里扫描 IPv4 网络空间上的每一个地址，叹为观止！扫描效率远远超过 Nmap 工具。</p>
+<table>
+<thead>
+<tr>
+<th>OS</th>
+<th>安装方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Fedora 19+ or EPEL 6+</td>
+<td><code>sudo yum install zmap</code></td>
+</tr>
+<tr>
+<td>Debian 8+ or Ubuntu 14.04+</td>
+<td><code>sudo apt install zmap</code></td>
+</tr>
+<tr>
+<td>Gentoo</td>
+<td><code>sudo emerge zmap</code></td>
+</tr>
+<tr>
+<td>macOS (using <a target="_blank" rel="noopener" href="https://brew.sh/">Homebrew</a>)</td>
+<td><code>brew install zmap</code></td>
+</tr>
+<tr>
+<td>Arch Linux</td>
+<td><code>sudo pacman -S zmap</code></td>
+</tr>
+</tbody></table>
+<p>使用手册：<a target="_blank" rel="noopener" href="https://github.com/zmap/zmap/wiki">https://github.com/zmap/zmap/wiki</a></p>
+<p>传言的基础条件:</p>
+<ol>
+<li>1000Mbps的网络</li>
+<li>网络运营商或者云供应商不将此机器判定为DDOS攻击者（大量对外发送TCP syn包）</li>
+</ol>
+<p>实际情况，zmap扫了全部地址，指定10m，大概用了72小时。</p>
+<p>ZMap会对于指定端口实施尽可能大速率的TCP SYN扫描。较为保守的情况下，对10,000个随机的地址的80端口以10Mbps的速度扫描  </p>
+<p>  zmap –bandwidth=10M –target-port=80–max-targets=10000–output-file=results.csv</p>
+<p>  zmap -B 10M -p 80 -n 10000 -o results.csv</p>
+<p>  <img src="https://secure2.wostatic.cn/static/g7mYkdT3PgVKZ8joGwXsHy/image.png"></p>
+<p>  可以使用banner-grab，伴随ZMap使用可以让用户从监听状态的TCP服务器上接收到消息。Banner-grab连接到提供的服务器上，发送一个可选的消息，然后打印出收到的第一个消息。这个工具可以用来获取banner，例如HTTP服务的回复的具体指令，telnet登陆提示，或SSH服务的字符串。</p>
+<p>  如下，寻找了1000个监听80端口的服务器，并向每个发送一个简单的GET请求，存储他们的64位编码响应至http-banners.out  </p>
+<p>  zmap -p 80 -N 1000 -B 10M -o - | ./banner-grab-tcp -p 80 -c 500 -d ./http-req &gt; out</p>
+<p>  zmap -p 80 [cidr] | node cli.js -p 80 –payload=tcp/GetRequest –parse http &gt; http.json</p>
+<h1 id="指纹探测"><a href="#指纹探测" class="headerlink" title="指纹探测"></a>指纹探测</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>指纹识别是信息收集环节中一个比较重要的环节，通过一些开源的工具、平台或者手工检测目标系统是公开的CMS程序还是二次开发至关重要，能准确的获取CMS类型、Web服务组件类型及版本信息可以帮助红队评估人员快速有效的去验证已知漏洞。</p>
+<p><img src="https://secure2.wostatic.cn/static/qb8NvdPzpyPEqa3Y7JuXq8/image.png"></p>
+<p>指纹识别常见的检测对象：<br>（1）CMS&lt;内容管理系统&gt;信息，常见CMS有：dede织梦、worepress、phpcms、thinkphp、ezcms、ecshop、帝国、大汉CMS、discuz、魅力、海洋cms、逐浪CMS Zoomla、drupal、EarCMS、思途CMS<br>（2）前端技术：HTML5 、jquery、bootstrap、pure、ace、ajax等等<br>（3）中间件和容器等：apache 、IIS、Nginx、lighttpd、tomcat、weblogic、jboss、websphere等等<br>（4）开发语言：php java ruby  go python c# Jsp  asp  aspx  等等<br>（5) 操作系统：Windows NT、类UNIX（MACOS）<br>（6）CDN信息：是否使用CDN技术、常用CDN：cloudflare/360CDN/365cyd等等<br>（7）端口或者服务：<br>（8）IP或者域名信息：<br>（9）WAF：检测是否有WAF：云盾、云锁、安全狗、IPS/IDS、等等</p>
+<p><img src="https://secure2.wostatic.cn/static/reESZTo9bKUJoxpgLzSf5f/image.png"></p>
+<h2 id="常见指纹识别方法"><a href="#常见指纹识别方法" class="headerlink" title="常见指纹识别方法"></a>常见指纹识别方法</h2><p><img src="https://secure2.wostatic.cn/static/vRrKULKvqeYsqA2qd6WUHz/image.png"></p>
+<p>1、特定文件的MD5<br>一些网站的特定图片文件、js文件、CSS等静态文件，如favicon.ico、css、logo.ico、js等文件一般不会修改，通过爬虫对这些文件进行抓取并比对md5值，如果和规则库中的Md5一致则说明是同一CMS。这种方式速度比较快，误报率相对低一些，但也不排除有些二次开发的CMS会修改这些文件。</p>
+<p>2、正常页面或错误网页中包含的关键字<br>先访问首页或特定页面如robots.txt等，通过正则的方式去匹配某些关键字，如Powered by Discuz、dedecms等。(wp-admin)<br>或者可以构造错误页面，根据报错信息来判断使用的CMS或者中间件信息，比较常见的如tomcat的报错页面。</p>
+<p>3、请求头信息的关键字匹配<br>根据网站response返回头信息进行关键字匹配，whatweb和Wappalyzer就是通过banner信息来快速识别指纹，之前fofa的web指纹库很多都是使用的这种方法，效率非常高，基本请求一次就可以，但搜集这些规则可能会耗时很长。而且这些banner信息有些很容易被改掉。<br>根据response header一般有以下几种识别方式：<br>1）查看http响应报头的X-Powered-By字段来识别；<br>2）根据Cookies来进行判断，比如一些waf会在返回头中包含一些信息，如360wzws、Safedog、yunsuo等；<br>3）根据header中的Server信息来判断，如DVRDVS-Webs、yunjiasu-nginx、Mod_Security、nginx-wallarm等；<br>4）根据WWW-Authenticate进行判断，一些路由交换设备可能存在这个字段，如NETCORE、huawei、h3c等设备。</p>
+<p>4、部分URL中包含的关键字，比如wp-includes、dede等URL关键特征<br>通过规则库去探测是否有相应目录，或者根据爬虫结果对链接url进行分析，或者对robots.txt文件中目录进行检测等等方式，通过url地址来判别是否使用了某CMS，比如wordpress默认存在wp-includes和wp-admin目录，织梦默认管理后台为dede目录，solr平台可能使用/solr目录，weblogic可能使用wls-wsat目录等。</p>
+<p>5、开发语言的识别<br>web开发语言一般常见的有PHP、jsp、aspx、asp等，常见的识别方式有：<br>1）通过爬虫获取动态链接进行直接判断是比较简便的方法。<br>asp判别规则如下&lt;a[^&gt;]<em>?href=(‘|”)[^http][^&gt;]</em>?.asp(?|#|\1)，其他语言可替换相应asp即可。<br>2）通过X-Powered-By进行识别<br>比较常见的有X-Powered-By: ASP.NET或者X-Powered-By: PHP/7.1.8<br>3）通过Set-Cookie进行识别<br>这种方法比较常见也很快捷，比如Set-Cookie中包含PHPSSIONID说明是php、包含JSESSIONID说明是java、包含ASP.NET_SessionId说明是aspx等。</p>
+<h3 id="在线平台-1"><a href="#在线平台-1" class="headerlink" title="在线平台"></a>在线平台</h3><p>通过第三方在线平台进行指纹识别<br>（1）<a target="_blank" rel="noopener" href="http://www.yunsee.cn/">http://www.yunsee.cn/</a><br>（2）<a target="_blank" rel="noopener" href="http://finger.tidesec.net/">http://finger.tidesec.net/</a><br>（3）<a target="_blank" rel="noopener" href="http://whatweb.bugscaner.com/look/">http://whatweb.bugscaner.com/look/</a><br>（4）<a target="_blank" rel="noopener" href="https://fp.shuziguanxing.com/">https://fp.shuziguanxing.com/</a><br>（5）<a target="_blank" rel="noopener" href="http://www.whatweb.net/">http://www.whatweb.net/</a><br>（6）<a target="_blank" rel="noopener" href="https://scan.dyboy.cn/web/">https://scan.dyboy.cn/web/</a><br>（7）<a target="_blank" rel="noopener" href="https://whatweb.net/">https://whatweb.net/</a></p>
+<p><img src="https://secure2.wostatic.cn/static/46TWzp1sxKeHhvGtRPxs9/image.png"></p>
+<h3 id="本地化工具"><a href="#本地化工具" class="headerlink" title="本地化工具"></a>本地化工具</h3><p>通过利用指纹识别工具进行指纹识别<br>（1）WhatWeb：<a target="_blank" rel="noopener" href="https://github.com/urbanadventurer/WhatWeb">https://github.com/urbanadventurer/WhatWeb</a><br>（2）Wapplyzer：<a target="_blank" rel="noopener" href="https://github.com/AliasIO/Wappalyzer">https://github.com/AliasIO/Wappalyzer</a><br>（3）Whatruns：<a target="_blank" rel="noopener" href="https://www.whatruns.com/downloads/">https://www.whatruns.com/downloads/</a><br>（4）Plecost：<a target="_blank" rel="noopener" href="https://github.com/iniqua/plecost">https://github.com/iniqua/plecost</a><br>（5）BlindElephant：<a target="_blank" rel="noopener" href="https://github.com/lokifer/BlindElephant">https://github.com/lokifer/BlindElephant</a><br>（6）WebEye：<a target="_blank" rel="noopener" href="https://github.com/zerokeeper/WebEye/">https://github.com/zerokeeper/WebEye/</a><br>（7）WTF_Scan：<a target="_blank" rel="noopener" href="https://github.com/dyboy2017/WTF_Scan">https://github.com/dyboy2017/WTF_Scan</a><br>（8）Webfinger：<a target="_blank" rel="noopener" href="https://github.com/se55i0n/Webfinger">https://github.com/se55i0n/Webfinger</a><br>（9）FingerPrint：<a target="_blank" rel="noopener" href="https://github.com/tanjiti/FingerPrint">https://github.com/tanjiti/FingerPrint</a><br>（10）御剑web指纹识别程序：<a target="_blank" rel="noopener" href="https://www.webshell.cc/4697.html">https://www.webshell.cc/4697.html</a><br>（11）Test404轻量WEB指纹识别：<a target="_blank" rel="noopener" href="https://www.test404.com/post-1618.html">https://www.test404.com/post-1618.html</a><br>（12）w11scan分布式WEB指纹识别平台：<a target="_blank" rel="noopener" href="https://github.com/w-digital-scanner/w11scan">https://github.com/w-digital-scanner/w11scan</a><br>（13）Dayu指纹识别工具：<a target="_blank" rel="noopener" href="https://github.com/Ms0x0/Dayu">https://github.com/Ms0x0/Dayu</a></p>
+<p><img src="https://secure2.wostatic.cn/static/dfweCG3kLf7fWNpnAnHEA2/image.png"></p>
+<p><strong>Whatweb</strong></p>
+<p>WhatWeb是一个开源的网站指纹识别软件。可识别Web技术，包括内容管理系统（CMS），博客平台，统计/分析包，Javascript库，服务器和嵌入式设备。它有超过1000个插件，每个插件都能识别不同的东西。WhatWeb还标识版本号，电子邮件地址，账户ID，Web框架模块，SQL错误等<br>安装：<br>Ubuntu：apt-get install whatweb<br>Centos：yum updateyum install ruby ruby-devel rubygems<br>wget <a target="_blank" rel="noopener" href="http://www.morningstarsecurity.com/downloads/whatweb-0.4.7.tar.gz">http://www.morningstarsecurity.com/downloads/whatweb-0.4.7.tar.gz</a><br>tar xzvf whatweb-0.4.7.tar.gz<br>cd whatweb-0.4.7<br>./whatweb url</p>
+<p>whatweb <a target="_blank" rel="noopener" href="http://www.target.com/">www.target.com</a> #扫描单个域名<br>whatweb -i target.txt #批量扫描<br>whatweb <a target="_blank" rel="noopener" href="http://www.target.com/">www.target.com</a> –log-xml=baidu.xml #保存结果<br>whatweb –no-errors -t 255 内网网段 #快速本地扫描（扫描内网主机）<br>-i 指定要扫描的文件<br>-v 详细显示扫描的结果<br>-a 指定运行级别，1-4</p>
+<p><img src="https://secure2.wostatic.cn/static/r1JdgHtEsKcs4diKL7bbtM/image.png"></p>
+<p><img src="https://secure2.wostatic.cn/static/4YyV8xB97XTm6gfL6sqpF3/image.png"></p>
+<p><strong>Wapplyzer</strong></p>
+<p>Wappalyzer最新版是一款强大的网站技术栈嗅探工具，Wappalyzer官方版插件能够快速识别一个网站用到的前后端技术框架、运行容器、脚本库等，Wappalyzer还提供跨平台实用程序，能够发现网站上使用的技术，还可以检测内容管理系统，电子商务平台，Web框架，服务器软件，分析工具等。<br>该软件是浏览器插件，所以安装方式也比较简单，只需要在浏览器的插件管理器中下载安装该插件即可。下面以火狐浏览器为例介绍其安装和使用</p>
+<p>打开火狐浏览器在输入框中输入about:addons，找到插件，再查询输入框中输入“Wappalyzer”,    “添加到firefox”，在浏览器中即可使用。打开    待测试  网站，右击该插件即可。</p>
+<p><img src="https://secure2.wostatic.cn/static/dXXEsYSyQtzdjDFy3Qbtm4/image.png"></p>
+<p><strong>御剑Web指纹识别系统</strong></p>
+<p>一款CMS指纹识别小工具，<a target="_blank" rel="noopener" href="http://该程序由.net/">该程序由.NET</a> 2.0框架开发，配置灵活、支持自定义关键字和正则匹配两种模式、使用起来简洁、体验良好。在指纹命中方面表现不错、识别速度很快、但目前比较明显的缺陷是指纹的配置库偏少（原本带的指纹库较小，感兴趣的可以添加）。</p>
+<p><img src="https://secure2.wostatic.cn/static/3kHBmiq8BZNJRUf5b2TChc/image.png"></p>
+<p>各种工具指纹收集分享</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/r0eXpeR/fingerprint">https://github.com/r0eXpeR/fingerprint</a></p>
+<p><img src="https://secure2.wostatic.cn/static/sqeY87keEsQ8ZAy43fWc8W/image.png"></p>
+<h1 id="目录、敏感文件探测"><a href="#目录、敏感文件探测" class="headerlink" title="目录、敏感文件探测"></a>目录、敏感文件探测</h1><h2 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h2><p>扫描站点的目录，寻找敏感文件，如目录名、探针文件、后台、robots.txt、备份文件等。</p>
+<p>  目录：站点结构，权限控制不严格；<br>探针文件：服务器配置信息，1.php、phpinfo.php、readme.txt、config.txt等；<br>后台：管理整个网站的入口，admin.php、index.php/s=admin、administrator.php等；<br>Robots.txt：一般存放在站点根目录，如果管理员对robots.txt配置不合理就会造成信息泄露；<br>备份文件：数据库备份、网站备份文件等，如.bak文件、.zip文件、.rar文件等；<br>敏感JS文件：网页中可能嵌套的JS存在敏感信息，如后台的入口、登录评估等；<br>API：网页中可能存在嵌套的应用程序接口，在信息收集中可以考虑寻找接口；<br>网页链接：收集页面中包含所有的链接。</p>
+<h2 id="常见扫描利用工具"><a href="#常见扫描利用工具" class="headerlink" title="常见扫描利用工具"></a>常见扫描利用工具</h2><p>(1)<a target="_blank" rel="noopener" href="https://github.com/maurosoria/dirsearch">https://github.com/maurosoria/dirsearch</a><br>(2)<a target="_blank" rel="noopener" href="https://github.com/H4ckForJob/dirmap">https://github.com/H4ckForJob/dirmap</a><br>(3)<a target="_blank" rel="noopener" href="https://scan.dyboy.cn/web/infoleak">https://scan.dyboy.cn/web/infoleak</a><br>(4)<a target="_blank" rel="noopener" href="https://github.com/lijiejie/BBScan">https://github.com/lijiejie/BBScan</a><br>(5)<a target="_blank" rel="noopener" href="https://github.com/7kbstorm/7kbscan-WebPathBrute">https://github.com/7kbstorm/7kbscan-WebPathBrute</a><br>(6)<a target="_blank" rel="noopener" href="https://sourceforge.net/projects/dirbuster/">https://sourceforge.net/projects/dirbuster/</a><br>(7)<a target="_blank" rel="noopener" href="https://www.kali.org/tools/dirb/">https://www.kali.org/tools/dirb/</a><br>(8)<a target="_blank" rel="noopener" href="https://github.com/OJ/gobuster">https://github.com/OJ/gobuster</a><br>(9)<a target="_blank" rel="noopener" href="https://github.com/TuuuNya/webdirscan">https://github.com/TuuuNya/webdirscan</a><br>(10)<a target="_blank" rel="noopener" href="https://github.com/deibit/cansina">https://github.com/deibit/cansina</a><br>(11)<a target="_blank" rel="noopener" href="https://github.com/aducode/wwwscan">https://github.com/aducode/wwwscan</a><br>(12)御剑后台扫描工具、AWVS、北极熊扫描器等</p>
+<p><img src="https://secure2.wostatic.cn/static/u9ubB4DNuirMTEAWDDFvak/image.png"></p>
+<h3 id="御剑后台扫描工具"><a href="#御剑后台扫描工具" class="headerlink" title="御剑后台扫描工具"></a>御剑后台扫描工具</h3><p>御剑后台扫描珍藏版是T00LS大牛的作品,方便查找用户后台登陆地址，同时也为程序开发人员增加了难度，尽量独特的后台目录结构。附带很强大的字典，字典我们也是可以自己修改的，继续增加规则。<br>特点：<br>（1）扫描线程自定义:用户可根据自身电脑的配置来设置调节扫描线程<br>（2）集合DIR扫描 ASP ASPX PHP JSP MDB数据库 包含所有网站脚本路径扫描<br>（3）默认探测200<br>安装：<br>御剑不用安装，直接下载下来解压，双击“御剑后台扫描工具.exe”即可正常使用 </p>
+<p>在域名输入框中输入域名，选择扫描参数即可，注意网站后端脚本类型，测试选用php.</p>
+<p><img src="https://secure2.wostatic.cn/static/v3Wzr3Dnu7KaRgAq5Phakx/image.png"></p>
+<h3 id="Dirbuster"><a href="#Dirbuster" class="headerlink" title="Dirbuster"></a>Dirbuster</h3><p>DirBuster是一个多线程Java应用程序，旨在强制Web/应用程序服务器上的目录和文件名。它可以选择执行纯暴力，在查询隐藏文件和目录方面非常好用。<br>安装使用：<br>（1）安装java，配置JDK环境变量<br>（2）下载安装，<a target="_blank" rel="noopener" href="https://sourceforge.net/projects/dirbuster/">https://sourceforge.net/projects/dirbuster/</a><br>面板参数：<br>（1）Target URL：输入要探测网站的地址；需要注意的是这个地址要加上协议，看网站是http还是https。<br>（2）Work Method：选择工作方式；一个是get请求，一个是自动选择。一般选auto switch的自动选择，它会自行判断是使用head方式或get方式。<br>（3）Number of Thread：是选择扫描线程数，一般为30。电脑配置好的可根据情况选择。<br>（4）select scanning type：是选择扫描类型。list based brute force是使用字典扫描的意思，勾选上。随后browse选择字典文件，可用自己的，也可用dirbuster自己的。pure brute force是纯暴力破解的意思。<br>（5）select starting options：选项一个是standard start point（固定标准的名字去搜），一个是urlfuzz（相当于按关键字模糊搜索），选择url fuzz，随后在url tofuzz框中输入{dir}即可。</p>
+<p><img src="https://secure2.wostatic.cn/static/2G6uPVS8wCZ9iig6AemAqi/image.png"></p>
+<p>扫描结果说明：<br>200 OK ：文件存在并能够读取。<br>404 File not found ：文件不存在。<br>301 Moved permanently ：这是到给定 URL 的重定向。<br>401 Unauthorized ：需要权限来访问这个文件。<br>403 Forbidden ：请求有效但是服务器拒绝响应。</p>
+<p>注意：第4步中也可以选择纯暴力破解模式，命中率不高，相比之下还是模糊测试好用些</p>
+<p><img src="https://secure2.wostatic.cn/static/pbjsTu686Nyi4fV3VAfJZi/image.png"></p>
+<h3 id="Dirsearch"><a href="#Dirsearch" class="headerlink" title="Dirsearch"></a>Dirsearch</h3><p>基于python的命令行工具，用于暴力扫描页面结构，包括网站中的目录、备份文件、编辑器、后台等敏感目录<br>特点：<br>（1）多线程，使其比任何其他站点扫描仪工具都快<br>（2）执行递归暴力破解<br>（3）具有HTTP代理支持<br>（4）有效地检测到无效网页<br>（5）具有用户代理随机化和批处理功能<br>（6）支持请求延迟<br>安装：<br>下载地址： <a target="_blank" rel="noopener" href="https://github.com/maurosoria/dirsearch">https://github.com/maurosoria/dirsearch</a>      运行环境：必须安装python3</p>
+<p>常见命令和参数：<br>python <a target="_blank" rel="noopener" href="http://dirsearch.py/">dirsearch.py</a>  -h  查看帮助菜单<br>-u  指定需要扫描URL<br>-e   指定需要扫描的文件名-x 403,302,301 排除状态码<br>-w  指定自定义的字典文件路径<br>-r 递归扫描，非常耗时<br>-R 递归深度级别</p>
+<p><img src="https://secure2.wostatic.cn/static/n3yWFS9ZhpgVLzeHXUpjxR/image.png"></p>
+<p>python3 <a target="_blank" rel="noopener" href="http://dirsearch.py/">dirsearch.py</a> -u <a target="_blank" rel="noopener" href="http://192.168.10.103:81/">http://192.168.10.103:81</a> -e php -x 403</p>
+<p><img src="https://secure2.wostatic.cn/static/jUHj239rfm5kLHaUV1HRCa/image.png"></p>
+<h3 id="LinkFinder"><a href="#LinkFinder" class="headerlink" title="LinkFinder"></a>LinkFinder</h3><p>LinkFinder是一个Python脚本，旨在发现JavaScript文件中的端点及其参数。这样，渗透测试人员和Bug猎手就可以在他们正在测试的网站上收集新的，隐藏的端点。导致新的测试环境，可能包含新的漏洞。<br>安装：<br>git clone <a target="_blank" rel="noopener" href="https://github.com/GerbenJavado/LinkFinder.git">https://github.com/GerbenJavado/LinkFinder.git</a><br>cd LinkFinder<br>python <a target="_blank" rel="noopener" href="http://setup.py/">setup.py</a> install（pip3 install -r requirements.txt）<br>python3 <a target="_blank" rel="noopener" href="http://linkfinder.py/">linkfinder.py</a> -h</p>
+<p><img src="https://secure2.wostatic.cn/static/dikaLt5RJYBWPLbfKe9Mjh/image.png"></p>
+<p>测试效果：python3 <a target="_blank" rel="noopener" href="http://linkfinder.py/">linkfinder.py</a> -i <a target="_blank" rel="noopener" href="http://192.168.10.103:81/">http://192.168.10.103:81/</a></p>
+<p><img src="https://secure2.wostatic.cn/static/r8oGhawSt9M8qDintaRhb6/image.png"></p>
+<h3 id="Link-Grabber"><a href="#Link-Grabber" class="headerlink" title="Link Grabber"></a>Link Grabber</h3><p>Link Grabber 是一款能够批量提取、筛选、复制网页里各种链接的 Chrome 扩展。<br>安装：<br>使用Chrome浏览器访问“<a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/category/extensions?hl=zh-CN%E2%80%9D%EF%BC%8C%E6%90%9C%E7%B4%A2%E2%80%9CLink">https://chrome.google.com/webstore/category/extensions?hl=zh-CN”，搜索“Link</a> Grabber”，安装即可。访问待测试页面，点击浏览器中“Link Grabber”。</p>
+<p><img src="https://secure2.wostatic.cn/static/7g1Sydz8DjSqCmMd24Tm8e/image.png"></p>
+<h3 id="Burp-JSFinderV1-1-obf"><a href="#Burp-JSFinderV1-1-obf" class="headerlink" title="Burp_JSFinderV1.1_obf"></a>Burp_JSFinderV1.1_obf</h3><p>扫描JS文件中链接的Burp脚本–Burp_JSFinderV1.1_obf<br>安装：<br><a target="_blank" rel="noopener" href="https://github.com/nice0e3/Burp_JSFinder/releases/download/V1.1/Burp_JSFinderV1.1_obf.jar">https://github.com/nice0e3/Burp_JSFinder/releases/download/V1.1/Burp_JSFinderV1.1_obf.jar</a><br>导入Burp中，开启burp–&gt;插件扩展–&gt;添加–&gt;类型选java，选择现在的jar文件</p>
+<p><img src="https://secure2.wostatic.cn/static/avnDdQMYhPr1NgSYDqvGgw/image.png"></p>
+<h1 id="其他信息收集"><a href="#其他信息收集" class="headerlink" title="其他信息收集"></a>其他信息收集</h1><h3 id="敏感信息"><a href="#敏感信息" class="headerlink" title="敏感信息"></a>敏感信息</h3><p>针对某些安全做得很好的目标，直接通过技术层面是无法完成渗透测试的。在这种情况下，可以利用搜索引擎目标暴露在互联网上的关联信息。例如：数据库文件、后台登录页面、服务配置信息，甚至是通过Git找到站点泄露源代码，以及Redis等未授权访问、Robots.txt等敏感信息，从而达到红队评估目的。</p>
+<p><img src="https://secure2.wostatic.cn/static/5q8EnNiGdWNgP8SFs8XgPu/image.png"></p>
+<p>在某些情况下，收集到的信息会对后期进行测试起到帮助重要。如果通过收集敏感信息直接获取了目标系统的数据库访问权限，那么渗透测试任务就结束了一大半。因此在进行技术层面情况下的测试之前，应该先进行更多的信息收集，尤其是针对敏感信息的。</p>
+<h3 id="Google-Hacking"><a href="#Google-Hacking" class="headerlink" title="Google Hacking"></a>Google Hacking</h3><p>前面已经整理，这里不再赘叙；</p>
+<h3 id="Github信息泄露"><a href="#Github信息泄露" class="headerlink" title="Github信息泄露"></a>Github信息泄露</h3><p>Github是一个分布式的版本控制系统，拥有大量的开发者用户。随着越来越多的应用程序转移到云端，Github已经成为了管理软件开发以及发现已有代码的首选方法。当今大数据时代，大规模数据泄露事件时有发生，但有些人不知道很多敏感信息的泄露其实是我们无意之间造成的。一个很小的疏漏，可能会造成一系列的连锁放映。Github上敏感信息的泄露，就是一个典型的例子，存在着一些安全隐患。常用工具：github-dorks（<a target="_blank" rel="noopener" href="https://github.com/techgaun/github-dorks%EF%BC%89">https://github.com/techgaun/github-dorks）</a></p>
+<p><img src="https://secure2.wostatic.cn/static/audC5dLqQbFNA7ftSuxNvz/image.png"></p>
+<h3 id="源码信息收集"><a href="#源码信息收集" class="headerlink" title="源码信息收集"></a>源码信息收集</h3><p>（1）利用JS文件信息收集，在JS文件中搜索关键字API，Swagger UI等等，尝试寻找API接口地址。<br>（2）利用APK、jar等移动应用提取，通过AndroidKiller、apktool、jd-gui、jadx、jad等反编译工具。静态分析：IDA Pro分析dex文件反汇编生成的Dalvik字节码，或者使用文本编辑器阅读baksmali反编译生成的smali文件。另一种是阅读反汇编生成的Java源码，可以使用dex2jar生成jar文件，然后再用jd-gui阅读文件的代码。<br>（3）利用在线源码托管平台，常见在线源码托管平台<br><a target="_blank" rel="noopener" href="https://searchcode.com/">https://searchcode.com/</a><br><a target="_blank" rel="noopener" href="https://gitee.com/">https://gitee.com/</a><br><a target="_blank" rel="noopener" href="https://github.com/">https://github.com/</a><br><a target="_blank" rel="noopener" href="https://coding.net/">https://coding.net/</a><br><a target="_blank" rel="noopener" href="https://codechina.csdn.net/explore">https://codechina.csdn.net/explore</a><br><a target="_blank" rel="noopener" href="https://gitshell.com/">https://gitshell.com/</a><br><a target="_blank" rel="noopener" href="http://www.svnchina.com/">http://www.svnchina.com/</a></p>
+<p><img src="https://secure2.wostatic.cn/static/nBQ5eX8Fxg8nFdbyjzcXHy/image.png"></p>
+<p>利用在线源码托管平台，以github为例–gshark，可视化的监测工具，它不仅可以监控github，还可以监控gitlab，安装步骤如下。<br>Step 1：下载压缩包，然后将压缩包解压，<a target="_blank" rel="noopener" href="https://github.com/madneal/gshark/releases%EF%BC%9B">https://github.com/madneal/gshark/releases；</a><br>Step 2：修改二进制文件的权限，以 ghsark_darwin_amd64为例，解压后修改二进制文件权限 chmod +x gshark，然后启动服务 ./gshark web；<br>Step 3：将前端文件发布到 nginx 的根目录下，就是将压缩包内的 dist 文件夹的文件拷贝到 nginx 根目录下，另外为了反向代理后端服务还需要修改一下 nginx 的配置，加入以下配置：<br>Step 4：启动本地的mysqll和nginx服务，访问nginx服务即可<br>注意：账号密码均为:gshark</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">location /api/ &#123;</span><br><span class="line">proxy_set_header Host <span class="variable">$http_host</span>;</span><br><span class="line">proxy_set_header  X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">proxy_set_header X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">rewrite ^/api/(.*)$ /<span class="variable">$1</span> <span class="built_in">break</span>;</span><br><span class="line">proxy_pass http://127.0.0.1:8888;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Step 5：登录GShark，添加规则和token，本次测试规则类型和token均为github。</p>
+<p><img src="https://secure2.wostatic.cn/static/fxcfE4ezX7QmVnsDAgXtMu/image.png"></p>
+<p>Step 6：执行./gshark scan，回到面板中能看到，获取的敏感信息。</p>
+<p><img src="https://secure2.wostatic.cn/static/nTZqx8QbSvnhRpzfEEaQTA/image.png"></p>
+<p>获取的GitHub敏感信息结果如下：</p>
+<p><img src="https://secure2.wostatic.cn/static/aoc8aBzPVuPQME8s8o5yie/image.png"></p>
+<h3 id="旁站及C段探测"><a href="#旁站及C段探测" class="headerlink" title="旁站及C段探测"></a>旁站及C段探测</h3><p>旁站指的是同一服务器上的其他网站，很多时候，有些网站可能不是那么容易入侵。那么，可以查看该网站所在的服务器上是否还有其他网站。如果有其他网站的话，可以先拿下其他网站的webshell，然后再提权拿到服务器的权限，最后就自然可以拿下该网站了！<br>对于实战攻防工程师来说，C段扫描比较有意义。对于单独网站的渗透测试，C段扫描意义不大。C段嗅探的意思就是拿下它同一C段中的其中一台服务器，也就是说是D段1-255中的一台服务器，然后利用工具嗅探拿下该服务器。</p>
+<p><img src="https://secure2.wostatic.cn/static/vZnUnpcrVNuiX8oHxh4Zdj/image.png"></p>
+<p>利用在线平台对平台组织的网站系统进行旁站和C段探测。常见在线平台如下：<br>（1）<a target="_blank" rel="noopener" href="http://www.webscan.cc/">http://www.webscan.cc/</a><br>（2）<a target="_blank" rel="noopener" href="https://scan.dyboy.cn/web/webside">https://scan.dyboy.cn/web/webside</a><br>（3）<a target="_blank" rel="noopener" href="http://www.bug8.me/bing/bing.php">http://www.bug8.me/bing/bing.php</a><br>（4）<a target="_blank" rel="noopener" href="http://stool.chinaz.com/same">http://stool.chinaz.com/same</a><br>（5）<a target="_blank" rel="noopener" href="https://fofa.so/">https://fofa.so/</a></p>
+<p><img src="https://secure2.wostatic.cn/static/8CHricRRqvuAeD2Ji8bgza/image.png"></p>
+<h3 id="组织架构"><a href="#组织架构" class="headerlink" title="组织架构"></a>组织架构</h3><p>目标组织信息——通过企查查、天眼查、国家企业信用信息公示系统等来对企业信息进行查询，可以查到目标组织的物理地址、逻辑关系网、邮箱、子公司、联系电话等信息。<br>域名注册信息——Whois可以查看注册的域名、注册人邮箱、电话、注册商等信息。<br>客服信息——销售客服、技术支持售后客服。<br>招聘信息——官网招聘联系方式、招聘网站联系方式等。<br>常见在线平台：<br>（1）<a target="_blank" rel="noopener" href="https://www.qcc.com/">https://www.qcc.com/</a><br>（2）<a target="_blank" rel="noopener" href="https://www.tianyancha.com/">https://www.tianyancha.com/</a><br>（3）<a target="_blank" rel="noopener" href="http://www.gsxt.gov.cn/">http://www.gsxt.gov.cn/</a></p>
+<p><img src="https://secure2.wostatic.cn/static/wdxhM9vPA7MdDb3Z9esPNf/image.png"></p>
+<h3 id="信用信息查询"><a href="#信用信息查询" class="headerlink" title="信用信息查询"></a>信用信息查询</h3><p>通过信用信息查询可获取目标组织的相关信息，包含：法定代表人、统一社会信用代码、注册号、经营范围等。</p>
+<p>常用在线查询地址<br>1、国家企业信用信息公示系统：<a target="_blank" rel="noopener" href="http://www.gsxt.gov.cn/index.html">http://www.gsxt.gov.cn/index.html</a><br>2、悉知-全国企业信息查询：<a target="_blank" rel="noopener" href="http://company.xizhi.com/">http://company.xizhi.com/</a><br>3、信用中国-个人信用查询搜索-企业信息查询搜索-统一社会信用代码查询：<a target="_blank" rel="noopener" href="https://www.creditchina.gov.cn/">https://www.creditchina.gov.cn/</a></p>
+<p><img src="https://secure2.wostatic.cn/static/f828hLo3uecvxGMkYz2jGf/image.png"></p>
+<h3 id="历史漏洞信息"><a href="#历史漏洞信息" class="headerlink" title="历史漏洞信息"></a>历史漏洞信息</h3><p><img src="https://secure2.wostatic.cn/static/mXVHdNKpZdmpxLWcyxNZee/image.png"></p>
+<p>国家信息安全漏洞库：<a target="_blank" rel="noopener" href="http://www.cnnvd.org.cn/">http://www.cnnvd.org.cn/</a><br>国家信息安全漏洞共享平台：<a target="_blank" rel="noopener" href="https://www.cnvd.org.cn/">https://www.cnvd.org.cn/</a><br>SeeBug：<a target="_blank" rel="noopener" href="https://www.seebug.org/?ref=www">https://www.seebug.org/?ref=www</a><br>信息安全漏洞门户 VULHUB：<a target="_blank" rel="noopener" href="http://vulhub.org.cn/view/global">http://vulhub.org.cn/view/global</a><br>数字观星：<a target="_blank" rel="noopener" href="https://poc.shuziguanxing.com/#/">https://poc.shuziguanxing.com/#/</a><br>NSFOCUS绿盟科技：<a target="_blank" rel="noopener" href="http://www.nsfocus.net/index.php?act=sec_bug">http://www.nsfocus.net/index.php?act=sec_bug</a><br>BugScan–漏洞插件社区：<a target="_blank" rel="noopener" href="http://www.bugscan.net/source/template/vulns/">http://www.bugscan.net/source/template/vulns/</a><br>漏洞列表 | 教育行业漏洞报告平台：<a target="_blank" rel="noopener" href="https://src.sjtu.edu.cn/list/">https://src.sjtu.edu.cn/list/</a><br>工控系统行业漏洞库平台：<a target="_blank" rel="noopener" href="http://ivd.winicssec.com/">http://ivd.winicssec.com/</a><br>exp库-打造中文最大exploit库：<a target="_blank" rel="noopener" href="http://www.expku.com/">http://www.expku.com/</a><br>乌云漏洞库：<a target="_blank" rel="noopener" href="https://github.com/hanc00l/wooyun_public">https://github.com/hanc00l/wooyun_public</a></p>
+<p>Exploit-db：<a target="_blank" rel="noopener" href="https://www.exploit-db.com/">https://www.exploit-db.com/</a><br>Sploitus | Exploit &amp; Hacktool Search Engine：<a target="_blank" rel="noopener" href="https://sploitus.com/">https://sploitus.com/</a><br>Packetstorm：<a target="_blank" rel="noopener" href="https://packetstormsecurity.org/">https://packetstormsecurity.org/</a><br>SecurityFocus：<a target="_blank" rel="noopener" href="https://www.securityfocus.com/bid">https://www.securityfocus.com/bid</a><br>Cxsecurity：<a target="_blank" rel="noopener" href="https://cxsecurity.com/exploit/">https://cxsecurity.com/exploit/</a><br>rapid7 Vulnerability &amp; Exploit Database：<a target="_blank" rel="noopener" href="https://www.rapid7.com/db/">https://www.rapid7.com/db/</a><br>Most recent entries - CVE-Search：<a target="_blank" rel="noopener" href="https://cve.circl.lu/">https://cve.circl.lu/</a><br>CVE security vulnerability database. Security vulnerabilities, exploits：<a target="_blank" rel="noopener" href="https://www.cvedetails.com/">https://www.cvedetails.com/</a><br>CVE mitre - Search CVE List：<a target="_blank" rel="noopener" href="https://cve.mitre.org/cve/search_cve_list.html">https://cve.mitre.org/cve/search_cve_list.html</a><br>美国官方工控数据库 ICS-CERT Landing | CISA：<a target="_blank" rel="noopener" href="https://www.us-cert.gov/ics">https://www.us-cert.gov/ics</a><br>路由器漏洞搜索 Routerpwn：<a target="_blank" rel="noopener" href="http://www.routerpwn.com/">http://www.routerpwn.com/</a></p>
+<h3 id="社工信息"><a href="#社工信息" class="headerlink" title="社工信息"></a>社工信息</h3><p>社工技术在安全领域广泛应用，并成为红队人员的一种辅助手段。在红队人员进行渗透测试前会通过社工手段收集目标组织的信息，所收集到的信息越多攻击测试的面就越广，所能发现的漏洞就越多。当系统足够强大使得你的渗透技术受到限制时，社工手段也不失为一种打开困局的突破口。<br> 社工需要收集的信息有：项目的信息；目标组织的信息；目标组织员工的信息等。</p>
+<p>1.项目的信息<br>一个项目从创建到开发到应用，这中间会产生许多有用的信息，一些信息对于安全人员来说可能是突破某个问题的钥匙。<br>项目的名称和服务信息的利用：有些软件的服务商会使用他们开发的项目为一些目标组织或者电商提供整套的建站服务，网站和管理后台是他们事先开发好的，并根据客户的需求进行部署。假如某个电商平台我们获知了它的项目名称叫xmail2.0，进而我们可获知xmall的服务商为A目标组织，进而我们便有可能获取到该项目的源码。一种方式是冒充客户从A目标组织获取该xmall2.0版本的项目，一种是从网上搜索有没有使用者将项目源码泄露。源码都到你手上了，目标在你面前已然变得完全透明，那么接下来的渗透将更加容易。<br>项目的开发者信息的利用：有的网站你在查看它的源码的时候会发现作者的署名，但是作者的署名会有什么用呢？很多人认为开发者的信息并无用处，但是作为安全人员来说这可是一条渗透的思路。比如我们从一个网站的源码中看到了它的作者是ZhangDeShuai，然后我们可以通过该名字去网上搜到他的一些平台账号，他可能在CSDN、Github或者博客上发布过一些项目的实例或者技术的框架，这可能就是你所渗透的目标所用到的。开发者往往还有一些不太好的习惯，他们往往将一些重要的信息附上自己的名字，比如有些开发在数据库建admin表时起名zhangdeshuai_admin。白帽子在sql注入后会使用字典猜解表名进而获取表中的数据，那么在爆破字典中加入开发者的名字不失为一种破解的思路。<br>项目的开发语言、开发框架、时间和版本信息的利用：我们所使用的开发技术都是在不断升级更新的，在一些老的版本可能会存在一些固有的漏洞。假如我们获知了某个项目使用了php进行开发，当我们获知了它的开发时间进而便能推测出它大概的php版本。这就为白帽子提供了一条渗透的思路，通过尝试利用该php版本存在的固有漏洞便可对该项目进行渗透。</p>
+<p>2.目标组织的信息<br>对渗透目标所属的目标组织来说，目标组织的有些信息也可为我们的渗透提供思路。<br>目标组织的组织架构、人事信息、产品信息：目标组织的一些公开信息可以从天眼查或者企信宝上看到，一些内部的信息也会因为泄露被获知，但是这些信息能为我们的渗透提供哪些帮助呢？举个栗子，比如我们获知了A目标组织的人事信息，如果该目标组织的内部沟通并不畅通，我们便可冒充A目标组织某个部门的员工给负责该渗透目标的技术人员打去电话，我们可以编一个正当的理由要求该技术人员为我们提供一些便利。再举个栗子，比如我们获知了该目标组织的产品信息，我们便可伪装成该产品的重要客户给该目标组织打去电话，表明我们使用该产品时出现了些问题，要求技术人员提供一些信息帮助解决。<br>目标组织的子域名、子服务器：目标组织子域名或者子服务器的发现能使得攻击面扩大。因为我们所渗透的目标可能会与目标组织的其他域有或多或少的联系，当目标域无从下手时，可以从与该域有关联的其他域另辟蹊径。举个栗子，比如我们的渗透目标是<a target="_blank" rel="noopener" href="http://qq.com,我们通过子域名爆破发现了http//game.qq.com%E3%80%81[http://video.qq.com](http://video.qq.com)%EF%BC%8C%E6%88%91%E4%BB%AC%E5%8F%91%E7%8E%B0%E4%BA%86%E8%AF%A5%E7%9B%AE%E6%A0%87%E7%BB%84%E7%BB%87%E8%BF%98%E6%9C%89%E6%B8%B8%E6%88%8F%E5%92%8C%E8%A7%86%E9%A2%91%E7%9A%84%E4%B8%9A%E5%8A%A1%EF%BC%8C%E5%8F%AF%E8%83%BD%E9%80%9A%E8%BF%87%E5%AF%B9%E8%BF%99%E4%B8%A4%E4%B8%AA%E5%AD%90%E5%9F%9F%E7%9A%84%E6%B8%97%E9%80%8F%E5%B0%B1%E8%83%BD%E8%BF%9B%E5%85%A5%E8%AF%A5%E7%9B%AE%E6%A0%87%E7%BB%84%E7%BB%87%E3%80%82">http://qq.com，我们通过子域名爆破发现了http://game.qq.com、[http://video.qq.com](http://video.qq.com)，我们发现了该目标组织还有游戏和视频的业务，可能通过对这两个子域的渗透就能进入该目标组织。</a></p>
+<p>3.人的信息<br>上面我们提到过，有些人的安全习惯不太好，可能会将一些重要的信息附上自己的名字、生日或者常用昵称，这会为我们的破解提供便利。还有不少目标组织在第三方服务平台或者服务器、域名商处注册账号时会使用技术部门主管的邮箱或者手机号。对渗透目标所属主管的个人信息进行搜集也能我们实施渗透或者劫持提供思路。</p>
+<p><strong>利用在线社工平台</strong></p>
+<p>利用在线社工平台进行信息收集。</p>
+<p>1、<a target="_blank" rel="noopener" href="https://www.reg007.com/">https://www.reg007.com/</a><br>2、<a target="_blank" rel="noopener" href="https://checkusernames.com/">https://checkusernames.com/</a><br>3、<a target="_blank" rel="noopener" href="https://knowem.com/">https://knowem.com/</a><br>4、<a target="_blank" rel="noopener" href="https://namechk.com/">https://namechk.com/</a><br>5、<a target="_blank" rel="noopener" href="https://www.blackbookonline.info/">https://www.blackbookonline.info/</a><br>6、<a target="_blank" rel="noopener" href="https://aleph.occrp.org/">https://aleph.occrp.org/</a><br>7、<a target="_blank" rel="noopener" href="https://monitor.firefox.com/">https://monitor.firefox.com/</a><br>8、<a target="_blank" rel="noopener" href="https://haveibeenpwned.com/">https://haveibeenpwned.com/</a><br>9、<a target="_blank" rel="noopener" href="https://ghostproject.fr/">https://ghostproject.fr/</a></p>
+<p><img src="https://secure2.wostatic.cn/static/4xkzezE5HJNSwVSVymuaX8/image.png"></p>
+<h3 id="图标和信息特征"><a href="#图标和信息特征" class="headerlink" title="图标和信息特征"></a>图标和信息特征</h3><p> favicon.ico图标——获取目标站点的favicon.ico图标的哈希值，然后配合shodan进行目标站点资产收集，因为每个目标站点的favicon.ico图标的哈希值可能是固定值，因此可以通过该方法从shodan，fofa等等去寻找更多资产。示例：“shodan搜索语句：http.favicon.hash:哈希值”。生成图标哈希值的利用工具： <a target="_blank" rel="noopener" href="https://github.com/devanshbatham/FavFreak%E3%80%82">https://github.com/devanshbatham/FavFreak。</a></p>
+<p>其它信息征进行搜搜集的技巧——通过查看站点的body里是否有目标的特征，然后利用网络空间搜索引擎（如fofa等）对该特索，如：body=“XX公司”或body=“360”等。</p>
+<p>非常规操作：<br>1、如果找到了目标的一处资产，但是对目标其他资产的收集无处下手时，可以查看一下该站点的body里是否有目标的特征，然后利用网络空间搜索引擎（如fofa等）对该特征进行搜索，如：body=”XX公司”或body=”360”等。该方式一般适用于特征明显，资产数量较多的目标，并且很多时候效果拔群。<br>2、当通过上述方式的找到test.com的特征后，再进行body的搜索，然后再搜索到test.com的时候，此时fofa上显示的ip大概率为test.com的真实IP。<br>3、如果需要对政府网站作为目标，那么在批量获取网站首页的时候，可以用上<a target="_blank" rel="noopener" href="http://114.55.181.28/databaseInfo/index%E4%B9%8B%E5%90%8E%E5%8F%AF%E4%BB%A5%E7%BB%93%E5%90%88%E4%B8%8A%E4%B8%80%E6%AD%A5%E7%9A%84%E6%96%B9%E6%B3%95%E8%BF%9B%E8%A1%8C%E8%BF%9B%E4%B8%80%E6%AD%A5%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E3%80%82">http://114.55.181.28/databaseInfo/index之后可以结合上一步的方法进行进一步的信息收集。</a></p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>信息收集的定义和分类<br>常见信息收集的类别<br>不同信息收集工具的使用</p>
+
+      </div>
+    </div>
+</div>
+
+
+<div class="post-footer">
+  
+  <div class="donate text-center">
+    <span></span>
+    <div class="donate-way">
+      
+    </div>
+  </div>
+  
+
+</div>
+
+    <!-- Comments -->
+    <div class="comments">
+        
+        
+    </div>
+
+</article>
+
+
+        </div>
+        
+<footer class="text-center">
+    
+    
+    
+    
+    
+    <p>&copy;  2020 - 2021&nbsp;&nbsp;Theme Miracle</p>
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme by <a href="https://github.com/hifun-team/hexo-theme-miracle" target="_blank">Miracle</a></p>
+    
+    
+</footer>
+
+<div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
+    
+    <a href="#top" class="click-btn">
+      <i id="i-up"></i>
+    </a>
+</div>
+
+<!-- SCRIPTS -->
+
+
+
+
+
+
+
+<script>
+    document.getElementById("btn-dropdown").addEventListener('click', () => {
+      toggleClass("#dropdown-menus","display-inline");
+    });
+    console.log('\n' + ' %c Powered by Hexo Theme Miracle ' + ' %c https://github.com/hifun-team/hexo-theme-miracle ' + '\n' + '\n', 'color: #fff; background: #4F9BFA; padding:5px 0;', 'background: #FFF; padding:5px 0;');
+
+    
+
+    
+  /* 小彩蛋: 饮茶先啦 */
+  setTimeout(() => {
+    var time = new Date();
+    if (time.getHours() == 15) {
+      let comment = document.createComment(' 三点几嚟！饮茶先啦！ ');
+      document.body.insertBefore(comment, document.getElementsByTagName('header')[0]);
+    }
+  },1);
+    
+</script>
+
+
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
+
+
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+        </div>
+        <div id="css-loading">
+            <h3 class="text-center">加载中...</h3>
+        </div>
+        
+    </body>
+</html>
