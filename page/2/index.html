@@ -403,6 +403,95 @@ header .header__right .dropdown-menus .dropdown-menu {
       
       <article class="index-card-info">
         <h3 class="index-header">
+          <a href="/2022/04/20/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/">
+          
+          文件包含漏洞</a>
+        </h3>
+        <p class="index-excerpt">
+            
+            
+              
+            
+            一、什么是文件包含漏洞？
+1、文件包含概述
+和SQL注入等攻击方式一样，文件包含漏洞也是一种“注入型漏洞”，其本质就是输入一段用户能够控制的脚本或者代码，并让服务器端执行。
+什么叫包含呢？以PHP为例，我们常常把可重复使用的函数写入到单个文件中，在使用该函数时，直接调用此文件，而无需再次编写函数，这一过程就叫做包含。
+有时候由于网站功能需求，会让前端用户选择要包含的文件，而开发人员又没有对要包含的
+        </p>
+        <div class="index-btm post-metas">
+          
+            
+              <time datetime="2022-04-20 09:15" pubdate>
+                2022-04-20
+              </time>
+            
+          
+          
+        </div>
+      </article>
+    </div>
+  
+    <div class="index-card">
+      
+      <article class="index-card-info">
+        <h3 class="index-header">
+          <a href="/2022/04/13/%E7%BB%95%E8%BF%87waf%E6%8A%80%E5%B7%A7/">
+          
+          绕过waf技巧</a>
+        </h3>
+        <p class="index-excerpt">
+            
+            
+              
+            
+            常见的过WAF技巧1．大小写绕过∶·大小写绕过用于只针对小写或大写的关键字匹配技术·出现原因:在waf里，使用的正则不完善或者是没有用大小写转换函数·用法:比如，拦截了union，那就使用uNIoNXXx.com/index.php?id=-3 uNIoN sELect 1,2,3·注意:对于一些不太成熟的WAF效果显著
+2．替换关键字∶关键字双写·出现原因∶利用waf的不完整性，只验证一次字符串
+        </p>
+        <div class="index-btm post-metas">
+          
+            
+              <time datetime="2022-04-13 09:30" pubdate>
+                2022-04-13
+              </time>
+            
+          
+          
+        </div>
+      </article>
+    </div>
+  
+    <div class="index-card">
+      
+      <article class="index-card-info">
+        <h3 class="index-header">
+          <a href="/2022/04/06/sql-lib/">
+          
+          sql-lib</a>
+        </h3>
+        <p class="index-excerpt">
+            
+            
+              
+            
+            sql注入union联合注入(前四关关同理)1.http://45.32.113.109:44709/Less-1/?id=1&#39;   //报错,说明存在注入2.http://45.32.113.109:44709/Less-1/?id=1&#39;  and 1=1–+ //显示数据http://45.32.113.109:44709/Less-1/?id=1&#39;  and 1=2–
+        </p>
+        <div class="index-btm post-metas">
+          
+            
+              <time datetime="2022-04-06 14:40" pubdate>
+                2022-04-06
+              </time>
+            
+          
+          
+        </div>
+      </article>
+    </div>
+  
+    <div class="index-card">
+      
+      <article class="index-card-info">
+        <h3 class="index-header">
           <a href="/2022/03/29/sqlmap/">
           
           sqlmap</a>

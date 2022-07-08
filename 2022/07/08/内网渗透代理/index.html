@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/null">
     <link rel="icon" type="image/png" href="/null">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <title>归档 - Hexo</title>
+    <title>内网渗透代理 - Hexo</title>
     
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
@@ -404,77 +404,78 @@ header .header__right .dropdown-menus .dropdown-menu {
             
 
 <article class="page">
-  <div class="archive-list">
-    <p class="h4">共计 19 篇文章</p>
-    <hr>
+<div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3>内网渗透代理</h3>
     
-    
-      
-        
-        <p class="h5">2022</p>
-      
-      <a href="/2022/04/20/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">文件包含漏洞</span>
-        <time style="float: right;">04-20</time>
-      </a>
-    
-      
-      <a href="/2022/04/13/%E7%BB%95%E8%BF%87waf%E6%8A%80%E5%B7%A7/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">绕过waf技巧</span>
-        <time style="float: right;">04-13</time>
-      </a>
-    
-      
-      <a href="/2022/04/06/sql-lib/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">sql-lib</span>
-        <time style="float: right;">04-06</time>
-      </a>
-    
-      
-      <a href="/2022/03/29/sqlmap/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">sqlmap</span>
-        <time style="float: right;">03-29</time>
-      </a>
-    
-      
-      <a href="/2022/03/21/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%8F%92%E4%BB%B6/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">渗透测试插件</span>
-        <time style="float: right;">03-21</time>
-      </a>
-    
-      
-      <a href="/2022/03/15/mysql/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">mysql</span>
-        <time style="float: right;">03-15</time>
-      </a>
-    
-      
-      <a href="/2022/03/14/PHP/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">PHP</span>
-        <time style="float: right;">03-14</time>
-      </a>
-    
-      
-      <a href="/2022/03/14/Linux/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">Linux</span>
-        <time style="float: right;">03-14</time>
-      </a>
-    
-      
-      <a href="/2022/03/08/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">第一篇博客</span>
-        <time style="float: right;">03-08</time>
-      </a>
-    
-
-    <nav aria-label="navigation">
-      <span class="pagination" id="pagination">
-        <a class="extend prev" rel="prev" href="/archives/">&lt;</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
+      <span class="post-meta-label">
+        John Doe
       </span>
-    </nav>
+    
+    
+      <span class="post-meta-label">
+        <span class="p-dot"></span>
+        <time datetime="2022-07-08 11:30" pubdate>
+          2022-07-08
+        </time>
+      </span>
+    
+    
+      
+      <span class="post-meta">
+        <span class="p-dot"></span>
+        共 1.2k 字
+      </span>
+    
+    
+    
+  </div>
+  
+</div>
+<div class="article-m">
+  <div class="post-toc">
+    
+      
+    
+  </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <p>前言</p>
+<p>在内网环境中,使用一些常规的内网反弹工具均被各大安全软件所拦截,尝试提权但无果,这时就需要一款内网代理和端口转发工具,穿越防火墙直连内网。</p>
+<p>本文皆在学习内网渗透中 reGeorg+Proxifier 工具的使用。<br>一、工具介绍</p>
+<p>reGeorg是reDuh的继承者，利用了会话层的socks5协议，而Proxifier是一款强大的socks5客户端，可以让不支持通过代理服务器工作的网络能通过HTTPS或SOCKS代理或代理链。该文件下支持php，asp，jsp，aspx。</p>
+<p>内网转发工具大体分为：端口转发工具(lcx.exe)，Web代理脚本，Shell反弹脚本等</p>
+<p>reGeorg的出现，极大的方便了安全测试代理进内网。现在使用reGeorg和Proxifier，在安全测试过程中，可以利用它们的组合来完成从外网到内网的通信。<br>二、正向代理和反向代理<br>正向代理和反向代理的区别<br>1、正向代理<br>是一个位于客户端和原始服务器之间的服务器,为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标(原始服务器)，然后代理向原始服务器转交请求并将获得的内容返回给客户端，客户端才能正向代理；<br>2、反向代理<br>是指以代理服务器来接受Internet上的连接请求，然后将请求转发给内部网络上的服务器，并将从服务器上得到的结果返回给Internet上请求连接的客户端，此时代理服务器对外就表现为一个反向代理服务器；<br>如何进行内网穿透：<br>(1) 反向代理：将内网的流量转发到外网<br>(2) 正向代理：以某台机器为跳板，做正向代理进行内网穿透<br>四、reGeorg使用方法<br>先将reGeorg的对应脚本上传到服务器端，reGeorg提供了PHP、ASPX、JSP脚本，直接访问显示“Georg says, ‘All seems fine’”，表示脚本运行正常。<br>运行命令提示符下切换到C:\Python27\，运行 python reGeorgSocksProxy.py -u (上传reGeorg脚本的地址) -p (转发端口) -l(本地地址)，参数顺序无强制要求<br>由于是基于socks5,本地还需安装一个socks5代理工具此类工具网上很多，就以 Proxifier为例子<br>监听代理时候注意规则<br>以Proxifier为例子，将python.exe添加列外，不然会死循环。<br>下面我们配置Proxifier，运行Proxifier之后设置代理。<br>第一步设置代理服务器，127.0.0.1 + -p指定的端口<br>第二步设置代理规则（推荐），动作这里会有三个状态，Direct（放行），Block（阻塞），Proxy（代理）。<br>这里可以设置需要代理的，以及放行的程序。<br>五、应用场景<br>例如有一台主机运行了web服务IP映射到公网任何人都可以任意访问，还有一台主机是内网中的主机外部访问不到。假设在公网的web主机已经上传了webshell，但无法反弹shell，无法直接将内网主机通过端口映射到外网主机。<br>reGeorg这时就起作用了，通过上传reGeorg文件在web服务运行，使得攻击者发出的请求以及目标机器的响应经web服务的http转发，达到攻击者可以和内网主机进行通信的效果。</p>
+<p>多层代理</p>
+<p>方法一:matesploit路由转发<br>·如果已经拿到了一台内网服务器，需要使用MSF去访问内网资源，这时候就需要在msf中添加去往“内网网段”的路由。<br>MSF路由转发实现过程:<br>1．需要获得一个msf的session会话<br>2．获取内网的地址网段<br>3．在msf中添加“内网网段”的路由<br>命令:<br>-run autoroute -s目标网段#添加路由<br>. run autoroute -p#查看路由表<br>注意:<br>。通过MSF自带的autoroute功能自动添加路由<br>只有MSF能访问到第二层的内网<br>方法二:设置Socks代理<br>概述:通过socks4模块添加socks代理，然后通过proxychains和浏览器代理使所有应用都可以通过代理访问到第二层内网·模块: auxiliary/server/socks4a</p>
+<p>过程:<br>1．使用socks4a模块;<br>use auxiliary/server/socks4a<br>2．设置监听端口<br>set SRVPORT端口号<br>3．开始执行: exploit<br>·此时通过meterpreter隧道开了一个代理，这个代理端口默认开在本机<br>·连上代理相当于可以访问msf上下文的所有路由，即可以访问之前通过autoroute添加的路由</p>
+
+      </div>
+    </div>
+</div>
+
+
+<div class="post-footer">
+  
+  <div class="donate text-center">
+    <span></span>
+    <div class="donate-way">
+      
+    </div>
+  </div>
+  
 
 </div>
+
+    <!-- Comments -->
+    <div class="comments">
+        
+        
+    </div>
+
 </article>
+
+
         </div>
         
 <footer class="text-center">
@@ -491,6 +492,8 @@ header .header__right .dropdown-menus .dropdown-menu {
 </footer>
 
 <div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
     
     <a href="#top" class="click-btn">
       <i id="i-up"></i>
@@ -526,8 +529,50 @@ header .header__right .dropdown-menus .dropdown-menu {
 </script>
 
 
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
 
 
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
 
 
 

