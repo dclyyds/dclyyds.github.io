@@ -466,17 +466,17 @@ header .header__right .dropdown-menus .dropdown-menu {
 <p>所以先随便输入一个数试试</p>
 <p>我们可以看到输出点在这，并且输入最大长度设了限制，为20</p>
 <p>我们直接把长度限制给删了，然后闭合以下下面的那个输出</p>
-<p>我们用 </p><script>alert(1)</script> //<p></p>
+<p>我们用 </p>&lt;，Script&gt;alert(1)&lt;/。script&gt; /<p></p>
 <p>成功！！！</p>
 <p>解决方案，可以把长度限制同时放在后端就可以</p>
 <p>2.反射型xss(post)</p>
 <p>第二关更简单了</p>
 <p>根据提示登录账号密码</p>
 <p>然后这一次还没有字数限制，我们直接获取cookie</p>
-<p>payload：<script>alert(document.cookie)</script></p>
+<p>payload：&lt;。script&gt;alert(document.cookie)&lt;/。script&gt;</p>
 <p>3.存储型xss</p>
 <p>这一关让我们体验了一把什么是存储型xss</p>
-<p>我们在留言板输入：<script>alert(1)</script></p>
+<p>我们在留言板输入：&lt;。script&gt;alert(1)&lt;/。script&gt;</p>
 <p>然后我们每次访问这个界面就会触发这个命令</p>
 <p>4.DOM型xss</p>
 <p>其实这里的解法依旧是想办法闭合前面的即可，但是这里有点奇怪，不知道为什么输入的双引号无法闭合，只能输入单引号，单引号就变成双引号了，很离谱，具体原因未知</p>
@@ -497,12 +497,12 @@ header .header__right .dropdown-menus .dropdown-menu {
 <p>发现输出点以后</p>
 <p>我们注入一下</p>
 <p>离谱，咋全没有了</p>
-<p>接下来试了好多次，最后排除了一下可能是把<script>标签以及一些相关的都给过滤了</p>
+<p>接下来试了好多次，最后排除了一下可能是把&lt;。script&gt;标签以及一些相关的都给过滤了</p>
 <p>我们换个标签试试</p>
 <p>payload:xxxx</p>
 <p>然后还是被过滤了，貌似还是script的原因</p>
 <p>我们用onclick试试</p>
-<p>&lt;a href=”” οnclick=alert(1) &gt;</p>
+<p>&lt;。a href=”” οnclick=alert(1) &gt;</p>
 <p>最后成功</p>
 <p>8.xss之htmlspecialchars</p>
 <p>这个和之前那个挺像的</p>
@@ -515,7 +515,7 @@ header .header__right .dropdown-menus .dropdown-menu {
 <p>‘ οnclick=alert(1) ‘</p>
 <p>通关</p>
 <p>9.xss之href输出</p>
-<p>href 属性的值可以是任何有效文档的相对或绝对 URL，包括片段标识符和 JavaScript 代码段。如果用户选择了<a>标签中的内容，那么浏览器会尝试检索并显示 href 属性指定的 URL 所表示的文档，或者执行 JavaScript 表达式、方法和函数的列表。</p>
+<p>href 属性的值可以是任何有效文档的相对或绝对 URL，包括片段标识符和 JavaScript 代码段。如果用户选择了<a>标签中的内容，那么浏览器会尝试检索并显示 href 属性指定的 URL 所表示的文档，或者执行 JavaScript 表达式、方法和函数的列表。</a></p>
 <p>所以我们输入：javascript:alert(1)</p>
 <p>成功！！！</p>
 <p>10.xss之js输出</p>
@@ -544,11 +544,11 @@ header .header__right .dropdown-menus .dropdown-menu {
 <body>
     //这个地址是修改页面的地址，抓包获取到的
     <form action="http://192.168.3.184:8080//pikachu/vul/csrf/csrfpost/csrf_post_edit.php" method="post">
-        <input type='text' name='sex' value='1111'/>性别:<br>
-        <input type='text' name='phonenum' value='1111'/>手机号:<br>
-        <input type='text' name='add' value='1111'/>住址:<br>
-        <input type='text' name='email' value='1111'/>邮箱:<br>
-        <input id='autosubmit' type='submit' name='submit' value='submit'/><br>   
+        <input type="text" name="sex" value="1111">性别:<br>
+        <input type="text" name="phonenum" value="1111">手机号:<br>
+        <input type="text" name="add" value="1111">住址:<br>
+        <input type="text" name="email" value="1111">邮箱:<br>
+        <input id="autosubmit" type="submit" name="submit" value="submit"><br>   
     </form>
 ​
     <script>
@@ -556,14 +556,14 @@ header .header__right .dropdown-menus .dropdown-menu {
             document.getElementById('autosubmit').click();
         }
     </script>
-
-
+</body>
+</html>
 
 
 
  
 
-</p><p>等会让用户直接访问这个地址</p>
+<p>等会让用户直接访问这个地址</p>
 <p>页面加载完成之后会自动提交post请求</p>
 <p>最后我们访问了那个地址之后，发现信息被修改</p>
 <p>3.CSRF Token</p>
@@ -802,7 +802,7 @@ r.send(null);
 <p>具体的关于xml实体的介绍,网络上有很多,自己动手先查一下。 现在很多语言里面对应的解析xml的函数默认是禁止解析外部实体内容的,从而也就直接避免了这个漏洞。 以PHP为例,在PHP里面解析xml用的是libxml,其在≥2.9.0的版本中,默认是禁止解析xml外部实体内容的。</p>
 <p>payload：</p>
 <?xml version = "1.0"?><!DOCTYPE note [     <!ENTITY hacker "xxe"><p> ]&gt;<br><name>&hacker;</name><br>​<br>十四.URL重定向<br>这里直接抓包改url即可</p>
-<p>十五.SSRF(服务器请求伪造)<br>服务器可能会请求其它资源，而这个资源是我们想要的而且我们可以通过参数控制，那么这里就会存在SSRF漏洞，因为我们可以去访问服务器内网或者本机的一些敏感信息等<br>————————————————<br>版权声明：本文为CSDN博主「henghengzhao_」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/henghengzhao_/article/details/127309946">https://blog.csdn.net/henghengzhao_/article/details/127309946</a></p>
+<p>十五.SSRF(服务器请求伪造)<br>服务器可能会请求其它资源，而这个资源是我们想要的而且我们可以通过参数控制，那么这里就会存在SSRF漏洞，因为我们可以去访问服务器内网或者本机的一些敏感信息等</p>
 
       </div>
     </div>
