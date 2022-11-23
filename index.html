@@ -423,8 +423,12 @@ header .header__right .dropdown-menus .dropdown-menu {
             
               
             
-            
-
+            一.暴力破解1.基于表单的暴力破解
+打开burpsuite抓包，进行爆破
+最后选择长度最特殊的那个payload试一下，基本就是账号密码了
+解决办法：加验证码机制，或者多次错误输入密码直接禁止输入等
+2.验证码绕过(on server)
+这个还是需要爆破，但是这个其实就是用一个验证码去爆破就可以了，因为服务器并没有对使用过的验证码销毁，所以导致在一定时间内该验证码都有效，所以拿着一个验证码去爆破账
         </p>
         <div class="index-btm post-metas">
           
